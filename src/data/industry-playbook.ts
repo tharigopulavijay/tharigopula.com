@@ -243,6 +243,136 @@ export const industryPlaybooks: Record<string, IndustryPlaybook> = {
       { name: "Practice dashboard", body: "Billed versus unbilled work, deadlines due and capacity.", from: "From ₹19,000" },
     ],
   },
+
+  retail: {
+    objective:
+      "Know what is actually in stock and what is actually selling, without counting shelves on a Sunday.",
+    levels: ["essential", "dynamic"],
+    startingFrom: "₹11,999",
+    functionality: [
+      "Product catalogue with live availability",
+      "Offers and new arrivals you update yourself",
+      "Enquiry and quotation requests",
+      "Store locations and timings",
+      "Online ordering where it makes sense",
+      "Customer reviews",
+    ],
+    automations: [
+      { trigger: "An invoice is generated", outcome: "Bill and warranty card sent on WhatsApp automatically" },
+      { trigger: "A quotation is pending 2 days", outcome: "Reminder sent while the offer is still valid" },
+      { trigger: "Stock drops below reorder level", outcome: "Purchase alert with the supplier's contact" },
+      { trigger: "11 months after a purchase", outcome: "Warranty expiry notice and an AMC offer" },
+    ],
+    systems: [
+      { name: "Inventory & billing", body: "Billing that reduces stock as it happens, so the count is always right.", from: "From ₹24,999" },
+      { name: "Customer database & loyalty", body: "Who bought what, when — so repeat business stops being luck.", from: "From ₹24,999" },
+      { name: "Sales dashboard", body: "Fast movers, dead stock, margin by category.", from: "From ₹9,999" },
+    ],
+  },
+
+  education: {
+    objective:
+      "Stop losing admission enquiries, and stop chasing fees over phone calls.",
+    levels: ["essential", "dynamic"],
+    startingFrom: "₹11,999",
+    functionality: [
+      "Courses, batches and faculty pages",
+      "Admission enquiry forms",
+      "Fee structure and schedules",
+      "Results and achievements",
+      "Parent and student information",
+      "Downloadable prospectus",
+    ],
+    automations: [
+      { trigger: "An admission enquiry arrives", outcome: "Acknowledged instantly and assigned to a counsellor" },
+      { trigger: "An enquiry goes cold for 3 days", outcome: "Follow-up with prospectus and counsellor availability" },
+      { trigger: "A fee instalment falls due", outcome: "Reminder to the parent before the due date" },
+      { trigger: "Attendance drops below threshold", outcome: "Parent notified the same day" },
+    ],
+    systems: [
+      { name: "Admissions CRM", body: "Every enquiry with a stage, a counsellor and a next action.", from: "From ₹49,000" },
+      { name: "Batch & fee management", body: "Batches, attendance and fee collection in one place.", from: "From ₹24,999" },
+      { name: "Institution dashboard", body: "Admissions funnel, collections due and batch utilisation.", from: "From ₹19,000" },
+    ],
+  },
+
+  logistics: {
+    objective:
+      "Know what each trip actually cost, and bill it before the month closes.",
+    levels: ["essential", "dynamic"],
+    startingFrom: "₹11,999",
+    functionality: [
+      "Service and route coverage pages",
+      "Freight enquiry and quotation forms",
+      "Shipment tracking lookup",
+      "Fleet and capability information",
+      "Document downloads",
+      "Branch contacts",
+    ],
+    automations: [
+      { trigger: "A trip is assigned", outcome: "Driver receives the details and documents on WhatsApp" },
+      { trigger: "Proof of delivery is uploaded", outcome: "Invoice raised automatically against the trip" },
+      { trigger: "A vehicle document nears expiry", outcome: "Alert for permit, insurance or fitness renewal" },
+      { trigger: "An invoice crosses terms", outcome: "Payment reminder with the trip statement" },
+    ],
+    systems: [
+      { name: "Trip & fleet management", body: "Trips, drivers, fuel and expenses against each vehicle.", from: "From ₹49,000" },
+      { name: "Proof of delivery", body: "Photo and signature capture that ends billing disputes.", from: "From ₹24,999" },
+      { name: "Cost dashboard", body: "Cost per km, per vehicle and per route — where margin actually goes.", from: "From ₹19,000" },
+    ],
+  },
+
+  "local-businesses": {
+    objective:
+      "Be findable when someone nearby searches, and be booked without a phone call.",
+    levels: ["launch-page", "essential"],
+    startingFrom: "₹6,999",
+    functionality: [
+      "Services and pricing",
+      "Click-to-call and WhatsApp",
+      "Booking or appointment requests",
+      "Directions and opening hours",
+      "Photo gallery",
+      "Local SEO essentials",
+    ],
+    automations: [
+      { trigger: "An enquiry comes in", outcome: "Instant WhatsApp acknowledgement so nobody is left waiting" },
+      { trigger: "A booking is made", outcome: "Confirmation with time, address and directions" },
+      { trigger: "A few hours before the appointment", outcome: "Reminder that cuts no-shows" },
+      { trigger: "After the service", outcome: "Thank you message with a Google review link" },
+    ],
+    systems: [
+      { name: "Booking & customer list", body: "Appointments and a customer history you actually own.", from: "From ₹24,999" },
+      { name: "Repeat-business automation", body: "Bring past customers back on a schedule that suits the service.", from: "From ₹4,999" },
+      { name: "Simple dashboard", body: "Enquiries, bookings and where customers came from.", from: "From ₹9,999" },
+    ],
+  },
+
+  startups: {
+    objective:
+      "Get something real in front of users and investors before the budget runs out.",
+    levels: ["launch-page", "premium-interactive"],
+    startingFrom: "₹6,999",
+    functionality: [
+      "Landing page that explains the idea fast",
+      "Waitlist and early-access capture",
+      "Interactive product explanation",
+      "Pricing and plan comparison",
+      "Analytics from day one",
+      "Investor-ready presentation",
+    ],
+    automations: [
+      { trigger: "Someone joins the waitlist", outcome: "Welcome message and their position in the queue" },
+      { trigger: "A user signs up", outcome: "Onboarding sequence starts automatically" },
+      { trigger: "A user goes inactive", outcome: "Re-engagement nudge before they churn" },
+      { trigger: "A demo is requested", outcome: "Calendar link sent and the founder notified" },
+    ],
+    systems: [
+      { name: "MVP web application", body: "The smallest real product that proves the idea works.", from: "From ₹69,000" },
+      { name: "Auth, accounts & payments", body: "Users can sign up, subscribe and pay — properly.", from: "From ₹24,999" },
+      { name: "Product analytics", body: "What users actually do, not what you hope they do.", from: "From ₹9,999" },
+    ],
+  },
 };
 
 export const playbookFor = (slug: string): IndustryPlaybook | undefined =>
