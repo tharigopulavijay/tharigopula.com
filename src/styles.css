@@ -1,0 +1,184 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Tharigopula Technologies design system.
+ * Warm paper base, graphite ink, signal amber accent, deep ink sections.
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-border: var(--ink-border);
+  --color-signal: var(--signal);
+  --color-signal-foreground: var(--signal-foreground);
+  --color-paper: var(--paper);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-azure: var(--azure);
+  --color-aqua: var(--aqua);
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --shadow-lift: 0 1px 2px oklch(0.2 0.02 90 / 0.06), 0 12px 28px -18px oklch(0.2 0.02 90 / 0.28);
+  --shadow-plate: 0 24px 60px -32px oklch(0.2 0.02 90 / 0.4);
+}
+
+:root {
+  --radius: 0.5rem;
+  --paper: #f6f9ff;
+  --background: #ffffff;
+  --foreground: #07182f;
+  --card: #ffffff;
+  --card-foreground: #07182f;
+  --popover: #ffffff;
+  --popover-foreground: #07182f;
+  --primary: #0b2a55;
+  --primary-foreground: #ffffff;
+  --secondary: #eaf3ff;
+  --secondary-foreground: #0b2a55;
+  --muted: #eaf3ff;
+  --muted-foreground: #55627a;
+  --accent: #eaf3ff;
+  --accent-foreground: #0b2a55;
+  --destructive: oklch(0.55 0.2 27);
+  --destructive-foreground: #ffffff;
+  --border: #dbe7fa;
+  --input: #dbe7fa;
+  --ring: #1769ff;
+  --ink: #07182f;
+  --ink-foreground: #eaf3ff;
+  --ink-muted: #9db2d4;
+  --ink-border: #ffffff1f;
+  --signal: #1769ff;
+  --signal-foreground: #ffffff;
+  --azure: #3d9cff;
+  --aqua: #41e6d0;
+  --chart-1: #1769ff;
+  --chart-2: #3d9cff;
+  --chart-3: #41e6d0;
+  --chart-4: #0b2a55;
+  --chart-5: #202838;
+  --sidebar: #f6f9ff;
+  --sidebar-foreground: #07182f;
+  --sidebar-primary: #0b2a55;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #eaf3ff;
+  --sidebar-accent-foreground: #0b2a55;
+  --sidebar-border: #dbe7fa;
+  --sidebar-ring: #1769ff;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    overflow-x: hidden;
+    font-feature-settings: "ss01", "cv01";
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.025em;
+    text-wrap: balance;
+  }
+}
+
+@utility surface-ink {
+  background-color: var(--ink);
+  color: var(--ink-foreground);
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+@utility grid-lines {
+  background-image:
+    linear-gradient(to right, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in oklab, var(--foreground) 6%, transparent) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+@utility reveal {
+  animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
