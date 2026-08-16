@@ -17,6 +17,57 @@ import {
   timelines,
   type EstimatorState,
 } from "@/data/estimator";
+import { ESTIMATOR_HANDOFF_KEY } from "@/lib/enquiry";
+
+/**
+ * Renders the configured scope as plain text that travels with the enquiry,
+ * so a proposal request arrives already specified.
+ */
+function buildHandoffSummary({
+  estimate,
+  baseLabel,
+  state,
+}: {
+  estimate: ReturnType<typeof computeEstimate>;
+  baseLabel: string | undefined;
+  state: EstimatorState;
+}): string {
+  const label = (list: { id: string; label: string }[], id: string) =>
+    list.find((x) => x.id === id)?.label;
+
+  const lines: string[] = ["Project configurator summary", ""];
+
+  if (baseLabel) lines.push(`Starting point: ${baseLabel}`);
+  const industry = industries.find((i) => i.slug === state.industry)?.name;
+  if (industry) lines.push(`Industry: ${industry}`);
+  const objective = label(objectives, state.objective);
+  if (objective) lines.push(`Main objective: ${objective}`);
+  const size = label(businessSizes, state.size);
+  if (size) lines.push(`Business size: ${size}`);
+  const timeline = label(timelines, state.timeline);
+  if (timeline) lines.push(`Timeline: ${timeline}`);
+
+  if (estimate.baseLine) {
+    lines.push("", "Breakdown", `- ${estimate.baseLine.label}: ${estimate.baseLine.detail}`);
+  }
+  for (const m of estimate.moduleLines) lines.push(`- ${m.label}: ${m.detail}`);
+  if (estimate.complexityLine) {
+    lines.push(`- ${estimate.complexityLine.label}: ${estimate.complexityLine.detail}`);
+  }
+  if (estimate.rushLine) lines.push(`- ${estimate.rushLine.label}: ${estimate.rushLine.detail}`);
+  if (estimate.includedLines.length) {
+    lines.push(`- Included at no extra cost: ${estimate.includedLines.join(", ")}`);
+  }
+
+  lines.push(
+    "",
+    `Indicative estimate: ${estimate.lowLabel} – ${estimate.highLabel}`,
+    `Complexity: ${estimate.complexity} · Estimated delivery: ${estimate.weeks}`,
+    "Confidence: preliminary — to be confirmed after scoping.",
+  );
+
+  return lines.join("\n");
+}
 
 const stepTitles = [
   "What do you want to build?",
@@ -402,6 +453,18 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
             <div className="mt-5 flex flex-col gap-2 sm:flex-row">
               <Link
                 to="/contact"
+                onClick={() => {
+                  // Carry the scope across so the enquiry arrives fully specified
+                  // and the visitor never re-explains what they just configured.
+                  try {
+                    sessionStorage.setItem(
+                      ESTIMATOR_HANDOFF_KEY,
+                      buildHandoffSummary({ estimate, baseLabel: selectedBase?.label, state }),
+                    );
+                  } catch {
+                    /* private mode — the enquiry still sends, just without scope */
+                  }
+                }}
                 className="rounded-md bg-ink px-5 py-3.5 text-center text-sm font-semibold text-ink-foreground"
               >
                 Request Detailed Proposal

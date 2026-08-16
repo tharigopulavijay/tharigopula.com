@@ -1,9 +1,15 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import { z } from "zod";
 import { Section, SectionHeading } from "@/components/site/primitives";
 import { site, whatsappLink } from "@/data/site";
+import {
+  ESTIMATOR_HANDOFF_KEY,
+  enquirySchema,
+  enquiryWhatsappLink,
+  submitEnquiry,
+  type EnquiryInput,
+} from "@/lib/enquiry";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -20,30 +26,56 @@ export const Route = createFileRoute("/contact")({
   component: ContactPage,
 });
 
-const schema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100),
-  email: z.string().trim().email("Enter a valid email").max(255),
-  phone: z.string().trim().max(20).optional(),
-  company: z.string().trim().max(120).optional(),
-  message: z.string().trim().min(10, "Tell us a little more").max(1500),
-});
+type Sent = { reference: string; payload: EnquiryInput };
 
 function ContactPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [busy, setBusy] = useState(false);
+  const [sent, setSent] = useState<Sent | null>(null);
+  const [handoff, setHandoff] = useState<string | null>(null);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  // Pick up an estimator breakdown if the visitor came from the configurator.
+  useEffect(() => {
+    try {
+      const stored = sessionStorage.getItem(ESTIMATOR_HANDOFF_KEY);
+      if (stored) setHandoff(stored);
+    } catch {
+      /* private mode — proceed without the handoff */
+    }
+  }, []);
+
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = new FormData(e.currentTarget);
-    const parsed = schema.safeParse(Object.fromEntries(form));
+    const raw = {
+      ...Object.fromEntries(form),
+      source: handoff ? "estimator" : "contact",
+      ...(handoff ? { context: handoff } : {}),
+    };
+
+    const parsed = enquirySchema.safeParse(raw);
     if (!parsed.success) {
       const next: Record<string, string> = {};
       for (const issue of parsed.error.issues) next[String(issue.path[0])] = issue.message;
       setErrors(next);
       return;
     }
+
     setErrors({});
-    e.currentTarget.reset();
-    toast.success("Thanks — your enquiry is noted. We will reply within one business day.");
+    setBusy(true);
+    try {
+      const result = await submitEnquiry({ data: parsed.data });
+      setSent({ reference: result.reference, payload: parsed.data });
+      try {
+        sessionStorage.removeItem(ESTIMATOR_HANDOFF_KEY);
+      } catch {
+        /* ignore */
+      }
+    } catch {
+      toast.error("That did not send. Please use WhatsApp or email below — we do not want to lose your message.");
+    } finally {
+      setBusy(false);
+    }
   };
 
   const field = "mt-1.5 w-full rounded-md border border-border bg-card px-3.5 py-2.5 text-sm outline-none focus:border-foreground/40";
@@ -61,7 +93,50 @@ function ContactPage() {
 
       <Section className="pt-0">
         <div className="grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+          {sent ? (
+            <div className="rounded-xl border border-signal bg-signal/5 p-6 sm:p-8">
+              <p className="font-mono text-[10px] tracking-[0.16em] text-signal uppercase">Enquiry received</p>
+              <h2 className="mt-3 font-display text-2xl font-semibold">Thanks, {sent.payload.name}.</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Your reference is{" "}
+                <span className="font-mono font-semibold text-foreground">{sent.reference}</span>. We reply within one
+                business day.
+              </p>
+              <p className="mt-5 text-sm">
+                Want a faster answer? Send the same details on WhatsApp — it arrives instantly with everything already
+                filled in.
+              </p>
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <a
+                  href={enquiryWhatsappLink(sent.reference, sent.payload)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-md bg-ink px-5 py-3.5 text-center text-sm font-semibold text-ink-foreground"
+                >
+                  Send on WhatsApp
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setSent(null)}
+                  className="rounded-md border border-border px-5 py-3.5 text-center text-sm font-semibold"
+                >
+                  Send another enquiry
+                </button>
+              </div>
+            </div>
+          ) : (
           <form onSubmit={onSubmit} noValidate className="rounded-xl border border-border bg-card p-6 sm:p-8">
+            {handoff ? (
+              <div className="mb-6 rounded-lg border border-signal/40 bg-signal/5 p-4">
+                <p className="font-mono text-[10px] tracking-[0.16em] text-signal uppercase">
+                  Your estimate is attached
+                </p>
+                <p className="mt-1.5 text-sm text-muted-foreground">
+                  We will receive your configurator breakdown with this message, so you will not be asked to explain the
+                  scope again.
+                </p>
+              </div>
+            ) : null}
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="block text-sm font-medium">
                 Name
@@ -87,10 +162,15 @@ function ContactPage() {
               <textarea name="message" rows={6} className={field} maxLength={1500} />
               {errors["message"] ? <span className="mt-1 block text-xs text-destructive">{errors["message"]}</span> : null}
             </label>
-            <button type="submit" className="mt-6 rounded-md bg-ink px-5 py-3.5 text-sm font-semibold text-ink-foreground">
-              Send enquiry
+            <button
+              type="submit"
+              disabled={busy}
+              className="mt-6 rounded-md bg-ink px-5 py-3.5 text-sm font-semibold text-ink-foreground transition-opacity disabled:opacity-60"
+            >
+              {busy ? "Sending…" : "Send enquiry"}
             </button>
           </form>
+          )}
 
           <div className="space-y-5">
             <div className="rounded-xl border border-border bg-card p-6">
