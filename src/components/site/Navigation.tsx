@@ -42,12 +42,12 @@ export function Navigation() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 lg:flex">
+        <nav className="mr-auto hidden items-center gap-0.5 lg:ml-4 lg:flex xl:ml-7 xl:gap-1">
           {nav.slice(1).map((item) => (
             <Link
               key={item.to}
               to={item.to}
-              className="rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+              className="whitespace-nowrap rounded-md px-2.5 py-2 text-sm text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground xl:px-3"
               activeProps={{ className: "text-foreground font-medium" }}
             >
               {item.label}
