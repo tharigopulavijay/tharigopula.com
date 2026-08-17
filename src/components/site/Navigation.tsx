@@ -28,9 +28,12 @@ export function Navigation() {
     >
       <Container className="flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex items-center gap-2.5" aria-label={site.name}>
-          <span className="grid h-8 w-8 place-items-center rounded-[6px] bg-ink font-display text-sm font-bold text-ink-foreground">
-            T
-          </span>
+          <img
+            src="/tharigopula-logo.png"
+            alt=""
+            className="h-10 w-10 shrink-0 object-contain"
+            aria-hidden="true"
+          />
           <span className="leading-none">
             <span className="block font-display text-[15px] font-semibold tracking-tight">Tharigopula</span>
             <span className="block font-mono text-[9px] tracking-[0.22em] text-muted-foreground uppercase">
