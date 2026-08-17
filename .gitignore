@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 .output
+.vercel
 .vinxi
 .tanstack/**
 .nitro
@@ -19,11 +20,6 @@ dist-ssr
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
-
-# This project uses bun.lock as its lockfile (see bunfig.toml). package-lock.json
-# is only generated when running npm locally — committing it would make CI/Lovable
-# builds ambiguous about which package manager to use.
-package-lock.json
 
 # Local agent tooling — launch.json holds machine-specific absolute paths
 .claude/
