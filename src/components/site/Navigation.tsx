@@ -26,8 +26,8 @@ export function Navigation() {
         scrolled ? "border-border bg-background/90 backdrop-blur-md" : "border-transparent bg-background",
       )}
     >
-      <Container className="flex h-16 items-center justify-between gap-4">
-        <Link to="/" className="flex items-center gap-2.5" aria-label={site.name}>
+      <Container className="flex h-16 max-w-[1500px] items-center justify-between gap-4 px-4 sm:px-6">
+        <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label={site.name}>
           <img
             src="/tharigopula-logo.png"
             alt=""
@@ -42,7 +42,7 @@ export function Navigation() {
           </span>
         </Link>
 
-        <nav className="mr-auto hidden items-center gap-0.5 lg:ml-4 lg:flex xl:ml-7 xl:gap-1">
+        <nav className="mr-auto hidden items-center gap-0.5 xl:ml-5 xl:flex 2xl:ml-7 2xl:gap-1">
           {nav.slice(1).map((item) => (
             <Link
               key={item.to}
@@ -55,16 +55,16 @@ export function Navigation() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden shrink-0 items-center gap-2 xl:flex">
           <Link
             to="/portfolio"
-            className="rounded-md border border-border px-3.5 py-2 text-sm font-medium transition-colors hover:bg-secondary"
+            className="whitespace-nowrap rounded-md border border-border px-3.5 py-2 text-sm font-medium transition-colors hover:bg-secondary"
           >
             View Our Work
           </Link>
           <Link
             to="/start-project"
-            className="rounded-md bg-ink px-3.5 py-2 text-sm font-medium text-ink-foreground transition-opacity hover:opacity-90"
+            className="whitespace-nowrap rounded-md bg-ink px-3.5 py-2 text-sm font-medium text-ink-foreground transition-opacity hover:opacity-90"
           >
             Start Your Project
           </Link>
@@ -75,14 +75,14 @@ export function Navigation() {
           onClick={() => setOpen((v) => !v)}
           aria-label={open ? "Close menu" : "Open menu"}
           aria-expanded={open}
-          className="grid h-11 w-11 place-items-center rounded-md border border-border lg:hidden"
+          className="grid h-11 w-11 place-items-center rounded-md border border-border xl:hidden"
         >
           {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </Container>
 
       {open ? (
-        <div className="border-t border-border bg-background lg:hidden">
+        <div className="border-t border-border bg-background xl:hidden">
           <Container className="py-3">
             <nav className="flex flex-col">
               {nav.map((item) => (
