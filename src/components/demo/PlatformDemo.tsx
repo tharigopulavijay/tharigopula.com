@@ -29,8 +29,20 @@ const MODULES: { key: ModuleKey; label: string; icon: React.ReactNode }[] = [
   { key: "automation", label: "Automation", icon: <IconBolt /> },
 ];
 
-export function PlatformDemo() {
-  const [slug, setSlug] = useState(businesses[0]!.slug);
+export function PlatformDemo({
+  initialBusiness,
+  onBusinessChange,
+}: {
+  /** Opens the demo already showing this business — used for industry deep links. */
+  initialBusiness?: string | undefined;
+  /** Lets the page keep its copy and CTAs in step with the demo. */
+  onBusinessChange?: ((slug: string) => void) | undefined;
+} = {}) {
+  const [slug, setSlug] = useState(
+    initialBusiness && businesses.some((b) => b.slug === initialBusiness)
+      ? initialBusiness
+      : businesses[0]!.slug,
+  );
   const [module, setModule] = useState<ModuleKey>("dashboard");
   const business = businessBySlug(slug);
 
@@ -41,6 +53,7 @@ export function PlatformDemo() {
   const [flash, setFlash] = useState(false);
   const switchBusiness = (next: string) => {
     setSlug(next);
+    onBusinessChange?.(next);
     setFlash(true);
     window.setTimeout(() => setFlash(false), 420);
   };
@@ -65,8 +78,14 @@ export function PlatformDemo() {
       }
     >
       {/* ---------- business switcher ---------- */}
-      <div className="border-b px-4 py-3 sm:px-5" style={{ borderColor: "var(--d-line)", background: "var(--d-panel)" }}>
-        <p className="mb-2.5 font-mono text-[10px] tracking-[0.2em] uppercase" style={{ color: "var(--d-muted)" }}>
+      <div
+        className="border-b px-4 py-3 sm:px-5"
+        style={{ borderColor: "var(--d-line)", background: "var(--d-panel)" }}
+      >
+        <p
+          className="mb-2.5 font-mono text-[10px] tracking-[0.2em] uppercase"
+          style={{ color: "var(--d-muted)" }}
+        >
           Choose a business — every screen below changes with it
         </p>
         <div className="flex flex-wrap gap-1.5">
@@ -160,7 +179,15 @@ export function PlatformDemo() {
 /* Shared bits                                                         */
 /* ================================================================== */
 
-function Panel({ title, action, children }: { title: string; action?: React.ReactNode; children: React.ReactNode }) {
+function Panel({
+  title,
+  action,
+  children,
+}: {
+  title: string;
+  action?: React.ReactNode;
+  children: React.ReactNode;
+}) {
   return (
     <section
       className="rounded-lg border"
@@ -224,7 +251,10 @@ function Dashboard({ b, leads }: { b: BusinessProfile; leads: Lead[] }) {
             className="rounded-lg border p-3.5"
             style={{ borderColor: "var(--d-line)", background: "var(--d-panel)" }}
           >
-            <p className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "var(--d-muted)" }}>
+            <p
+              className="font-mono text-[10px] tracking-[0.14em] uppercase"
+              style={{ color: "var(--d-muted)" }}
+            >
               {k.label}
             </p>
             <p className="mt-2 text-2xl font-bold tracking-tight tabular-nums">{k.value}</p>
@@ -288,7 +318,10 @@ function Dashboard({ b, leads }: { b: BusinessProfile; leads: Lead[] }) {
                     {c.v}%
                   </span>
                 </div>
-                <div className="h-1.5 overflow-hidden rounded-full" style={{ background: "var(--d-raise)" }}>
+                <div
+                  className="h-1.5 overflow-hidden rounded-full"
+                  style={{ background: "var(--d-raise)" }}
+                >
                   <div
                     className="h-full rounded-full transition-all duration-700"
                     style={{ width: `${(c.v / totalCh) * 100}%`, background: b.accent }}
@@ -371,7 +404,10 @@ function Pipeline({
   };
 
   const weighted = leads
-    .filter((l) => !["lost", "dropped", "no-show", "closed", "completed"].some((x) => l.stage.includes(x)))
+    .filter(
+      (l) =>
+        !["lost", "dropped", "no-show", "closed", "completed"].some((x) => l.stage.includes(x)),
+    )
     .reduce((s, l) => s + l.value, 0);
 
   return (
@@ -384,7 +420,10 @@ function Pipeline({
           </p>
         </div>
         <div className="text-right">
-          <p className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "var(--d-muted)" }}>
+          <p
+            className="font-mono text-[10px] tracking-[0.14em] uppercase"
+            style={{ color: "var(--d-muted)" }}
+          >
             Open pipeline
           </p>
           <p className="text-xl font-bold tabular-nums" style={{ color: b.accent }}>
@@ -437,11 +476,16 @@ function Pipeline({
                       }}
                     >
                       <p className="truncate text-[12px] font-medium">{l.party}</p>
-                      <p className="mt-0.5 truncate text-[10px]" style={{ color: "var(--d-muted)" }}>
+                      <p
+                        className="mt-0.5 truncate text-[10px]"
+                        style={{ color: "var(--d-muted)" }}
+                      >
                         {l.person}
                       </p>
                       <div className="mt-2 flex items-center justify-between gap-2">
-                        <span className="font-mono text-[11px] tabular-nums">{inrShort(l.value)}</span>
+                        <span className="font-mono text-[11px] tabular-nums">
+                          {inrShort(l.value)}
+                        </span>
                         <span className="font-mono text-[9px]" style={{ color: "var(--d-muted)" }}>
                           {l.ageDays}d
                         </span>
@@ -449,7 +493,10 @@ function Pipeline({
                     </button>
                   ))}
                   {!inStage.length && (
-                    <p className="px-1 py-3 text-center text-[10px]" style={{ color: "var(--d-muted)" }}>
+                    <p
+                      className="px-1 py-3 text-center text-[10px]"
+                      style={{ color: "var(--d-muted)" }}
+                    >
                       Empty
                     </p>
                   )}
@@ -557,22 +604,37 @@ function Inventory({ b }: { b: BusinessProfile }) {
               const pct = c.reorder > 0 ? Math.min(100, (c.stock / (c.reorder * 2)) * 100) : 100;
               return (
                 <tr key={c.sku} style={{ background: "var(--d-bg)" }}>
-                  <td className="border-b px-3 py-2.5 font-mono text-[11px]" style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}>
+                  <td
+                    className="border-b px-3 py-2.5 font-mono text-[11px]"
+                    style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}
+                  >
                     {c.sku}
                   </td>
-                  <td className="border-b px-3 py-2.5 font-medium" style={{ borderColor: "var(--d-line)" }}>
+                  <td
+                    className="border-b px-3 py-2.5 font-medium"
+                    style={{ borderColor: "var(--d-line)" }}
+                  >
                     {c.name}
                   </td>
-                  <td className="border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}>
+                  <td
+                    className="border-b px-3 py-2.5"
+                    style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}
+                  >
                     {c.group}
                   </td>
-                  <td className="border-b px-3 py-2.5 font-mono tabular-nums" style={{ borderColor: "var(--d-line)" }}>
+                  <td
+                    className="border-b px-3 py-2.5 font-mono tabular-nums"
+                    style={{ borderColor: "var(--d-line)" }}
+                  >
                     {inr(c.price)}
                   </td>
                   <td className="border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)" }}>
                     {c.reorder > 0 ? (
                       <div className="flex items-center gap-2">
-                        <div className="h-1.5 w-16 overflow-hidden rounded-full" style={{ background: "var(--d-raise)" }}>
+                        <div
+                          className="h-1.5 w-16 overflow-hidden rounded-full"
+                          style={{ background: "var(--d-raise)" }}
+                        >
                           <div
                             className="h-full rounded-full"
                             style={{ width: `${pct}%`, background: low ? TONE.bad : TONE.good }}
@@ -631,7 +693,10 @@ function Billing({ b }: { b: BusinessProfile }) {
             className="rounded-lg border p-3.5"
             style={{ borderColor: "var(--d-line)", background: "var(--d-panel)" }}
           >
-            <p className="font-mono text-[10px] tracking-[0.14em] uppercase" style={{ color: "var(--d-muted)" }}>
+            <p
+              className="font-mono text-[10px] tracking-[0.14em] uppercase"
+              style={{ color: "var(--d-muted)" }}
+            >
               {label as string}
             </p>
             <p className="mt-1.5 text-xl font-bold tabular-nums" style={{ color: tone as string }}>
@@ -659,22 +724,37 @@ function Billing({ b }: { b: BusinessProfile }) {
           <tbody>
             {b.txns.map((t) => (
               <tr key={t.id} style={{ background: "var(--d-bg)" }}>
-                <td className="border-b px-3 py-2.5 font-mono text-[11px]" style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}>
+                <td
+                  className="border-b px-3 py-2.5 font-mono text-[11px]"
+                  style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}
+                >
                   {t.id}
                 </td>
-                <td className="border-b px-3 py-2.5 font-medium" style={{ borderColor: "var(--d-line)" }}>
+                <td
+                  className="border-b px-3 py-2.5 font-medium"
+                  style={{ borderColor: "var(--d-line)" }}
+                >
                   {t.party}
                 </td>
-                <td className="border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}>
+                <td
+                  className="border-b px-3 py-2.5"
+                  style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}
+                >
                   {t.summary}
                 </td>
-                <td className="border-b px-3 py-2.5 font-mono tabular-nums" style={{ borderColor: "var(--d-line)" }}>
+                <td
+                  className="border-b px-3 py-2.5 font-mono tabular-nums"
+                  style={{ borderColor: "var(--d-line)" }}
+                >
                   {inr(t.amount)}
                 </td>
                 <td className="border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)" }}>
                   <Chip tone={statusTone(t.status)}>{t.status.toUpperCase()}</Chip>
                 </td>
-                <td className="border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}>
+                <td
+                  className="border-b px-3 py-2.5"
+                  style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}
+                >
                   {t.date}
                 </td>
               </tr>
@@ -710,7 +790,10 @@ function Service({ b }: { b: BusinessProfile }) {
               className="rounded-lg border"
               style={{ borderColor: "var(--d-line)", background: "var(--d-panel)" }}
             >
-              <header className="flex items-center justify-between border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)" }}>
+              <header
+                className="flex items-center justify-between border-b px-3 py-2.5"
+                style={{ borderColor: "var(--d-line)" }}
+              >
                 <span className="text-[12px] font-semibold">{col}</span>
                 <span
                   className="rounded px-1.5 font-mono text-[10px] tabular-nums"
@@ -724,7 +807,11 @@ function Service({ b }: { b: BusinessProfile }) {
                   <div
                     key={j.id}
                     className="rounded-md border p-2.5"
-                    style={{ borderColor: "var(--d-line)", background: "var(--d-raise)", opacity: col === "Closed" ? 0.6 : 1 }}
+                    style={{
+                      borderColor: "var(--d-line)",
+                      background: "var(--d-raise)",
+                      opacity: col === "Closed" ? 0.6 : 1,
+                    }}
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-mono text-[10px]" style={{ color: "var(--d-muted)" }}>
@@ -733,7 +820,10 @@ function Service({ b }: { b: BusinessProfile }) {
                       <Chip tone={statusTone(j.priority)}>{j.priority.toUpperCase()}</Chip>
                     </div>
                     <p className="mt-1.5 text-[12px] font-medium">{j.party}</p>
-                    <p className="mt-0.5 text-[11px] leading-snug" style={{ color: "var(--d-muted)" }}>
+                    <p
+                      className="mt-0.5 text-[11px] leading-snug"
+                      style={{ color: "var(--d-muted)" }}
+                    >
                       {j.issue}
                     </p>
                     <p className="mt-2 font-mono text-[10px]" style={{ color: "var(--d-muted)" }}>
@@ -742,7 +832,10 @@ function Service({ b }: { b: BusinessProfile }) {
                   </div>
                 ))}
                 {!jobs.length && (
-                  <p className="px-1 py-3 text-center text-[10px]" style={{ color: "var(--d-muted)" }}>
+                  <p
+                    className="px-1 py-3 text-center text-[10px]"
+                    style={{ color: "var(--d-muted)" }}
+                  >
                     Nothing here
                   </p>
                 )}
@@ -927,7 +1020,10 @@ function Automation({ b }: { b: BusinessProfile }) {
                   <td className="border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)" }}>
                     {a.trigger}
                   </td>
-                  <td className="border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}>
+                  <td
+                    className="border-b px-3 py-2.5"
+                    style={{ borderColor: "var(--d-line)", color: "var(--d-muted)" }}
+                  >
                     {a.action}
                   </td>
                   <td className="border-b px-3 py-2.5" style={{ borderColor: "var(--d-line)" }}>
@@ -955,15 +1051,59 @@ function Automation({ b }: { b: BusinessProfile }) {
 
 function svg(children: React.ReactNode) {
   return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">
+    <svg
+      width="15"
+      height="15"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.7"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
       {children}
     </svg>
   );
 }
 
-function IconGrid() { return svg(<><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></>); }
-function IconFlow() { return svg(<><rect x="3" y="4" width="5" height="16" /><rect x="10" y="4" width="5" height="11" /><rect x="17" y="4" width="4" height="7" /></>); }
-function IconBox() { return svg(<><path d="M21 8 12 3 3 8v8l9 5 9-5Z" /><path d="M3 8l9 5 9-5M12 13v8" /></>); }
-function IconBill() { return svg(<><path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2Z" /><path d="M9 8h6M9 12h6" /></>); }
-function IconWrench() { return svg(<path d="M14.5 5.5a4 4 0 1 0 4.9 4.9L21 12l-9 9-3-3 9-9Z" />); }
-function IconBolt() { return svg(<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />); }
+function IconGrid() {
+  return svg(
+    <>
+      <rect x="3" y="3" width="7" height="7" />
+      <rect x="14" y="3" width="7" height="7" />
+      <rect x="3" y="14" width="7" height="7" />
+      <rect x="14" y="14" width="7" height="7" />
+    </>,
+  );
+}
+function IconFlow() {
+  return svg(
+    <>
+      <rect x="3" y="4" width="5" height="16" />
+      <rect x="10" y="4" width="5" height="11" />
+      <rect x="17" y="4" width="4" height="7" />
+    </>,
+  );
+}
+function IconBox() {
+  return svg(
+    <>
+      <path d="M21 8 12 3 3 8v8l9 5 9-5Z" />
+      <path d="M3 8l9 5 9-5M12 13v8" />
+    </>,
+  );
+}
+function IconBill() {
+  return svg(
+    <>
+      <path d="M5 3h14v18l-3-2-2 2-2-2-2 2-2-2-3 2Z" />
+      <path d="M9 8h6M9 12h6" />
+    </>,
+  );
+}
+function IconWrench() {
+  return svg(<path d="M14.5 5.5a4 4 0 1 0 4.9 4.9L21 12l-9 9-3-3 9-9Z" />);
+}
+function IconBolt() {
+  return svg(<path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />);
+}

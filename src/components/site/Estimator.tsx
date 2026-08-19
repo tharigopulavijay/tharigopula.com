@@ -98,21 +98,42 @@ function Choice({
       aria-pressed={selected}
       className={cn(
         "flex min-h-12 w-full items-center justify-between gap-3 rounded-lg border px-4 py-3 text-left text-sm transition-all",
-        selected ? "border-signal bg-signal/10 font-medium" : "border-border bg-card hover:border-foreground/25",
+        selected
+          ? "border-signal bg-signal/10 font-medium"
+          : "border-border bg-card hover:border-foreground/25",
       )}
     >
       <span>
         {label}
-        {hint ? <span className="mt-0.5 block text-xs font-normal text-muted-foreground">{hint}</span> : null}
+        {hint ? (
+          <span className="mt-0.5 block text-xs font-normal text-muted-foreground">{hint}</span>
+        ) : null}
       </span>
       {selected ? <Check className="h-4 w-4 shrink-0 text-signal" /> : null}
     </button>
   );
 }
 
-export function Estimator({ compact = false }: { compact?: boolean | undefined }) {
+export function Estimator({
+  compact = false,
+  initialIndustry,
+  initialBase,
+}: {
+  compact?: boolean | undefined;
+  /** Pre-selects the industry when arriving from an industry page, case study or demo. */
+  initialIndustry?: string | undefined;
+  /** Pre-selects the starting point, e.g. a case study suggesting "crm". */
+  initialBase?: string | undefined;
+}) {
   const [step, setStep] = useState(0);
-  const [state, setState] = useState<EstimatorState>(emptyState);
+  const [state, setState] = useState<EstimatorState>(() => ({
+    ...emptyState,
+    industry:
+      initialIndustry && industries.some((i) => i.slug === initialIndustry)
+        ? initialIndustry
+        : emptyState.industry,
+    base: initialBase && bases.some((b) => b.id === initialBase) ? initialBase : emptyState.base,
+  }));
 
   const selectedBase = bases.find((b) => b.id === state.base);
   const availableModules = useMemo(() => modulesFor(state.base), [state.base]);
@@ -150,16 +171,28 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
       (t) =>
         templateCategory &&
         t.category === templateCategory &&
-        t.industry.toLowerCase().includes((industries.find((i) => i.slug === state.industry)?.name ?? "").toLowerCase().split(" ")[0] ?? "~"),
+        t.industry
+          .toLowerCase()
+          .includes(
+            (industries.find((i) => i.slug === state.industry)?.name ?? "")
+              .toLowerCase()
+              .split(" ")[0] ?? "~",
+          ),
     ) ?? templates.find((t) => templateCategory && t.category === templateCategory);
 
-  const recommendedCase = caseStudies.find((c) => c.industrySlug === state.industry) ?? caseStudies[0];
+  const recommendedCase =
+    caseStudies.find((c) => c.industrySlug === state.industry) ?? caseStudies[0];
 
   const websiteBases = bases.filter((b) => b.group === "website");
   const softwareBases = bases.filter((b) => b.group === "software");
 
   return (
-    <div className={cn("rounded-xl border border-border bg-card", compact ? "p-5 sm:p-7" : "p-5 sm:p-8")}>
+    <div
+      className={cn(
+        "rounded-xl border border-border bg-card",
+        compact ? "p-5 sm:p-7" : "p-5 sm:p-8",
+      )}
+    >
       <div className="flex items-center justify-between gap-4">
         <p className="font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
           Step {step + 1} / 8
@@ -168,7 +201,10 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
           {stepTitles.map((t, i) => (
             <span
               key={t}
-              className={cn("h-1 flex-1 rounded-full transition-colors", i <= step ? "bg-signal" : "bg-border")}
+              className={cn(
+                "h-1 flex-1 rounded-full transition-colors",
+                i <= step ? "bg-signal" : "bg-border",
+              )}
             />
           ))}
         </div>
@@ -180,7 +216,9 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
         {step === 0 ? (
           <div className="space-y-5">
             <div>
-              <p className="mb-2 text-xs font-medium tracking-[0.08em] text-muted-foreground uppercase">Websites</p>
+              <p className="mb-2 text-xs font-medium tracking-[0.08em] text-muted-foreground uppercase">
+                Websites
+              </p>
               <div className="grid gap-2 sm:grid-cols-2">
                 {websiteBases.map((b) => (
                   <Choice
@@ -221,7 +259,12 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
         {step === 1 ? (
           <div className="grid gap-2 sm:grid-cols-2">
             {industries.map((i) => (
-              <Choice key={i.slug} label={i.name} selected={state.industry === i.slug} onClick={() => set("industry", i.slug)} />
+              <Choice
+                key={i.slug}
+                label={i.name}
+                selected={state.industry === i.slug}
+                onClick={() => set("industry", i.slug)}
+              />
             ))}
           </div>
         ) : null}
@@ -229,7 +272,12 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
         {step === 2 ? (
           <div className="grid gap-2 sm:grid-cols-2">
             {objectives.map((o) => (
-              <Choice key={o.id} label={o.label} selected={state.objective === o.id} onClick={() => set("objective", o.id)} />
+              <Choice
+                key={o.id}
+                label={o.label}
+                selected={state.objective === o.id}
+                onClick={() => set("objective", o.id)}
+              />
             ))}
           </div>
         ) : null}
@@ -237,8 +285,9 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
         {step === 3 ? (
           <>
             <p className="-mt-2 mb-4 text-sm text-muted-foreground">
-              Select whatever sounds relevant. Responsive design, contact forms, WhatsApp, basic SEO, analytics and
-              deployment are already included in your base package — only genuinely extra work is priced below.
+              Select whatever sounds relevant. Responsive design, contact forms, WhatsApp, basic
+              SEO, analytics and deployment are already included in your base package — only
+              genuinely extra work is priced below.
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               {availableModules.map((m) => (
@@ -270,8 +319,8 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
         {step === 4 ? (
           <>
             <p className="-mt-2 mb-4 text-sm text-muted-foreground">
-              These don't add a fixed module, but they modestly affect effort — shown transparently as their own line
-              in your estimate.
+              These don't add a fixed module, but they modestly affect effort — shown transparently
+              as their own line in your estimate.
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               {complexityFactors.map((f) => (
@@ -301,7 +350,12 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
             </p>
             <div className="grid gap-2 sm:grid-cols-2">
               {businessSizes.map((s) => (
-                <Choice key={s.id} label={s.label} selected={state.size === s.id} onClick={() => set("size", s.id)} />
+                <Choice
+                  key={s.id}
+                  label={s.label}
+                  selected={state.size === s.id}
+                  onClick={() => set("size", s.id)}
+                />
               ))}
             </div>
           </>
@@ -310,7 +364,12 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
         {step === 6 ? (
           <div className="grid gap-2 sm:grid-cols-2">
             {timelines.map((t) => (
-              <Choice key={t.id} label={t.label} selected={state.timeline === t.id} onClick={() => set("timeline", t.id)} />
+              <Choice
+                key={t.id}
+                label={t.label}
+                selected={state.timeline === t.id}
+                onClick={() => set("timeline", t.id)}
+              />
             ))}
           </div>
         ) : null}
@@ -396,13 +455,18 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
                 </p>
                 <div className="mt-3 grid gap-2 sm:grid-cols-2">
                   {estimate.crossSell.map((c) => (
-                    <div key={c.id} className="flex items-center justify-between gap-3 rounded-md bg-secondary/50 px-3 py-2.5">
+                    <div
+                      key={c.id}
+                      className="flex items-center justify-between gap-3 rounded-md bg-secondary/50 px-3 py-2.5"
+                    >
                       <div>
                         <p className="text-sm font-medium">{c.label}</p>
                         <p className="text-xs text-muted-foreground">{c.range}</p>
                       </div>
                       <a
-                        href={whatsappLink(`Hello Tharigopula Technologies, I'd like to add "${c.label}" to my project.`)}
+                        href={whatsappLink(
+                          `Hello Tharigopula Technologies, I'd like to add "${c.label}" to my project.`,
+                        )}
                         target="_blank"
                         rel="noreferrer"
                         className="shrink-0 rounded-md border border-border px-2.5 py-1.5 text-xs font-medium"
@@ -447,7 +511,8 @@ export function Estimator({ compact = false }: { compact?: boolean | undefined }
             </div>
 
             <p className="mt-5 text-sm text-muted-foreground">
-              Final pricing is confirmed after understanding business logic, integrations and content requirements.
+              Final pricing is confirmed after understanding business logic, integrations and
+              content requirements.
             </p>
 
             <div className="mt-5 flex flex-col gap-2 sm:flex-row">
