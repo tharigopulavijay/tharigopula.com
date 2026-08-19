@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Container, Eyebrow, Section, SectionHeading } from "@/components/site/primitives";
-import { SystemMap } from "@/components/site/SystemMap";
+import { Container, Section, SectionHeading } from "@/components/site/primitives";
+import { SystemFlow } from "@/components/site/SystemFlow";
 import {
   FeatureGrid,
   IndustryCard,
@@ -41,45 +41,110 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
+/**
+ * Facts a visitor can verify, not claims they have to take on trust.
+ * Deliberately no client counts or years-in-business — an early practice that
+ * quotes numbers invites the reader to weigh them, and silence reads stronger
+ * than a small figure.
+ */
+const HERO_MARKERS = [
+  { label: "Business-first approach", icon: <MarkerTarget /> },
+  { label: "Custom & scalable", icon: <MarkerBlocks /> },
+  { label: "Built in Hyderabad, India", icon: <MarkerPin /> },
+];
+
 function Hero() {
   return (
-    <section className="surface-ink relative overflow-hidden">
-      <div className="grid-lines absolute inset-0 opacity-[0.35]" aria-hidden />
-      <Container className="relative py-16 sm:py-24 lg:py-28">
-        <div className="grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr]">
+    <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-secondary/60 to-background">
+      <Container className="relative py-14 sm:py-20 lg:py-24">
+        <div className="grid items-center gap-12 lg:grid-cols-[1.02fr_0.98fr]">
           <div className="reveal">
-            <Eyebrow ink>Tharigopula Technologies</Eyebrow>
-            <h1 className="mt-5 font-display text-4xl leading-[1.05] font-semibold text-ink-foreground sm:text-5xl lg:text-6xl">
-              Technology built around your business.
+            <h1 className="font-display text-4xl leading-[1.06] font-semibold tracking-tight sm:text-5xl lg:text-[3.4rem]">
+              Technology built
+              <br />
+              around <span className="text-signal">your business.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
-              From websites and business software to automation, data and AI — we design technology
-              that helps businesses operate better and grow faster.
+            <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Tharigopula builds websites, business software, automation, dashboards and AI around
+              how your business actually works — starting with one problem, not a platform.
             </p>
+
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
-                to="/solutions"
-                className="rounded-md bg-signal px-6 py-3.5 text-center text-sm font-semibold text-signal-foreground transition-opacity hover:opacity-90"
+                to="/experience-lab"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-signal px-6 py-3.5 text-sm font-semibold text-signal-foreground transition-opacity hover:opacity-90"
               >
-                Explore Solutions
+                See live demos <span aria-hidden>→</span>
               </Link>
               <Link
                 to="/start-project"
-                className="rounded-md border border-ink-border px-6 py-3.5 text-center text-sm font-semibold text-ink-foreground transition-colors hover:bg-white/5"
+                className="inline-flex items-center justify-center rounded-lg border border-border bg-card px-6 py-3.5 text-sm font-semibold transition-colors hover:border-foreground/25"
               >
-                Start Your Project
+                Get project estimate
               </Link>
             </div>
-            <p className="mt-8 font-mono text-[11px] tracking-[0.16em] text-ink-muted uppercase">
-              Websites · Software · Data · Automation · AI
-            </p>
+
+            <ul className="mt-9 flex flex-wrap gap-x-7 gap-y-3">
+              {HERO_MARKERS.map((m) => (
+                <li key={m.label} className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <span className="text-signal" aria-hidden>
+                    {m.icon}
+                  </span>
+                  {m.label}
+                </li>
+              ))}
+            </ul>
           </div>
+
           <div className="reveal" style={{ animationDelay: "120ms" }}>
-            <SystemMap />
+            <SystemFlow />
           </div>
         </div>
       </Container>
     </section>
+  );
+}
+
+function markerSvg(children: React.ReactNode) {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      {children}
+    </svg>
+  );
+}
+function MarkerTarget() {
+  return markerSvg(
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="4" />
+    </>,
+  );
+}
+function MarkerBlocks() {
+  return markerSvg(
+    <>
+      <rect x="3" y="3" width="7" height="7" rx="1.5" />
+      <rect x="14" y="14" width="7" height="7" rx="1.5" />
+      <path d="M14 6.5h7M6.5 14v7" />
+    </>,
+  );
+}
+function MarkerPin() {
+  return markerSvg(
+    <>
+      <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z" />
+      <circle cx="12" cy="10" r="2.5" />
+    </>,
   );
 }
 
