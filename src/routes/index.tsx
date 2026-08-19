@@ -200,19 +200,6 @@ function Home() {
       <Hero />
       <ProblemEntry />
 
-      <Section className="bg-secondary/40">
-        <SectionHeading
-          eyebrow="Solutions"
-          title="Six capability groups, one partner"
-          lead="Most businesses need two or three of these. Very few need all six on day one — and we will tell you which."
-        />
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          {solutionGroups.map((g) => (
-            <SolutionCard key={g.slug} group={g} />
-          ))}
-        </div>
-      </Section>
-
       <Section>
         <SectionHeading
           eyebrow="Industries"

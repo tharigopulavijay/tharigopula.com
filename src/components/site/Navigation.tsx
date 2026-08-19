@@ -28,7 +28,7 @@ export function Navigation() {
           : "border-transparent bg-background",
       )}
     >
-      <Container className="flex h-16 max-w-[1500px] items-center justify-between gap-4 px-4 sm:px-6">
+      <Container className="flex h-16 items-center justify-between gap-4">
         <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label={site.name}>
           <img
             src="/logo-mark.png"

@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Section, SectionHeading } from "@/components/site/primitives";
-import { FeatureGrid, SolutionCard, StepList } from "@/components/site/cards";
+import { FeatureGrid, SolutionCard } from "@/components/site/cards";
 import { CTASection } from "@/components/site/CTASection";
-import { capabilityStack, process, solutionGroups } from "@/data/solutions";
+import { capabilityStack, solutionGroups } from "@/data/solutions";
 
 export const Route = createFileRoute("/solutions")({
   head: () => ({
@@ -16,7 +16,8 @@ export const Route = createFileRoute("/solutions")({
       { property: "og:title", content: "Solutions | Tharigopula Technologies" },
       {
         property: "og:description",
-        content: "Websites, CRM, ERP-style systems, automation, dashboards and AI for growing businesses.",
+        content:
+          "Websites, CRM, ERP-style systems, automation, dashboards and AI for growing businesses.",
       },
     ],
   }),
@@ -45,12 +46,6 @@ function SolutionsPage() {
         <SectionHeading eyebrow="Capabilities" title="What we bring to a project" />
         <div className="mt-10">
           <FeatureGrid items={capabilityStack} />
-        </div>
-      </Section>
-      <Section>
-        <SectionHeading eyebrow="How we work" title="From first conversation to a system in daily use" />
-        <div className="mt-10">
-          <StepList items={process} />
         </div>
       </Section>
       <CTASection />

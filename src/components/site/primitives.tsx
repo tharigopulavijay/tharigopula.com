@@ -2,8 +2,18 @@ import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 
+/**
+ * One page width for the whole site.
+ *
+ * The header used to set its own max-w-[1500px] while every section below used
+ * max-w-6xl (1152px). On a 1600px screen that left a 348px mismatch — the logo
+ * sat well outside the content beneath it, and the page looked cramped in the
+ * middle of a wide monitor. Both now share this value.
+ */
 export function Container({ children, className }: { children: ReactNode; className?: string }) {
-  return <div className={cn("mx-auto w-full max-w-6xl px-5 sm:px-8", className)}>{children}</div>;
+  return (
+    <div className={cn("mx-auto w-full max-w-[1400px] px-5 sm:px-8", className)}>{children}</div>
+  );
 }
 
 export function Section({
@@ -61,7 +71,12 @@ export function SectionHeading({
         {title}
       </Tag>
       {lead ? (
-        <p className={cn("mt-4 text-base leading-relaxed sm:text-lg", ink ? "text-ink-muted" : "text-muted-foreground")}>
+        <p
+          className={cn(
+            "mt-4 text-base leading-relaxed sm:text-lg",
+            ink ? "text-ink-muted" : "text-muted-foreground",
+          )}
+        >
           {lead}
         </p>
       ) : null}

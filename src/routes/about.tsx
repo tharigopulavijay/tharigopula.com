@@ -1,7 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Pill, Section, SectionHeading } from "@/components/site/primitives";
+import { Section, SectionHeading } from "@/components/site/primitives";
 import { CTASection } from "@/components/site/CTASection";
-import { capabilityStack } from "@/data/solutions";
 import { site, whatsappLink } from "@/data/site";
 import { track } from "@/lib/analytics";
 
@@ -167,17 +166,6 @@ function AboutPage() {
             </p>
           </div>
         </div>
-      </Section>
-
-      <Section className="bg-secondary/40">
-        <SectionHeading eyebrow="Capabilities" title="What we work with" />
-        <ul className="mt-8 flex flex-wrap gap-2">
-          {capabilityStack.map((c) => (
-            <li key={c.title}>
-              <Pill>{c.title}</Pill>
-            </li>
-          ))}
-        </ul>
       </Section>
 
       <CTASection />
