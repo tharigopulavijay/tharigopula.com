@@ -1,3 +1,5 @@
+import { priceLabel, tierById } from "./catalog";
+
 export type ExperienceLevel = {
   slug: string;
   index: string;
@@ -20,10 +22,16 @@ export const experienceLevels: ExperienceLevel[] = [
     slug: "essential",
     index: "01",
     name: "Essential",
-    price: "₹11,999 – ₹17,999",
+    price: priceLabel(tierById("essential")),
     headline: "A clear, credible presence that loads fast anywhere.",
-    oneLiner: "Everything a business needs to be found, understood and contacted — nothing it does not.",
-    whoFor: ["New businesses", "Local services", "Consultants and clinics", "Single-service companies"],
+    oneLiner:
+      "Everything a business needs to be found, understood and contacted — nothing it does not.",
+    whoFor: [
+      "New businesses",
+      "Local services",
+      "Consultants and clinics",
+      "Single-service companies",
+    ],
     includes: [
       "Up to five core pages",
       "Responsive on every device",
@@ -43,10 +51,16 @@ export const experienceLevels: ExperienceLevel[] = [
     slug: "dynamic",
     index: "02",
     name: "Dynamic",
-    price: "₹18,999 – ₹34,999",
+    price: priceLabel(tierById("dynamic")),
     headline: "A website that holds data and does work.",
-    oneLiner: "Content you can edit, catalogues customers can search, and enquiries that land somewhere structured.",
-    whoFor: ["Retailers and dealers", "Real estate and hospitality", "Education and healthcare", "Growing service firms"],
+    oneLiner:
+      "Content you can edit, catalogues customers can search, and enquiries that land somewhere structured.",
+    whoFor: [
+      "Retailers and dealers",
+      "Real estate and hospitality",
+      "Education and healthcare",
+      "Growing service firms",
+    ],
     includes: [
       "Everything in Essential",
       "Content management",
@@ -57,7 +71,12 @@ export const experienceLevels: ExperienceLevel[] = [
     ],
     businessImpact:
       "Your team updates content without calling anyone, and every enquiry is captured in one place instead of three inboxes.",
-    techniques: ["Database-backed content", "Filtering and search", "Form pipelines", "Admin surfaces"],
+    techniques: [
+      "Database-backed content",
+      "Filtering and search",
+      "Form pipelines",
+      "Admin surfaces",
+    ],
     timeline: "2 – 4 weeks",
     demoPath: "/demo/dynamic",
     heavy: false,
@@ -66,10 +85,16 @@ export const experienceLevels: ExperienceLevel[] = [
     slug: "interactive",
     index: "03",
     name: "Interactive",
-    price: "₹29,999 – ₹54,999",
+    price: priceLabel(tierById("premium")),
     headline: "Design that responds to the person using it.",
-    oneLiner: "Motion with a purpose: attention guided, quality signalled, complexity made easy to explore.",
-    whoFor: ["Premium brands", "Design-led studios", "Technology companies", "High-consideration purchases"],
+    oneLiner:
+      "Motion with a purpose: attention guided, quality signalled, complexity made easy to explore.",
+    whoFor: [
+      "Premium brands",
+      "Design-led studios",
+      "Technology companies",
+      "High-consideration purchases",
+    ],
     includes: [
       "Everything in Dynamic",
       "Custom interface design",
@@ -80,7 +105,12 @@ export const experienceLevels: ExperienceLevel[] = [
     ],
     businessImpact:
       "Raises perceived value before a single conversation. Buyers spend longer on the page and arrive better informed.",
-    techniques: ["Pointer-reactive layers", "Magnetic controls", "Scroll observers", "3D card transforms"],
+    techniques: [
+      "Pointer-reactive layers",
+      "Magnetic controls",
+      "Scroll observers",
+      "3D card transforms",
+    ],
     timeline: "3 – 5 weeks",
     demoPath: "/demo/interactive",
     heavy: false,
@@ -89,10 +119,16 @@ export const experienceLevels: ExperienceLevel[] = [
     slug: "cinematic",
     index: "04",
     name: "Cinematic",
-    price: "₹39,999 – ₹79,999",
+    price: priceLabel(tierById("cinematic")),
     headline: "A scroll-driven story, authored scene by scene.",
-    oneLiner: "The page becomes a sequence — pinned scenes, masked reveals and layered depth that carry a narrative.",
-    whoFor: ["Launches and campaigns", "Architecture and property", "Luxury and lifestyle", "Brand storytelling"],
+    oneLiner:
+      "The page becomes a sequence — pinned scenes, masked reveals and layered depth that carry a narrative.",
+    whoFor: [
+      "Launches and campaigns",
+      "Architecture and property",
+      "Luxury and lifestyle",
+      "Brand storytelling",
+    ],
     includes: [
       "Everything in Interactive",
       "Scroll-linked scenes",
@@ -113,9 +149,10 @@ export const experienceLevels: ExperienceLevel[] = [
     slug: "3d",
     index: "05",
     name: "3D Immersive",
-    price: "₹49,999 – ₹1,25,000+",
+    price: priceLabel(tierById("threed")),
     headline: "A real 3D scene your customer can move through.",
-    oneLiner: "Rotate it, inspect it, configure it — the product explains itself without a showroom visit.",
+    oneLiner:
+      "Rotate it, inspect it, configure it — the product explains itself without a showroom visit.",
     whoFor: ["Manufacturers", "Property developers", "Product companies", "Configurable offerings"],
     includes: [
       "Everything in Cinematic",
@@ -140,7 +177,10 @@ export type MatrixRow = { capability: string; values: [string, string, string, s
 export const comparisonMatrix: MatrixRow[] = [
   { capability: "Responsive design", values: ["Yes", "Yes", "Yes", "Yes", "Yes"] },
   { capability: "Contact + WhatsApp", values: ["Yes", "Yes", "Yes", "Yes", "Yes"] },
-  { capability: "SEO + analytics", values: ["Basic", "Structured", "Structured", "Advanced", "Advanced"] },
+  {
+    capability: "SEO + analytics",
+    values: ["Basic", "Structured", "Structured", "Advanced", "Advanced"],
+  },
   { capability: "Content management", values: ["—", "Yes", "Yes", "Yes", "Yes"] },
   { capability: "Search + filtering", values: ["—", "Yes", "Yes", "Yes", "Yes"] },
   { capability: "Booking / enquiry desk", values: ["—", "Yes", "Yes", "Yes", "Yes"] },
@@ -149,7 +189,10 @@ export const comparisonMatrix: MatrixRow[] = [
   { capability: "Scroll-driven scenes", values: ["—", "—", "Partial", "Yes", "Yes"] },
   { capability: "Narrative art direction", values: ["—", "—", "—", "Yes", "Yes"] },
   { capability: "Interactive 3D", values: ["—", "—", "—", "—", "Yes"] },
-  { capability: "Typical timeline", values: ["1–2 wks", "2–4 wks", "3–5 wks", "4–7 wks", "5–9 wks"] },
+  {
+    capability: "Typical timeline",
+    values: ["1–2 wks", "2–4 wks", "3–5 wks", "4–7 wks", "5–9 wks"],
+  },
   { capability: "Starting from", values: ["₹11,999", "₹18,999", "₹29,999", "₹39,999", "₹49,999"] },
 ];
 

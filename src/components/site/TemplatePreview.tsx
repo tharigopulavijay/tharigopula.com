@@ -125,10 +125,7 @@ function Nav({
   const fg = dark ? p.paper : p.ink;
   return (
     <div
-      className={cn(
-        "flex items-center px-9 py-5",
-        centered ? "flex-col gap-3" : "justify-between",
-      )}
+      className={cn("flex items-center px-9 py-5", centered ? "flex-col gap-3" : "justify-between")}
       style={{ borderBottom: `1px solid ${fg}18` }}
     >
       <span style={{ color: fg, fontSize: 15, fontWeight: 700, letterSpacing: "-0.02em" }}>
@@ -143,7 +140,13 @@ function Nav({
         {cta && (
           <span
             className="rounded"
-            style={{ background: p.accent, color: p.paper, fontSize: 10, padding: "6px 12px", fontWeight: 600 }}
+            style={{
+              background: p.accent,
+              color: p.paper,
+              fontSize: 10,
+              padding: "6px 12px",
+              fontWeight: 600,
+            }}
           >
             {cta}
           </span>
@@ -157,7 +160,10 @@ function Lines({ color, widths, gap = 7 }: { color: string; widths: number[]; ga
   return (
     <div className="flex flex-col" style={{ gap }}>
       {widths.map((w, i) => (
-        <div key={i} style={{ height: 5, width: w, background: color, borderRadius: 3, opacity: 0.22 }} />
+        <div
+          key={i}
+          style={{ height: 5, width: w, background: color, borderRadius: 3, opacity: 0.22 }}
+        />
       ))}
     </div>
   );
@@ -193,7 +199,14 @@ function CorporateLayout({ p }: { p: Palette }) {
             ADVISORY &amp; CONSULTING
           </div>
           <div
-            style={{ color: p.ink, fontSize: 30, fontWeight: 700, lineHeight: 1.15, marginTop: 10, letterSpacing: "-0.03em" }}
+            style={{
+              color: p.ink,
+              fontSize: 30,
+              fontWeight: 700,
+              lineHeight: 1.15,
+              marginTop: 10,
+              letterSpacing: "-0.03em",
+            }}
           >
             Clarity for complex
             <br />
@@ -207,12 +220,17 @@ function CorporateLayout({ p }: { p: Palette }) {
             <Btn p={p} label="Our work" solid={false} />
           </div>
         </div>
-        <div className="rounded" style={{ background: `${p.ink}0D`, border: `1px solid ${p.ink}12` }} />
+        <div
+          className="rounded"
+          style={{ background: `${p.ink}0D`, border: `1px solid ${p.ink}12` }}
+        />
       </div>
       <div className="mt-9 grid grid-cols-3 gap-4 px-9">
         {["Strategy", "Operations", "Compliance"].map((s) => (
           <div key={s} className="rounded p-4" style={{ border: `1px solid ${p.ink}18` }}>
-            <div style={{ width: 20, height: 20, background: p.accent, borderRadius: 4, opacity: 0.9 }} />
+            <div
+              style={{ width: 20, height: 20, background: p.accent, borderRadius: 4, opacity: 0.9 }}
+            />
             <div style={{ color: p.ink, fontSize: 12, fontWeight: 600, marginTop: 10 }}>{s}</div>
             <div className="mt-2">
               <Lines color={p.ink} widths={[150, 120]} gap={5} />
@@ -231,9 +249,18 @@ function MinimalLayout({ p }: { p: Palette }) {
     <div className="flex h-full w-full flex-col" style={{ background: p.paper }}>
       <Nav p={p} brand="norr." items={["Work", "Studio", "Contact"]} />
       <div className="flex flex-1 flex-col items-center justify-center px-24 text-center">
-        <div style={{ color: p.accent, fontSize: 9.5, letterSpacing: "0.24em", fontWeight: 600 }}>EST. 2024</div>
+        <div style={{ color: p.accent, fontSize: 9.5, letterSpacing: "0.24em", fontWeight: 600 }}>
+          EST. 2024
+        </div>
         <div
-          style={{ color: p.ink, fontSize: 42, fontWeight: 400, lineHeight: 1.1, marginTop: 18, letterSpacing: "-0.04em" }}
+          style={{
+            color: p.ink,
+            fontSize: 42,
+            fontWeight: 400,
+            lineHeight: 1.1,
+            marginTop: 18,
+            letterSpacing: "-0.04em",
+          }}
         >
           We make quiet
           <br />
@@ -269,7 +296,9 @@ function EditorialLayout({ p }: { p: Palette }) {
   return (
     <div className="h-full w-full" style={{ background: p.paper }}>
       <div className="px-9 py-5 text-center" style={{ borderBottom: `2px solid ${p.ink}` }}>
-        <div style={{ color: p.ink, fontSize: 22, fontWeight: 700, letterSpacing: "0.14em" }}>THE LEDGER</div>
+        <div style={{ color: p.ink, fontSize: 22, fontWeight: 700, letterSpacing: "0.14em" }}>
+          THE LEDGER
+        </div>
         <div style={{ color: `${p.ink}80`, fontSize: 9, letterSpacing: "0.16em", marginTop: 3 }}>
           NOTES ON TEACHING &amp; LEARNING
         </div>
@@ -283,11 +312,31 @@ function EditorialLayout({ p }: { p: Palette }) {
       </div>
       <div className="grid grid-cols-[1.4fr_1fr] gap-7 px-9 pt-6">
         <div>
-          <div className="rounded" style={{ height: 108, background: `${p.accent}22`, border: `1px solid ${p.ink}12` }} />
-          <div style={{ color: p.accent, fontSize: 9, letterSpacing: "0.16em", fontWeight: 600, marginTop: 12 }}>
+          <div
+            className="rounded"
+            style={{ height: 108, background: `${p.accent}22`, border: `1px solid ${p.ink}12` }}
+          />
+          <div
+            style={{
+              color: p.accent,
+              fontSize: 9,
+              letterSpacing: "0.16em",
+              fontWeight: 600,
+              marginTop: 12,
+            }}
+          >
             FEATURE
           </div>
-          <div style={{ color: p.ink, fontSize: 19, fontWeight: 700, lineHeight: 1.25, marginTop: 6, letterSpacing: "-0.02em" }}>
+          <div
+            style={{
+              color: p.ink,
+              fontSize: 19,
+              fontWeight: 700,
+              lineHeight: 1.25,
+              marginTop: 6,
+              letterSpacing: "-0.02em",
+            }}
+          >
             The quiet case for slower marking
           </div>
           <div className="mt-3">
@@ -297,10 +346,22 @@ function EditorialLayout({ p }: { p: Palette }) {
         <div className="flex flex-col gap-4">
           {posts.map(([title, tag, date]) => (
             <div key={title} className="pb-3" style={{ borderBottom: `1px solid ${p.ink}15` }}>
-              <div style={{ color: p.accent, fontSize: 8.5, letterSpacing: "0.14em", fontWeight: 600 }}>
+              <div
+                style={{ color: p.accent, fontSize: 8.5, letterSpacing: "0.14em", fontWeight: 600 }}
+              >
                 {tag!.toUpperCase()} · {date}
               </div>
-              <div style={{ color: p.ink, fontSize: 11.5, fontWeight: 600, lineHeight: 1.35, marginTop: 4 }}>{title}</div>
+              <div
+                style={{
+                  color: p.ink,
+                  fontSize: 11.5,
+                  fontWeight: 600,
+                  lineHeight: 1.35,
+                  marginTop: 4,
+                }}
+              >
+                {title}
+              </div>
             </div>
           ))}
         </div>
@@ -320,7 +381,16 @@ function ClinicLayout({ p }: { p: Palette }) {
           <div style={{ color: p.accent, fontSize: 9.5, letterSpacing: "0.18em", fontWeight: 600 }}>
             MULTI-SPECIALITY CARE
           </div>
-          <div style={{ color: p.ink, fontSize: 27, fontWeight: 700, lineHeight: 1.2, marginTop: 10, letterSpacing: "-0.03em" }}>
+          <div
+            style={{
+              color: p.ink,
+              fontSize: 27,
+              fontWeight: 700,
+              lineHeight: 1.2,
+              marginTop: 10,
+              letterSpacing: "-0.03em",
+            }}
+          >
             Care that respects
             <br />
             your time.
@@ -360,7 +430,11 @@ function ClinicLayout({ p }: { p: Palette }) {
       </div>
       <div className="mt-7 grid grid-cols-3 gap-4 px-9">
         {["Dr. Rao", "Dr. Iyer", "Dr. Menon"].map((d) => (
-          <div key={d} className="flex items-center gap-3 rounded p-3" style={{ border: `1px solid ${p.ink}18` }}>
+          <div
+            key={d}
+            className="flex items-center gap-3 rounded p-3"
+            style={{ border: `1px solid ${p.ink}18` }}
+          >
             <div style={{ width: 30, height: 30, borderRadius: 99, background: `${p.accent}30` }} />
             <div>
               <div style={{ color: p.ink, fontSize: 11, fontWeight: 600 }}>{d}</div>
@@ -388,7 +462,16 @@ function RestaurantLayout({ p }: { p: Palette }) {
         <div style={{ color: p.accent, fontSize: 9.5, letterSpacing: "0.22em", fontWeight: 600 }}>
           COASTAL KITCHEN &amp; BAR
         </div>
-        <div style={{ color: p.paper, fontSize: 34, fontWeight: 400, lineHeight: 1.12, marginTop: 10, letterSpacing: "-0.03em" }}>
+        <div
+          style={{
+            color: p.paper,
+            fontSize: 34,
+            fontWeight: 400,
+            lineHeight: 1.12,
+            marginTop: 10,
+            letterSpacing: "-0.03em",
+          }}
+        >
           The sea, cooked
           <br />
           the old way.
@@ -396,7 +479,15 @@ function RestaurantLayout({ p }: { p: Palette }) {
       </div>
       <div className="mt-6 grid grid-cols-[1fr_240px] gap-7 px-9">
         <div>
-          <div style={{ color: p.accent, fontSize: 9, letterSpacing: "0.18em", fontWeight: 600, marginBottom: 10 }}>
+          <div
+            style={{
+              color: p.accent,
+              fontSize: 9,
+              letterSpacing: "0.18em",
+              fontWeight: 600,
+              marginBottom: 10,
+            }}
+          >
             FROM THE KITCHEN
           </div>
           {menu.map(([dish, price]) => (
@@ -412,11 +503,16 @@ function RestaurantLayout({ p }: { p: Palette }) {
         </div>
         <div
           className="rounded"
-          style={{ background: `linear-gradient(150deg, ${p.accent}55, ${p.accent}18)`, border: `1px solid ${p.paper}18` }}
+          style={{
+            background: `linear-gradient(150deg, ${p.accent}55, ${p.accent}18)`,
+            border: `1px solid ${p.paper}18`,
+          }}
         />
       </div>
       <div className="mt-6 flex items-center justify-between px-9">
-        <span style={{ color: `${p.paper}88`, fontSize: 9.5 }}>Open 12:00 – 23:00 · Indiranagar</span>
+        <span style={{ color: `${p.paper}88`, fontSize: 9.5 }}>
+          Open 12:00 – 23:00 · Indiranagar
+        </span>
         <Btn p={p} label="Book a table" />
       </div>
     </div>
@@ -433,33 +529,65 @@ function IndustrialLayout({ p }: { p: Palette }) {
   ];
   return (
     <div className="h-full w-full" style={{ background: p.paper }}>
-      <Nav p={p} brand="SURYAN INDUSTRIES" items={["Products", "Applications", "Downloads"]} cta="Enquire" />
+      <Nav
+        p={p}
+        brand="SURYAN INDUSTRIES"
+        items={["Products", "Applications", "Downloads"]}
+        cta="Enquire"
+      />
       <div className="grid grid-cols-[1fr_1fr] gap-7 px-9 pt-7">
         <div>
           <div style={{ color: p.accent, fontSize: 9, letterSpacing: "0.2em", fontWeight: 600 }}>
             ISO 9001 · SINCE 1994
           </div>
-          <div style={{ color: p.ink, fontSize: 26, fontWeight: 700, lineHeight: 1.18, marginTop: 9, letterSpacing: "-0.03em" }}>
+          <div
+            style={{
+              color: p.ink,
+              fontSize: 26,
+              fontWeight: 700,
+              lineHeight: 1.18,
+              marginTop: 9,
+              letterSpacing: "-0.03em",
+            }}
+          >
             Pumps built for
             <br />
             the long season.
           </div>
           <div className="mt-4 grid grid-cols-3 gap-2">
-            {[["120+", "Models"], ["38", "Countries"], ["30yr", "Field data"]].map(([v, k]) => (
+            {[
+              ["120+", "Models"],
+              ["38", "Countries"],
+              ["30yr", "Field data"],
+            ].map(([v, k]) => (
               <div key={k} className="rounded p-2.5" style={{ background: `${p.ink}0A` }}>
                 <div style={{ color: p.accent, fontSize: 15, fontWeight: 700 }}>{v}</div>
-                <div style={{ color: `${p.ink}80`, fontSize: 8.5, letterSpacing: "0.1em" }}>{k!.toUpperCase()}</div>
+                <div style={{ color: `${p.ink}80`, fontSize: 8.5, letterSpacing: "0.1em" }}>
+                  {k!.toUpperCase()}
+                </div>
               </div>
             ))}
           </div>
         </div>
-        <div className="rounded" style={{ background: `${p.ink}0F`, border: `1px solid ${p.ink}1A` }} />
+        <div
+          className="rounded"
+          style={{ background: `${p.ink}0F`, border: `1px solid ${p.ink}1A` }}
+        />
       </div>
       {/* spec table */}
-      <div className="mx-9 mt-6 rounded" style={{ border: `1px solid ${p.ink}1A`, overflow: "hidden" }}>
-        <div className="grid grid-cols-[90px_1fr_90px] px-3 py-2" style={{ background: `${p.ink}0D` }}>
+      <div
+        className="mx-9 mt-6 rounded"
+        style={{ border: `1px solid ${p.ink}1A`, overflow: "hidden" }}
+      >
+        <div
+          className="grid grid-cols-[90px_1fr_90px] px-3 py-2"
+          style={{ background: `${p.ink}0D` }}
+        >
           {["CODE", "PRODUCT", "PRICE ₹"].map((h) => (
-            <span key={h} style={{ color: `${p.ink}88`, fontSize: 8, letterSpacing: "0.14em", fontWeight: 600 }}>
+            <span
+              key={h}
+              style={{ color: `${p.ink}88`, fontSize: 8, letterSpacing: "0.14em", fontWeight: 600 }}
+            >
               {h}
             </span>
           ))}
@@ -495,7 +623,16 @@ function ProductLayout({ p }: { p: Palette }) {
             NOW WITH LIVE SYNC
           </span>
         </div>
-        <div style={{ color: p.paper, fontSize: 30, fontWeight: 700, lineHeight: 1.14, marginTop: 12, letterSpacing: "-0.035em" }}>
+        <div
+          style={{
+            color: p.paper,
+            fontSize: 30,
+            fontWeight: 700,
+            lineHeight: 1.14,
+            marginTop: 12,
+            letterSpacing: "-0.035em",
+          }}
+        >
           Ship work without
           <br />
           the status meeting.
@@ -508,7 +645,10 @@ function ProductLayout({ p }: { p: Palette }) {
       >
         <div className="flex gap-1.5 px-3 py-2" style={{ borderBottom: `1px solid ${p.paper}14` }}>
           {[0, 1, 2].map((i) => (
-            <div key={i} style={{ width: 6, height: 6, borderRadius: 99, background: `${p.paper}35` }} />
+            <div
+              key={i}
+              style={{ width: 6, height: 6, borderRadius: 99, background: `${p.paper}35` }}
+            />
           ))}
         </div>
         <div className="grid grid-cols-[110px_1fr] gap-3 p-3">
@@ -519,7 +659,13 @@ function ProductLayout({ p }: { p: Palette }) {
                 className="rounded px-2 py-1.5"
                 style={{ background: i === 1 ? `${p.accent}2A` : "transparent" }}
               >
-                <span style={{ color: i === 1 ? p.accent : `${p.paper}80`, fontSize: 9, fontWeight: i === 1 ? 600 : 400 }}>
+                <span
+                  style={{
+                    color: i === 1 ? p.accent : `${p.paper}80`,
+                    fontSize: 9,
+                    fontWeight: i === 1 ? 600 : 400,
+                  }}
+                >
                   {n}
                 </span>
               </div>
@@ -536,8 +682,23 @@ function ProductLayout({ p }: { p: Palette }) {
                       className="rounded p-1.5"
                       style={{ background: `${p.paper}0E`, borderLeft: `2px solid ${p.accent}` }}
                     >
-                      <div style={{ height: 3, width: "70%", background: `${p.paper}35`, borderRadius: 2 }} />
-                      <div style={{ height: 3, width: "45%", background: `${p.paper}22`, borderRadius: 2, marginTop: 3 }} />
+                      <div
+                        style={{
+                          height: 3,
+                          width: "70%",
+                          background: `${p.paper}35`,
+                          borderRadius: 2,
+                        }}
+                      />
+                      <div
+                        style={{
+                          height: 3,
+                          width: "45%",
+                          background: `${p.paper}22`,
+                          borderRadius: 2,
+                          marginTop: 3,
+                        }}
+                      />
                     </div>
                   ))}
                 </div>
@@ -561,7 +722,16 @@ function FinanceLayout({ p }: { p: Palette }) {
           <div style={{ color: p.accent, fontSize: 9, letterSpacing: "0.2em", fontWeight: 600 }}>
             REGULATED · SINCE 1998
           </div>
-          <div style={{ color: p.ink, fontSize: 27, fontWeight: 700, lineHeight: 1.18, marginTop: 9, letterSpacing: "-0.03em" }}>
+          <div
+            style={{
+              color: p.ink,
+              fontSize: 27,
+              fontWeight: 700,
+              lineHeight: 1.18,
+              marginTop: 9,
+              letterSpacing: "-0.03em",
+            }}
+          >
             Borrow with the
             <br />
             numbers in front of you.
@@ -575,9 +745,15 @@ function FinanceLayout({ p }: { p: Palette }) {
           </div>
         </div>
         {/* calculator */}
-        <div className="rounded p-4" style={{ border: `1px solid ${p.ink}1F`, background: `${p.ink}06` }}>
+        <div
+          className="rounded p-4"
+          style={{ border: `1px solid ${p.ink}1F`, background: `${p.ink}06` }}
+        >
           <div style={{ color: p.ink, fontSize: 11, fontWeight: 700 }}>EMI calculator</div>
-          {[["Loan amount", "₹25,00,000"], ["Tenure", "20 years"]].map(([k, v]) => (
+          {[
+            ["Loan amount", "₹25,00,000"],
+            ["Tenure", "20 years"],
+          ].map(([k, v]) => (
             <div key={k} className="mt-3">
               <div className="flex justify-between">
                 <span style={{ color: `${p.ink}88`, fontSize: 9 }}>{k}</span>
@@ -589,16 +765,26 @@ function FinanceLayout({ p }: { p: Palette }) {
             </div>
           ))}
           <div className="mt-4 rounded p-2.5 text-center" style={{ background: p.ink }}>
-            <div style={{ color: `${p.paper}9A`, fontSize: 8.5, letterSpacing: "0.12em" }}>MONTHLY EMI</div>
-            <div style={{ color: p.paper, fontSize: 17, fontWeight: 700, marginTop: 2 }}>₹21,450</div>
+            <div style={{ color: `${p.paper}9A`, fontSize: 8.5, letterSpacing: "0.12em" }}>
+              MONTHLY EMI
+            </div>
+            <div style={{ color: p.paper, fontSize: 17, fontWeight: 700, marginTop: 2 }}>
+              ₹21,450
+            </div>
           </div>
         </div>
       </div>
       <div className="mt-7 flex gap-6 px-9">
-        {[["₹2,400 Cr", "Disbursed"], ["48 hrs", "Approval"], ["9.2%", "From"]].map(([v, k]) => (
+        {[
+          ["₹2,400 Cr", "Disbursed"],
+          ["48 hrs", "Approval"],
+          ["9.2%", "From"],
+        ].map(([v, k]) => (
           <div key={k}>
             <div style={{ color: p.ink, fontSize: 16, fontWeight: 700 }}>{v}</div>
-            <div style={{ color: `${p.ink}80`, fontSize: 8.5, letterSpacing: "0.12em" }}>{k!.toUpperCase()}</div>
+            <div style={{ color: `${p.ink}80`, fontSize: 8.5, letterSpacing: "0.12em" }}>
+              {k!.toUpperCase()}
+            </div>
           </div>
         ))}
       </div>
@@ -628,14 +814,39 @@ function CreativeLayout({ p }: { p: Palette }) {
           MAKING
         </div>
         <div className="flex items-end gap-4">
-          <span style={{ color: p.accent, fontSize: 60, fontWeight: 800, lineHeight: 0.92, letterSpacing: "-0.055em", fontStyle: "italic" }}>
+          <span
+            style={{
+              color: p.accent,
+              fontSize: 60,
+              fontWeight: 800,
+              lineHeight: 0.92,
+              letterSpacing: "-0.055em",
+              fontStyle: "italic",
+            }}
+          >
             THINGS
           </span>
-          <span style={{ color: `${p.ink}88`, fontSize: 10.5, lineHeight: 1.5, maxWidth: 170, paddingBottom: 8 }}>
+          <span
+            style={{
+              color: `${p.ink}88`,
+              fontSize: 10.5,
+              lineHeight: 1.5,
+              maxWidth: 170,
+              paddingBottom: 8,
+            }}
+          >
             Brand, film and interaction for people who care about the details.
           </span>
         </div>
-        <div style={{ color: p.ink, fontSize: 60, fontWeight: 800, lineHeight: 0.92, letterSpacing: "-0.055em" }}>
+        <div
+          style={{
+            color: p.ink,
+            fontSize: 60,
+            fontWeight: 800,
+            lineHeight: 0.92,
+            letterSpacing: "-0.055em",
+          }}
+        >
           MATTER
         </div>
       </div>
@@ -668,9 +879,15 @@ function LuxuryLayout({ p }: { p: Palette }) {
         }}
       />
       <div className="relative flex items-center justify-between px-10 py-6">
-        <span style={{ color: `${p.paper}A0`, fontSize: 9.5, letterSpacing: "0.2em" }}>COLLECTION</span>
-        <span style={{ color: p.paper, fontSize: 13, fontWeight: 400, letterSpacing: "0.32em" }}>MAISON</span>
-        <span style={{ color: `${p.paper}A0`, fontSize: 9.5, letterSpacing: "0.2em" }}>ENQUIRE</span>
+        <span style={{ color: `${p.paper}A0`, fontSize: 9.5, letterSpacing: "0.2em" }}>
+          COLLECTION
+        </span>
+        <span style={{ color: p.paper, fontSize: 13, fontWeight: 400, letterSpacing: "0.32em" }}>
+          MAISON
+        </span>
+        <span style={{ color: `${p.paper}A0`, fontSize: 9.5, letterSpacing: "0.2em" }}>
+          ENQUIRE
+        </span>
       </div>
       <div className="relative flex flex-col items-center px-10" style={{ marginTop: 46 }}>
         <div style={{ color: p.accent, fontSize: 9, letterSpacing: "0.34em" }}>AUTUMN MMXXVI</div>
@@ -707,12 +924,27 @@ function LuxuryLayout({ p }: { p: Palette }) {
 function RealEstateLayout({ p }: { p: Palette }) {
   return (
     <div className="h-full w-full" style={{ background: p.ink }}>
-      <Nav p={p} brand="AURELIA RIDGE" items={["Project", "Plans", "Location"]} cta="Site visit" dark />
+      <Nav
+        p={p}
+        brand="AURELIA RIDGE"
+        items={["Project", "Plans", "Location"]}
+        cta="Site visit"
+        dark
+      />
       <div className="relative px-9 pt-8">
         <div style={{ color: p.accent, fontSize: 9, letterSpacing: "0.24em", fontWeight: 600 }}>
           SARJAPUR RIDGE · BENGALURU
         </div>
-        <div style={{ color: p.paper, fontSize: 32, fontWeight: 300, lineHeight: 1.12, marginTop: 12, letterSpacing: "-0.03em" }}>
+        <div
+          style={{
+            color: p.paper,
+            fontSize: 32,
+            fontWeight: 300,
+            lineHeight: 1.12,
+            marginTop: 12,
+            letterSpacing: "-0.03em",
+          }}
+        >
           Twelve residences.
           <br />
           One ridge.
@@ -727,10 +959,21 @@ function RealEstateLayout({ p }: { p: Palette }) {
         }}
       />
       <div className="mt-5 grid grid-cols-4 gap-3 px-9">
-        {[["12", "Residences"], ["4.2", "Acres"], ["82%", "Open ground"], ["2027", "Handover"]].map(([v, k]) => (
-          <div key={k} className="rounded p-2.5" style={{ background: `${p.paper}0A`, border: `1px solid ${p.paper}14` }}>
+        {[
+          ["12", "Residences"],
+          ["4.2", "Acres"],
+          ["82%", "Open ground"],
+          ["2027", "Handover"],
+        ].map(([v, k]) => (
+          <div
+            key={k}
+            className="rounded p-2.5"
+            style={{ background: `${p.paper}0A`, border: `1px solid ${p.paper}14` }}
+          >
             <div style={{ color: p.paper, fontSize: 16, fontWeight: 600 }}>{v}</div>
-            <div style={{ color: `${p.paper}70`, fontSize: 8, letterSpacing: "0.1em", marginTop: 1 }}>
+            <div
+              style={{ color: `${p.paper}70`, fontSize: 8, letterSpacing: "0.1em", marginTop: 1 }}
+            >
               {k!.toUpperCase()}
             </div>
           </div>
@@ -788,7 +1031,11 @@ function ImmersiveLayout({ p }: { p: Palette }) {
           { top: 176, left: 470, n: "02", label: "Performance" },
           { top: 246, left: 250, n: "03", label: "Technology" },
         ].map((h) => (
-          <div key={h.n} className="absolute flex items-center gap-2" style={{ top: h.top, left: h.left }}>
+          <div
+            key={h.n}
+            className="absolute flex items-center gap-2"
+            style={{ top: h.top, left: h.left }}
+          >
             <div
               className="grid place-items-center"
               style={{
@@ -804,7 +1051,9 @@ function ImmersiveLayout({ p }: { p: Palette }) {
             >
               {h.n}
             </div>
-            <span style={{ color: `${p.paper}B0`, fontSize: 9, letterSpacing: "0.1em" }}>{h.label}</span>
+            <span style={{ color: `${p.paper}B0`, fontSize: 9, letterSpacing: "0.1em" }}>
+              {h.label}
+            </span>
           </div>
         ))}
       </div>

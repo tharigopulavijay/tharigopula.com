@@ -1,3 +1,5 @@
+import { systemTiers, websiteTiers, type SystemId, type TierId } from "./catalog";
+
 export type Option = { id: string; label: string; hint?: string };
 
 export type Range = [number, number];
@@ -12,23 +14,55 @@ export type Base = {
 };
 
 // Bundled-and-included items shown on every base as "Included" (never priced individually).
-const standardIncluded = ["Responsive design", "Contact forms", "WhatsApp", "Basic SEO", "Analytics", "Deployment"];
+const standardIncluded = [
+  "Responsive design",
+  "Contact forms",
+  "WhatsApp",
+  "Basic SEO",
+  "Analytics",
+  "Deployment",
+];
 const standardIncludedWithCms = [...standardIncluded, "CMS-lite content editing"];
 
-export const bases: Base[] = [
-  { id: "launch", label: "Launch Page", group: "website", base: [6999, 11999], included: standardIncluded, hint: "A focused single/few-page site to get you online fast." },
-  { id: "essential", label: "Essential", group: "website", base: [11999, 17999], included: standardIncluded, hint: "A complete small business website." },
-  { id: "dynamic", label: "Dynamic", group: "website", base: [18999, 27999], included: standardIncludedWithCms, hint: "Content-driven site with editable sections." },
-  { id: "premium", label: "Premium Interactive", group: "website", base: [29999, 44999], included: standardIncludedWithCms, hint: "Richer interactions and a distinctive design layer." },
-  { id: "cinematic", label: "Cinematic", group: "website", base: [39999, 59999], included: standardIncludedWithCms, hint: "Motion-led, brand-first experience." },
-  { id: "threed", label: "3D Interactive", group: "website", base: [49999, 79999], included: standardIncludedWithCms, hint: "3D/immersive storytelling where it genuinely helps." },
+// Hints are the only thing written here. Names and prices come from the catalog
+// so the estimator can never quote a figure the pricing page does not advertise.
+const websiteHints: Record<TierId, string> = {
+  launch: "A focused single-page site to get you online fast.",
+  essential: "A complete small business website.",
+  dynamic: "Content-driven site with editable sections.",
+  premium: "Richer interactions and a distinctive design layer.",
+  cinematic: "Motion-led, brand-first experience.",
+  threed: "3D/immersive storytelling where it genuinely helps.",
+};
 
-  { id: "software", label: "Business software", group: "software", base: [24999, 60000], included: standardIncluded, hint: "Custom internal tool tailored to how you work." },
-  { id: "crm", label: "CRM / Operations", group: "software", base: [49000, 100000], included: standardIncluded, hint: "Manage leads, customers, sales and service in one place." },
-  { id: "dashboard", label: "Dashboard", group: "software", base: [9999, 25000], included: standardIncluded, hint: "Reporting and visibility into your data." },
-  { id: "automation", label: "Automation", group: "software", base: [4999, 15000], included: standardIncluded, hint: "Automate a repetitive manual process." },
-  { id: "ai", label: "AI assistant", group: "software", base: [14999, 35000], included: standardIncluded, hint: "An AI assistant trained on your business." },
-  { id: "mobile", label: "Mobile PWA", group: "software", base: [39000, 70000], included: standardIncluded, hint: "An installable mobile experience." },
+const systemHints: Record<SystemId, string> = {
+  software: "Custom internal tool tailored to how you work.",
+  crm: "Manage leads, customers, sales and service in one place.",
+  platform: "Several connected modules running the business end to end.",
+  dashboard: "Reporting and visibility into your data.",
+  automation: "Automate a repetitive manual process.",
+  ai: "An AI assistant trained on your business.",
+  mobile: "An installable mobile experience.",
+};
+
+export const bases: Base[] = [
+  ...websiteTiers.map<Base>((t) => ({
+    id: t.id,
+    label: t.name,
+    group: "website",
+    base: [t.low, t.high],
+    included:
+      t.id === "launch" || t.id === "essential" ? standardIncluded : standardIncludedWithCms,
+    hint: websiteHints[t.id],
+  })),
+  ...systemTiers.map<Base>((s) => ({
+    id: s.id,
+    label: s.name,
+    group: "software",
+    base: [s.low, s.high],
+    included: standardIncluded,
+    hint: systemHints[s.id],
+  })),
 ];
 
 export const objectives: Option[] = [
@@ -55,17 +89,56 @@ export type Module = {
 };
 
 export const modules: Module[] = [
-  { id: "cms", label: "CMS", cost: [4000, 8000], groups: ["website"], includedInBases: ["dynamic", "premium", "cinematic", "threed"] },
+  {
+    id: "cms",
+    label: "CMS",
+    cost: [4000, 8000],
+    groups: ["website"],
+    includedInBases: ["dynamic", "premium", "cinematic", "threed"],
+  },
   { id: "booking", label: "Booking", cost: [5000, 10000], groups: ["website", "software"] },
   { id: "auth", label: "Authentication", cost: [7000, 12000], groups: ["website", "software"] },
-  { id: "accounts", label: "Customer accounts", cost: [8000, 15000], groups: ["website", "software"] },
+  {
+    id: "accounts",
+    label: "Customer accounts",
+    cost: [8000, 15000],
+    groups: ["website", "software"],
+  },
   { id: "payments", label: "Payments", cost: [6000, 12000], groups: ["website", "software"] },
   { id: "admin", label: "Custom admin", cost: [10000, 25000], groups: ["website", "software"] },
-  { id: "dbWorkflows", label: "Custom database workflows", cost: [8000, 20000], groups: ["software"] },
-  { id: "dashboardModule", label: "Dashboard", cost: [10000, 25000], groups: ["website", "software"], includedInBases: ["dashboard"] },
-  { id: "apiIntegration", label: "Custom API integration", cost: [5000, 20000], groups: ["website", "software"] },
-  { id: "automationModule", label: "Workflow automation", cost: [8000, 25000], groups: ["software"], includedInBases: ["automation"] },
-  { id: "aiAssistant", label: "AI assistant", cost: [15000, 30000], groups: ["website", "software"], includedInBases: ["ai"] },
+  {
+    id: "dbWorkflows",
+    label: "Custom database workflows",
+    cost: [8000, 20000],
+    groups: ["software"],
+  },
+  {
+    id: "dashboardModule",
+    label: "Dashboard",
+    cost: [10000, 25000],
+    groups: ["website", "software"],
+    includedInBases: ["dashboard"],
+  },
+  {
+    id: "apiIntegration",
+    label: "Custom API integration",
+    cost: [5000, 20000],
+    groups: ["website", "software"],
+  },
+  {
+    id: "automationModule",
+    label: "Workflow automation",
+    cost: [8000, 25000],
+    groups: ["software"],
+    includedInBases: ["automation"],
+  },
+  {
+    id: "aiAssistant",
+    label: "AI assistant",
+    cost: [15000, 30000],
+    groups: ["website", "software"],
+    includedInBases: ["ai"],
+  },
   { id: "advanced3d", label: "Advanced custom 3D", cost: null, groups: ["website"] },
 ];
 
@@ -177,8 +250,8 @@ export function computeEstimate(state: EstimatorState) {
   }
   const complexityLow = subtotalLow * pctLow;
   const complexityHigh = subtotalHigh * pctHigh;
-  let runningLow = subtotalLow + complexityLow;
-  let runningHigh = subtotalHigh + complexityHigh;
+  const runningLow = subtotalLow + complexityLow;
+  const runningHigh = subtotalHigh + complexityHigh;
 
   // Urgency — applied last, clearly labelled.
   const time = timelines.find((t) => t.id === state.timeline);
@@ -198,7 +271,13 @@ export function computeEstimate(state: EstimatorState) {
           : "Low";
 
   const weeks =
-    complexity === "Very high" ? "10–16 weeks" : complexity === "High" ? "6–10 weeks" : complexity === "Medium" ? "3–6 weeks" : "1–3 weeks";
+    complexity === "Very high"
+      ? "10–16 weeks"
+      : complexity === "High"
+        ? "6–10 weeks"
+        : complexity === "Medium"
+          ? "3–6 weeks"
+          : "1–3 weeks";
 
   // Cross-sell suggestions based on what wasn't picked yet.
   const crossSellCatalog: CrossSell[] = [
@@ -213,22 +292,32 @@ export function computeEstimate(state: EstimatorState) {
     { id: "accounts", label: "Customer login / accounts", range: "+₹8,000 – ₹15,000" },
   ];
   const alreadyHave = new Set([...state.modules, ...includedLines.map((l) => l.toLowerCase())]);
-  const crossSell = crossSellCatalog
-    .filter((c) => !alreadyHave.has(c.id))
-    .slice(0, 4);
+  const crossSell = crossSellCatalog.filter((c) => !alreadyHave.has(c.id)).slice(0, 4);
 
   return {
     base,
-    baseLine: base ? { label: `Base experience — ${base.label}`, detail: `${inr(base.base[0])} – ${inr(base.base[1])}` } : null,
+    baseLine: base
+      ? {
+          label: `Base experience — ${base.label}`,
+          detail: `${inr(base.base[0])} – ${inr(base.base[1])}`,
+        }
+      : null,
     includedLines: Array.from(new Set(includedLines)),
     moduleLines,
     complexityLine:
       chosenFactors.length > 0
-        ? { label: "Complexity adjustment", detail: `+${inr(complexityLow)} – ${inr(complexityHigh)}`, factors: chosenFactors.map((f) => f.label) }
+        ? {
+            label: "Complexity adjustment",
+            detail: `+${inr(complexityLow)} – ${inr(complexityHigh)}`,
+            factors: chosenFactors.map((f) => f.label),
+          }
         : null,
     rushLine:
       time && time.id === "urgent"
-        ? { label: "Urgency / rush adjustment (15–25%)", detail: `+${inr(rushLow)} – ${inr(rushHigh)}` }
+        ? {
+            label: "Urgency / rush adjustment (15–25%)",
+            detail: `+${inr(rushLow)} – ${inr(rushHigh)}`,
+          }
         : null,
     lowLabel: inr(finalLow),
     highLabel: inr(finalHigh),

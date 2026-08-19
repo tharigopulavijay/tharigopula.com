@@ -1,3 +1,5 @@
+import { priceLabel, tierById } from "./catalog";
+
 export type PricingTier = {
   name: string;
   price: string;
@@ -22,11 +24,12 @@ export const pricingCategories: PricingCategory[] = [
   {
     key: "websites",
     title: "Websites",
-    blurb: "Right-sized technology, priced by how much the site has to do — not by page count alone.",
+    blurb:
+      "Right-sized technology, priced by how much the site has to do — not by page count alone.",
     tiers: [
       {
         name: "Launch Page",
-        price: "From ₹6,999",
+        price: priceLabel(tierById("launch")),
         audience: "Campaigns, new businesses, personal brands, single-service offers",
         includes: [
           "Single premium landing page",
@@ -41,7 +44,7 @@ export const pricingCategories: PricingCategory[] = [
       },
       {
         name: "Essential Business",
-        price: "₹11,999 – ₹17,999",
+        price: priceLabel(tierById("essential")),
         audience: "Most small businesses that need a professional presence",
         includes: [
           "Up to ~5 core pages",
@@ -58,7 +61,7 @@ export const pricingCategories: PricingCategory[] = [
       },
       {
         name: "Dynamic Business",
-        price: "₹18,999 – ₹34,999",
+        price: priceLabel(tierById("dynamic")),
         audience: "Businesses that need to manage content or bookings themselves",
         includes: [
           "Content management system",
@@ -74,7 +77,7 @@ export const pricingCategories: PricingCategory[] = [
       },
       {
         name: "Premium Interactive",
-        price: "₹29,999 – ₹54,999",
+        price: priceLabel(tierById("premium")),
         audience: "Brands that want a distinctive, high-craft digital presence",
         includes: [
           "Custom UI design",
@@ -89,7 +92,7 @@ export const pricingCategories: PricingCategory[] = [
       },
       {
         name: "Cinematic Experience",
-        price: "₹39,999 – ₹79,999",
+        price: priceLabel(tierById("cinematic")),
         audience: "Flagship brand or product sites built to be remembered",
         includes: [
           "Scroll-driven scenes",
@@ -103,7 +106,7 @@ export const pricingCategories: PricingCategory[] = [
       },
       {
         name: "3D Interactive",
-        price: "₹49,999 – ₹1,25,000+",
+        price: priceLabel(tierById("threed")),
         audience: "Product-led brands that want immersive, spatial presentation",
         includes: [
           "Interactive 3D scene",
@@ -133,14 +136,25 @@ export const pricingCategories: PricingCategory[] = [
         name: "CRM / Operations",
         price: "₹49,000 – ₹1,00,000+",
         audience: "Businesses managing leads, customers or day-to-day operations",
-        includes: ["Custom CRM logic", "Role-based access", "Pipeline & task tracking", "Reporting", "Integrations"],
+        includes: [
+          "Custom CRM logic",
+          "Role-based access",
+          "Pipeline & task tracking",
+          "Reporting",
+          "Integrations",
+        ],
         popular: true,
       },
       {
         name: "Multi-module Platform",
         price: "₹99,000 – ₹2,50,000+",
         audience: "Businesses running several connected functions in one system",
-        includes: ["Multiple integrated modules", "Advanced permissions", "Workflow automation", "Custom reporting"],
+        includes: [
+          "Multiple integrated modules",
+          "Advanced permissions",
+          "Workflow automation",
+          "Custom reporting",
+        ],
       },
       {
         name: "Large / Complex Systems",
@@ -165,20 +179,35 @@ export const pricingCategories: PricingCategory[] = [
         name: "Business Workflow",
         price: "₹9,999 – ₹24,999",
         audience: "A full process automated end to end",
-        includes: ["Multi-step workflow", "Conditional logic", "Notifications", "Basic error handling"],
+        includes: [
+          "Multi-step workflow",
+          "Conditional logic",
+          "Notifications",
+          "Basic error handling",
+        ],
         popular: true,
       },
       {
         name: "Multi-system Automation",
         price: "₹20,000 – ₹49,000",
         audience: "Automations that connect several tools you already use",
-        includes: ["Multiple system integrations", "Data mapping", "Monitoring", "Exception handling"],
+        includes: [
+          "Multiple system integrations",
+          "Data mapping",
+          "Monitoring",
+          "Exception handling",
+        ],
       },
       {
         name: "AI Automation",
         price: "₹29,000 – ₹75,000+",
         audience: "Workflows that need judgement, not just rules",
-        includes: ["AI-assisted decisions", "Document or text processing", "Integrated workflow", "Monitoring"],
+        includes: [
+          "AI-assisted decisions",
+          "Document or text processing",
+          "Integrated workflow",
+          "Monitoring",
+        ],
         note: "Third-party platform and API costs are separate.",
       },
     ],
@@ -280,7 +309,9 @@ export const pricingCategories: PricingCategory[] = [
 export const pricingGroups: PricingGroup[] = pricingCategories.map((c) => ({
   title: c.title,
   blurb: c.blurb,
-  rows: c.tiers.map((t) => (t.note ? { name: t.name, range: t.price, note: t.note } : { name: t.name, range: t.price })),
+  rows: c.tiers.map((t) =>
+    t.note ? { name: t.name, range: t.price, note: t.note } : { name: t.name, range: t.price },
+  ),
 }));
 
 export const costFactors = [
@@ -305,7 +336,12 @@ export const supportPlans = [
   {
     name: "Website Care",
     price: "₹999/month",
-    points: ["Monitoring", "Backup checks", "Small text and image updates", "Basic technical support"],
+    points: [
+      "Monitoring",
+      "Backup checks",
+      "Small text and image updates",
+      "Basic technical support",
+    ],
   },
   {
     name: "Business Care",

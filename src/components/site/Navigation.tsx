@@ -23,7 +23,9 @@ export function Navigation() {
     <header
       className={cn(
         "sticky top-0 z-50 border-b transition-colors",
-        scrolled ? "border-border bg-background/90 backdrop-blur-md" : "border-transparent bg-background",
+        scrolled
+          ? "border-border bg-background/90 backdrop-blur-md"
+          : "border-transparent bg-background",
       )}
     >
       <Container className="flex h-16 max-w-[1500px] items-center justify-between gap-4 px-4 sm:px-6">
@@ -37,7 +39,9 @@ export function Navigation() {
             aria-hidden="true"
           />
           <span className="leading-none">
-            <span className="block font-display text-[15px] font-semibold tracking-tight">Tharigopula</span>
+            <span className="block font-display text-[15px] font-semibold tracking-tight">
+              Tharigopula
+            </span>
             <span className="block font-mono text-[9px] tracking-[0.22em] text-muted-foreground uppercase">
               Technologies
             </span>

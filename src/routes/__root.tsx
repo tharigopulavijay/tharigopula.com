@@ -16,7 +16,6 @@ import { Navigation, WhatsAppFab } from "@/components/site/Navigation";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
-
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -93,7 +92,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:image", content: `${site.url}/og-image.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:image:alt", content: "Tharigopula Technologies — technology built around your business" },
+      {
+        property: "og:image:alt",
+        content: "Tharigopula Technologies — technology built around your business",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:image", content: `${site.url}/og-image.png` },
     ],
