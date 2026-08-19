@@ -1,22 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState } from "react";
-import { Container, Section, SectionHeading } from "@/components/site/primitives";
+import { Container, Section } from "@/components/site/primitives";
 import { SystemFlow } from "@/components/site/SystemFlow";
+import { FeatureGrid, ProjectCard } from "@/components/site/cards";
+import { CardGrid, Icons, type GridItem } from "@/components/site/HomeGrids";
 import {
-  FeatureGrid,
-  IndustryCard,
-  ProjectCard,
-  SolutionCard,
-  StepList,
-} from "@/components/site/cards";
+  PreviewPlatform,
+  PreviewPricing,
+  PreviewSolutions,
+  PreviewStudio,
+  PreviewWork,
+} from "@/components/site/PagePreview";
 import { CTASection } from "@/components/site/CTASection";
 import { EstimatorTeaser } from "@/components/site/EstimatorTeaser";
-import { problemEntries, process, solutionGroups, whyPoints } from "@/data/solutions";
+import { whyPoints } from "@/data/solutions";
 import { industries } from "@/data/industries";
 import { caseStudies } from "@/data/portfolio";
-import { websiteCategories } from "@/data/templates";
-import { experienceLevels } from "@/data/experience-lab";
-import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -148,167 +146,240 @@ function MarkerPin() {
   );
 }
 
-function ProblemEntry() {
-  const [active, setActive] = useState(problemEntries[0]!.slug);
-  const group = solutionGroups.find((g) => g.slug === active)!;
-
+/** Section heading, centred — the rhythm the grids below sit under. */
+function Band({ title, lead }: { title: string; lead?: string }) {
   return (
-    <Section>
-      <SectionHeading
-        eyebrow="Start here"
-        title="What are you trying to improve?"
-        lead="Most businesses do not start with a technology name. They start with something that is not working."
-      />
-      <div className="mt-10 grid gap-6 lg:grid-cols-[1fr_1fr]">
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-1">
-          {problemEntries.map((p) => (
-            <button
-              key={p.slug}
-              type="button"
-              onClick={() => setActive(p.slug)}
-              aria-pressed={active === p.slug}
-              className={cn(
-                "rounded-lg border px-4 py-4 text-left transition-all",
-                active === p.slug
-                  ? "border-signal bg-signal/10"
-                  : "border-border bg-card hover:-translate-y-0.5 hover:shadow-lift",
-              )}
-            >
-              <span className="block font-display text-base font-semibold">{p.title}</span>
-              <span className="mt-1 block text-sm text-muted-foreground">{p.description}</span>
-            </button>
-          ))}
-        </div>
-        <div className="lg:sticky lg:top-24 lg:self-start">
-          <SolutionCard group={group} />
-          <Link
-            to="/solutions"
-            hash={group.slug}
-            className="mt-4 inline-flex items-center gap-2 text-sm font-medium hover:text-signal"
-          >
-            See everything in {group.title} <span aria-hidden>→</span>
-          </Link>
-        </div>
-      </div>
-    </Section>
+    <div className="mx-auto max-w-2xl text-center">
+      <h2 className="font-display text-2xl font-semibold tracking-tight sm:text-3xl">{title}</h2>
+      {lead ? <p className="mt-3 text-sm text-muted-foreground sm:text-base">{lead}</p> : null}
+    </div>
   );
 }
+
+/**
+ * Entry by problem rather than by product name. A business owner does not wake
+ * up wanting "a CRM" — they wake up unable to find who called last week.
+ */
+const IMPROVE: GridItem[] = [
+  {
+    title: "Get more customers",
+    body: "Websites, landing pages and enquiry capture.",
+    icon: <Icons.customers />,
+    to: "/solutions",
+  },
+  {
+    title: "Run operations better",
+    body: "CRM, inventory, billing and service in one place.",
+    icon: <Icons.operations />,
+    to: "/demo/platform",
+  },
+  {
+    title: "Automate repetitive work",
+    body: "Reminders, approvals and follow-ups that run themselves.",
+    icon: <Icons.automate />,
+    to: "/demo/platform",
+  },
+  {
+    title: "Build a custom system",
+    body: "Software shaped to your workflow, not the other way round.",
+    icon: <Icons.custom />,
+    to: "/solutions",
+  },
+  {
+    title: "Improve reporting",
+    body: "Live numbers without waiting for month-end.",
+    icon: <Icons.reporting />,
+    to: "/solutions",
+  },
+  {
+    title: "Launch an app",
+    body: "Customer portals and mobile apps.",
+    icon: <Icons.app />,
+    to: "/solutions",
+  },
+];
+
+const INDUSTRY_CARDS: GridItem[] = [
+  {
+    title: "Manufacturing",
+    body: "Orders, stock, dispatch and warranty.",
+    icon: <Icons.factory />,
+    to: "/industries/$slug",
+    params: { slug: "manufacturing" },
+  },
+  {
+    title: "Healthcare",
+    body: "Appointments, records and reminders.",
+    icon: <Icons.clinic />,
+    to: "/industries/$slug",
+    params: { slug: "healthcare" },
+  },
+  {
+    title: "Restaurants",
+    body: "Bookings, menu and repeat guests.",
+    icon: <Icons.restaurant />,
+    to: "/industries/$slug",
+    params: { slug: "restaurants" },
+  },
+  {
+    title: "Retail",
+    body: "Billing, stock and customer history.",
+    icon: <Icons.retail />,
+    to: "/industries/$slug",
+    params: { slug: "retail" },
+  },
+  {
+    title: "Real Estate",
+    body: "Enquiries, site visits and collections.",
+    icon: <Icons.realEstate />,
+    to: "/industries/$slug",
+    params: { slug: "real-estate" },
+  },
+  {
+    title: "Professional Services",
+    body: "Engagements, documents and deadlines.",
+    icon: <Icons.professional />,
+    to: "/industries/$slug",
+    params: { slug: "professional-services" },
+  },
+];
+
+const EXPLORE = [
+  {
+    title: "Solutions",
+    body: "The full range, grouped by what it does.",
+    to: "/solutions",
+    cta: "Explore solutions",
+    preview: <PreviewSolutions />,
+  },
+  {
+    title: "Live business platform",
+    body: "Open a working system for your industry.",
+    to: "/demo/platform",
+    cta: "Open the demo",
+    preview: <PreviewPlatform />,
+  },
+  {
+    title: "Website Studio",
+    body: "Compare five website experience levels.",
+    to: "/website-studio",
+    cta: "Visit the studio",
+    preview: <PreviewStudio />,
+  },
+  {
+    title: "Work",
+    body: "How we would build it, worked through.",
+    to: "/portfolio",
+    cta: "View the work",
+    preview: <PreviewWork />,
+  },
+  {
+    title: "Pricing & estimate",
+    body: "Indicative ranges and a configurator.",
+    to: "/pricing",
+    cta: "See pricing",
+    preview: <PreviewPricing />,
+  },
+];
 
 function Home() {
   return (
     <>
       <Hero />
-      <ProblemEntry />
 
       <Section>
-        <SectionHeading
-          eyebrow="Industries"
-          title="What could technology improve in your type of business?"
-          lead="Each industry has its own version of the same problems. Start with yours."
+        <Band
+          title="What do you want to improve?"
+          lead="Most businesses do not start with a technology name. They start with something that is not working."
         />
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {industries.slice(0, 6).map((i) => (
-            <IndustryCard key={i.slug} industry={i} />
-          ))}
-        </div>
-        <Link
-          to="/industries"
-          className="mt-8 inline-flex items-center gap-2 text-sm font-medium hover:text-signal"
-        >
-          View all {industries.length} industries <span aria-hidden>→</span>
-        </Link>
+        <CardGrid items={IMPROVE} cols={6} />
       </Section>
 
       <Section className="bg-secondary/40">
-        <SectionHeading
-          eyebrow="Featured work"
-          title="Systems worked through, problem first"
+        <Band
+          title="Explore what we do"
+          lead="Jump to the area you need. Each one has a dedicated page with the detail."
+        />
+        <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {EXPLORE.map((e) => (
+            <Link
+              key={e.title}
+              to={e.to}
+              className="group flex h-full flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:border-signal/40 hover:shadow-lift"
+            >
+              <div className="h-[104px] border-b border-border bg-secondary/50 p-2.5">
+                {e.preview}
+              </div>
+              <div className="flex flex-1 flex-col p-4">
+                <h3 className="font-display text-[15px] font-semibold">{e.title}</h3>
+                <p className="mt-1.5 text-[13px] leading-snug text-muted-foreground">{e.body}</p>
+                <span className="mt-auto pt-3 text-[13px] font-medium text-signal">
+                  {e.cta}{" "}
+                  <span
+                    aria-hidden
+                    className="inline-block transition-transform group-hover:translate-x-1"
+                  >
+                    →
+                  </span>
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </Section>
+
+      <Section>
+        <Band
+          title="Industries we serve"
+          lead="Each industry has its own version of the same problems. Start with yours."
+        />
+        <CardGrid items={INDUSTRY_CARDS} cols={6} />
+        <p className="mt-8 text-center">
+          <Link
+            to="/industries"
+            className="inline-flex items-center gap-2 text-sm font-medium hover:text-signal"
+          >
+            See all {industries.length} industries <span aria-hidden>→</span>
+          </Link>
+        </p>
+      </Section>
+
+      <Section className="bg-secondary/40">
+        <Band
+          title="Recent work"
           lead="Each one says plainly whether it is a delivered client system or a solution designed to show the approach."
         />
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-9 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {caseStudies.slice(0, 3).map((c) => (
             <ProjectCard key={c.slug} study={c} />
           ))}
         </div>
-        <Link
-          to="/portfolio"
-          className="mt-8 inline-flex items-center gap-2 text-sm font-medium hover:text-signal"
-        >
-          View portfolio <span aria-hidden>→</span>
-        </Link>
-      </Section>
-
-      {/* One proof section instead of three. Website levels, template directions
-          and the working platform demo all answer the same visitor question:
-          "can you actually show me?" */}
-      <Section ink>
-        <SectionHeading
-          ink
-          eyebrow="See it working"
-          title="Everything below is live. Click it."
-          lead="Most agencies describe what they can build. We built the same fictional business five different ways, plus a working business platform, and put all of it on this site."
-        />
-
-        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-          {experienceLevels.map((l) => (
-            <div key={l.slug} className="rounded-lg border border-ink-border p-4">
-              <p className="font-mono text-[11px] text-signal">{l.index}</p>
-              <p className="mt-1 font-display font-semibold text-ink-foreground">{l.name}</p>
-              <p className="mt-2 text-xs text-ink-muted">{l.price}</p>
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+        <p className="mt-8 text-center">
           <Link
-            to="/experience-lab"
-            className="rounded-md bg-signal px-5 py-3 text-center text-sm font-medium text-signal-foreground"
+            to="/portfolio"
+            className="inline-flex items-center gap-2 text-sm font-medium hover:text-signal"
           >
-            Compare the five website levels
+            View more work <span aria-hidden>→</span>
           </Link>
-          <Link
-            to="/demo/platform"
-            className="rounded-md border border-ink-border px-5 py-3 text-center text-sm font-medium text-ink-foreground transition-colors hover:bg-white/5"
-          >
-            Try the business platform
-          </Link>
-          <Link
-            to="/website-studio"
-            className="rounded-md px-5 py-3 text-center text-sm font-medium text-ink-muted hover:text-ink-foreground"
-          >
-            Browse {websiteCategories.length} website styles
-          </Link>
-        </div>
+        </p>
       </Section>
 
       <Section>
-        <SectionHeading
-          eyebrow="How we work"
-          title="We do not sell websites. We solve a business problem and then build what fits."
-          lead="The same path whether it ends in a five-page website or a multi-module platform — and you can follow it without a technical background."
+        <Band
+          title="Why businesses choose Tharigopula"
+          lead="No claims we cannot back. These are things you can hold us to."
         />
-        <div className="mt-10">
-          <StepList items={process} />
+        <div className="mt-9">
+          <FeatureGrid items={whyPoints.slice(0, 6)} />
         </div>
       </Section>
 
-      <Section className="bg-secondary/40">
-        <SectionHeading
-          eyebrow="Why Tharigopula"
-          title="Practical technology, delivered transparently"
-        />
-        <div className="mt-10">
-          <FeatureGrid items={whyPoints} />
-        </div>
-      </Section>
-
-      <Section id="estimator">
-        <SectionHeading
-          eyebrow="Indicative pricing"
+      <Section className="bg-secondary/40" id="estimator">
+        <Band
           title="Find out roughly what it costs"
           lead="Before you talk to anyone. The configurator gives a range and writes out what is included."
         />
-        <div className="mt-10">
+        <div className="mt-9">
           <EstimatorTeaser />
         </div>
       </Section>
