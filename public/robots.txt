@@ -1,14 +1,14 @@
-User-agent: Googlebot
-Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Twitterbot
-Allow: /
-
-User-agent: facebookexternalhit
-Allow: /
-
 User-agent: *
 Allow: /
+
+# The five website experience demos are a fictional business used to compare
+# design levels. They are noindexed in their own metadata; disallowing them here
+# keeps them out of crawl budget too. /demo/platform is a real product page and
+# is intentionally left crawlable.
+Disallow: /demo/essential
+Disallow: /demo/dynamic
+Disallow: /demo/interactive
+Disallow: /demo/cinematic
+Disallow: /demo/3d
+
+Sitemap: https://tharigopula.com/sitemap.xml

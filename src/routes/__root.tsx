@@ -149,7 +149,11 @@ function RootShell({ children }: { children: ReactNode }) {
 function CanonicalUrl() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
 
-  if (pathname.startsWith("/demo")) return null;
+  // The five website demos are noindexed fictional sites — they need no canonical.
+  // /demo/platform is a real product page, and its ?industry= variants must all
+  // consolidate onto the bare path or they compete with each other.
+  const isNoindexDemo = pathname.startsWith("/demo") && pathname !== "/demo/platform";
+  if (isNoindexDemo) return null;
 
   // Strip any trailing slash so "/pricing/" and "/pricing" do not compete.
   const path = pathname !== "/" && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
@@ -163,6 +167,54 @@ function CanonicalUrl() {
   );
 }
 
+/**
+ * Organization and WebSite markup, emitted once on every page.
+ *
+ * Deliberately minimal: only facts that are verifiably true. No aggregateRating,
+ * no review markup, no employee count, no founding date — Google penalises
+ * fabricated structured data, and none of it can be substantiated here.
+ */
+function StructuredData() {
+  const json = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": `${site.url}/#organization`,
+        name: site.name,
+        url: site.url,
+        logo: `${site.url}/logo-mark.png`,
+        image: `${site.url}/og-image.png`,
+        description: site.supporting,
+        email: site.email,
+        telephone: `+${site.whatsapp}`,
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Hyderabad",
+          addressRegion: "Telangana",
+          addressCountry: "IN",
+        },
+      },
+      {
+        "@type": "WebSite",
+        "@id": `${site.url}/#website`,
+        url: site.url,
+        name: site.name,
+        publisher: { "@id": `${site.url}/#organization` },
+        inLanguage: "en-IN",
+      },
+    ],
+  };
+
+  return (
+    <script
+      type="application/ld+json"
+      // Serialised, not user input — safe, and required for JSON-LD.
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(json) }}
+    />
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const isDemo = useRouterState({
@@ -172,6 +224,10 @@ function RootComponent() {
   if (isDemo) {
     return (
       <QueryClientProvider client={queryClient}>
+        {/* Demos render without the site chrome, but /demo/platform is a real
+            indexable page and still needs its canonical — CanonicalUrl decides
+            which demo routes get one. */}
+        <CanonicalUrl />
         <Outlet />
         <Toaster position="top-center" richColors />
       </QueryClientProvider>
@@ -181,6 +237,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <CanonicalUrl />
+      <StructuredData />
       <div className="flex min-h-screen flex-col">
         <Navigation />
         <main className="flex-1">
