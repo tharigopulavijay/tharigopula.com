@@ -2,13 +2,19 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Container, Eyebrow, Section, SectionHeading } from "@/components/site/primitives";
 import { SystemMap } from "@/components/site/SystemMap";
-import { FeatureGrid, IndustryCard, ProjectCard, SolutionCard, StepList, TemplateCard } from "@/components/site/cards";
+import {
+  FeatureGrid,
+  IndustryCard,
+  ProjectCard,
+  SolutionCard,
+  StepList,
+} from "@/components/site/cards";
 import { CTASection } from "@/components/site/CTASection";
-import { Estimator } from "@/components/site/Estimator";
-import { deliveryJourney, problemEntries, process, solutionGroups, techCapabilities, whyPoints } from "@/data/solutions";
+import { EstimatorTeaser } from "@/components/site/EstimatorTeaser";
+import { problemEntries, process, solutionGroups, whyPoints } from "@/data/solutions";
 import { industries } from "@/data/industries";
 import { caseStudies } from "@/data/portfolio";
-import { templates, websiteCategories } from "@/data/templates";
+import { websiteCategories } from "@/data/templates";
 import { experienceLevels } from "@/data/experience-lab";
 import { cn } from "@/lib/utils";
 
@@ -21,10 +27,14 @@ export const Route = createFileRoute("/")({
         content:
           "Websites, business software, automation, dashboards and AI. We understand how your business works first, then build the system it actually needs.",
       },
-      { property: "og:title", content: "Tharigopula Technologies — Technology built around your business" },
+      {
+        property: "og:title",
+        content: "Tharigopula Technologies — Technology built around your business",
+      },
       {
         property: "og:description",
-        content: "Websites. Software. Data. Automation. AI. One technology partner for growing businesses.",
+        content:
+          "Websites. Software. Data. Automation. AI. One technology partner for growing businesses.",
       },
     ],
   }),
@@ -43,8 +53,8 @@ function Hero() {
               Technology built around your business.
             </h1>
             <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-muted sm:text-lg">
-              From websites and business software to automation, data and AI — we design technology that helps
-              businesses operate better and grow faster.
+              From websites and business software to automation, data and AI — we design technology
+              that helps businesses operate better and grow faster.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Link
@@ -119,28 +129,6 @@ function ProblemEntry() {
   );
 }
 
-function Journey() {
-  return (
-    <Section ink>
-      <SectionHeading
-        ink
-        eyebrow="How a solution takes shape"
-        title="We do not sell websites. We solve a business problem and then build what fits."
-        lead="Every engagement follows the same path, whether it ends in a five-page website or a multi-module platform."
-      />
-      <ol className="mt-10 grid gap-px overflow-hidden rounded-xl border border-ink-border bg-white/10 sm:grid-cols-3">
-        {deliveryJourney.map((s, i) => (
-          <li key={s.step} className="surface-ink p-5">
-            <span className="font-mono text-xs text-signal">{String(i + 1).padStart(2, "0")}</span>
-            <p className="mt-2 font-display text-base font-semibold text-ink-foreground">{s.step}</p>
-            <p className="mt-1 text-sm text-ink-muted">{s.note}</p>
-          </li>
-        ))}
-      </ol>
-    </Section>
-  );
-}
-
 function Home() {
   return (
     <>
@@ -160,8 +148,6 @@ function Home() {
         </div>
       </Section>
 
-      <Journey />
-
       <Section>
         <SectionHeading
           eyebrow="Industries"
@@ -173,30 +159,44 @@ function Home() {
             <IndustryCard key={i.slug} industry={i} />
           ))}
         </div>
-        <Link to="/industries" className="mt-8 inline-flex items-center gap-2 text-sm font-medium hover:text-signal">
+        <Link
+          to="/industries"
+          className="mt-8 inline-flex items-center gap-2 text-sm font-medium hover:text-signal"
+        >
           View all {industries.length} industries <span aria-hidden>→</span>
         </Link>
       </Section>
 
       <Section className="bg-secondary/40">
-        <SectionHeading eyebrow="Featured work" title="Systems built around real business problems" />
+        <SectionHeading
+          eyebrow="Featured work"
+          title="Systems worked through, problem first"
+          lead="Each one says plainly whether it is a delivered client system or a solution designed to show the approach."
+        />
         <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {caseStudies.slice(0, 3).map((c) => (
             <ProjectCard key={c.slug} study={c} />
           ))}
         </div>
-        <Link to="/portfolio" className="mt-8 inline-flex items-center gap-2 text-sm font-medium hover:text-signal">
+        <Link
+          to="/portfolio"
+          className="mt-8 inline-flex items-center gap-2 text-sm font-medium hover:text-signal"
+        >
           View portfolio <span aria-hidden>→</span>
         </Link>
       </Section>
 
+      {/* One proof section instead of three. Website levels, template directions
+          and the working platform demo all answer the same visitor question:
+          "can you actually show me?" */}
       <Section ink>
         <SectionHeading
           ink
-          eyebrow="Experience Lab"
-          title="One business, built five different ways — all live"
-          lead="Essential, Dynamic, Interactive, Cinematic and 3D Immersive. Instead of describing the difference, we built the same fictional business at every level so you can scroll through them yourself."
+          eyebrow="See it working"
+          title="Everything below is live. Click it."
+          lead="Most agencies describe what they can build. We built the same fictional business five different ways, plus a working business platform, and put all of it on this site."
         />
+
         <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
           {experienceLevels.map((l) => (
             <div key={l.slug} className="rounded-lg border border-ink-border p-4">
@@ -206,72 +206,58 @@ function Home() {
             </div>
           ))}
         </div>
-        <Link
-          to="/experience-lab"
-          className="mt-8 inline-flex items-center gap-2 rounded-md bg-signal px-5 py-3 text-sm font-medium text-signal-foreground"
-        >
-          Open the Experience Lab <span aria-hidden>→</span>
-        </Link>
-      </Section>
 
-
-
-      <Section>
-        <SectionHeading
-          eyebrow="Website Studio"
-          title="Choose how your business should appear online"
-          lead={`Five levels of website experience, from a fast essential site to full 3D. ${websiteCategories.length} categories, each with indicative pricing.`}
-        />
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {templates.slice(0, 3).map((t) => (
-            <TemplateCard key={t.slug} template={t} />
-          ))}
-        </div>
-        <Link to="/website-studio" className="mt-8 inline-flex items-center gap-2 text-sm font-medium hover:text-signal">
-          Explore website styles <span aria-hidden>→</span>
-        </Link>
-      </Section>
-
-      <Section className="bg-secondary/40" id="estimator">
-        <SectionHeading
-          eyebrow="Project estimator"
-          title="Build your project"
-          lead="Eight quick steps. You get an indicative range, a suggested direction and a relevant case study."
-        />
-        <div className="mt-10">
-          <Estimator compact />
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+          <Link
+            to="/experience-lab"
+            className="rounded-md bg-signal px-5 py-3 text-center text-sm font-medium text-signal-foreground"
+          >
+            Compare the five website levels
+          </Link>
+          <Link
+            to="/demo/platform"
+            className="rounded-md border border-ink-border px-5 py-3 text-center text-sm font-medium text-ink-foreground transition-colors hover:bg-white/5"
+          >
+            Try the business platform
+          </Link>
+          <Link
+            to="/website-studio"
+            className="rounded-md px-5 py-3 text-center text-sm font-medium text-ink-muted hover:text-ink-foreground"
+          >
+            Browse {websiteCategories.length} website styles
+          </Link>
         </div>
       </Section>
 
       <Section>
-        <SectionHeading eyebrow="How we work" title="A process you can follow without a technical background" />
+        <SectionHeading
+          eyebrow="How we work"
+          title="We do not sell websites. We solve a business problem and then build what fits."
+          lead="The same path whether it ends in a five-page website or a multi-module platform — and you can follow it without a technical background."
+        />
         <div className="mt-10">
           <StepList items={process} />
         </div>
       </Section>
 
       <Section className="bg-secondary/40">
-        <SectionHeading eyebrow="Why Tharigopula" title="Practical technology, delivered transparently" />
+        <SectionHeading
+          eyebrow="Why Tharigopula"
+          title="Practical technology, delivered transparently"
+        />
         <div className="mt-10">
           <FeatureGrid items={whyPoints} />
         </div>
       </Section>
 
-      <Section ink>
-        <SectionHeading ink eyebrow="Technology capabilities" title="The stack behind the business outcomes" />
-        <div className="mt-10 grid gap-px overflow-hidden rounded-xl border border-ink-border bg-white/10 sm:grid-cols-2">
-          {Object.entries(techCapabilities).map(([group, items]) => (
-            <div key={group} className="surface-ink p-6">
-              <p className="font-mono text-[11px] tracking-[0.16em] text-ink-muted uppercase">{group}</p>
-              <ul className="mt-3 flex flex-wrap gap-1.5">
-                {items.map((i) => (
-                  <li key={i} className="rounded-md border border-ink-border px-2.5 py-1 text-xs text-ink-foreground/85">
-                    {i}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+      <Section id="estimator">
+        <SectionHeading
+          eyebrow="Indicative pricing"
+          title="Find out roughly what it costs"
+          lead="Before you talk to anyone. The configurator gives a range and writes out what is included."
+        />
+        <div className="mt-10">
+          <EstimatorTeaser />
         </div>
       </Section>
 
