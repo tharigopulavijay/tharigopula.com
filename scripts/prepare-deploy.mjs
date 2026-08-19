@@ -32,11 +32,23 @@ const toPosix = (p) => p.split("\\").join("/");
 const wrangler = JSON.parse(readFileSync(WRANGLER_CONFIG, "utf8"));
 const previousName = wrangler.name;
 const previousDir = wrangler.assets?.directory;
+const previousDate = wrangler.compatibility_date;
 
 wrangler.name = WORKER_NAME;
 if (wrangler.assets?.directory) {
   wrangler.assets.directory = toPosix(wrangler.assets.directory);
 }
+
+// 3. COMPATIBILITY DATE. Nitro stamps this from the local clock. India is
+//    UTC+5:30, so from about 5:30am IST the local date is already tomorrow in
+//    Cloudflare's terms and the API rejects the deploy outright:
+//    "Can't set compatibility date in the future" [code: 10021].
+//    Clamping to today's UTC date makes evening deploys work.
+const utcToday = new Date().toISOString().slice(0, 10);
+if (wrangler.compatibility_date > utcToday) {
+  wrangler.compatibility_date = utcToday;
+}
+
 writeFileSync(WRANGLER_CONFIG, `${JSON.stringify(wrangler, null, 2)}\n`);
 
 let deployNote = "not present";
@@ -52,4 +64,8 @@ try {
 console.log("prepare-deploy:");
 console.log(`  worker name      ${previousName} -> ${wrangler.name}`);
 console.log(`  assets directory ${previousDir} -> ${wrangler.assets?.directory}`);
+console.log(
+  `  compatibility    ${previousDate} -> ${wrangler.compatibility_date}` +
+    (previousDate !== wrangler.compatibility_date ? "  (clamped to UTC today)" : ""),
+);
 console.log(`  deploy config    ${deployNote}`);
