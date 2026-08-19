@@ -8,8 +8,15 @@ import { categoryBySlug, demoPathFor, keyCapability } from "@/data/templates";
 import type { CaseStudy } from "@/data/portfolio";
 import { Pill } from "./primitives";
 import { TemplatePreview } from "./TemplatePreview";
+import { ProjectStatusBadge } from "./ProjectStatusBadge";
 
-export function SolutionCard({ group, className }: { group: SolutionGroup; className?: string | undefined }) {
+export function SolutionCard({
+  group,
+  className,
+}: {
+  group: SolutionGroup;
+  className?: string | undefined;
+}) {
   return (
     <div
       id={group.slug}
@@ -22,13 +29,18 @@ export function SolutionCard({ group, className }: { group: SolutionGroup; class
       <p className="mt-2 text-sm text-muted-foreground">{group.summary}</p>
       <ul className="mt-5 flex flex-wrap gap-1.5">
         {group.items.map((item) => (
-          <li key={item} className="rounded-md bg-secondary px-2.5 py-1 text-xs text-secondary-foreground">
+          <li
+            key={item}
+            className="rounded-md bg-secondary px-2.5 py-1 text-xs text-secondary-foreground"
+          >
             {item}
           </li>
         ))}
       </ul>
       <p className="mt-auto border-t border-border pt-4 text-sm text-foreground">
-        <span className="font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">Outcome</span>
+        <span className="font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
+          Outcome
+        </span>
         <br />
         {group.outcome}
       </p>
@@ -116,17 +128,27 @@ export function ProjectCard({ study }: { study: CaseStudy }) {
       params={{ slug: study.slug }}
       className="group flex h-full flex-col rounded-xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-lift"
     >
-      <p className="font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">{study.industry}</p>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <p className="font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
+          {study.industry}
+        </p>
+        <ProjectStatusBadge status={study.status} />
+      </div>
       <h3 className="mt-3 font-display text-xl leading-snug font-semibold">{study.title}</h3>
       <p className="mt-3 text-sm text-muted-foreground">{study.summary}</p>
       <ul className="mt-5 flex flex-wrap gap-1.5">
         {study.tech.slice(0, 5).map((t) => (
-          <li key={t} className="rounded-md bg-secondary px-2.5 py-1 text-xs text-secondary-foreground">
+          <li
+            key={t}
+            className="rounded-md bg-secondary px-2.5 py-1 text-xs text-secondary-foreground"
+          >
             {t}
           </li>
         ))}
       </ul>
-      <span className="mt-auto pt-5 text-sm font-medium group-hover:text-signal">Read the case study →</span>
+      <span className="mt-auto pt-5 text-sm font-medium group-hover:text-signal">
+        Read the case study →
+      </span>
     </Link>
   );
 }

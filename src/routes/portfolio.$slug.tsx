@@ -1,6 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Container, Pill, Section, SectionHeading } from "@/components/site/primitives";
 import { CTASection } from "@/components/site/CTASection";
+import { ProjectStatusNote } from "@/components/site/ProjectStatusBadge";
 import { caseStudyBySlug } from "@/data/portfolio";
 
 export const Route = createFileRoute("/portfolio/$slug")({
@@ -56,6 +57,10 @@ function CaseStudyPage() {
             title={study.title}
             lead={study.summary}
           />
+          {/* Stated before anything else, so nobody reads a concept as delivered work. */}
+          <div className="mt-8 max-w-2xl">
+            <ProjectStatusNote status={study.status} />
+          </div>
           <ul className="mt-8 flex flex-wrap gap-2">
             {study.tech.map((t) => (
               <li key={t}>
