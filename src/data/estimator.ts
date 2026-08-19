@@ -321,6 +321,10 @@ export function computeEstimate(state: EstimatorState) {
         : null,
     lowLabel: inr(finalLow),
     highLabel: inr(finalHigh),
+    // Raw figures for analytics — parsing the formatted labels back into
+    // numbers would break the moment the currency formatting changes.
+    lowValue: Math.round(finalLow),
+    highValue: Math.round(finalHigh),
     complexity,
     weeks,
     hasQuotedSeparately,

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { track } from "@/lib/analytics";
 import {
   businesses,
   businessBySlug,
@@ -52,10 +53,17 @@ export function PlatformDemo({
 
   const [flash, setFlash] = useState(false);
   const switchBusiness = (next: string) => {
+    track({ name: "demo_industry_changed", from: slug, to: next });
     setSlug(next);
     onBusinessChange?.(next);
     setFlash(true);
     window.setTimeout(() => setFlash(false), 420);
+  };
+
+  const openModule = (next: ModuleKey) => {
+    track({ name: "demo_module_viewed", module: next, business: slug });
+    if (next === "automation") track({ name: "automation_demo_started", business: slug });
+    setModule(next);
   };
 
   return (
@@ -139,7 +147,7 @@ export function PlatformDemo({
                 <button
                   key={m.key}
                   type="button"
-                  onClick={() => setModule(m.key)}
+                  onClick={() => openModule(m.key)}
                   aria-current={on ? "page" : undefined}
                   className="flex shrink-0 items-center gap-2.5 rounded-md px-3 py-2 text-[13px] font-medium transition-colors"
                   style={{

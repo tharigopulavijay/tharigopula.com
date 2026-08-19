@@ -18,6 +18,7 @@ import {
   type EstimatorState,
 } from "@/data/estimator";
 import { ESTIMATOR_HANDOFF_KEY } from "@/lib/enquiry";
+import { track } from "@/lib/analytics";
 
 /**
  * Renders the configured scope as plain text that travels with the enquiry,
@@ -142,7 +143,38 @@ export function Estimator({
   const set = <K extends keyof EstimatorState>(key: K, value: EstimatorState[K]) =>
     setState((s) => ({ ...s, [key]: value }));
 
-  const next = () => setStep((s) => Math.min(s + 1, 7));
+  // Step names make the drop-off readable — "they leave at step 4" is useless,
+  // "they leave when asked about integrations" is actionable.
+  const STEP_FIELDS = [
+    "base",
+    "industry",
+    "objective",
+    "modules",
+    "complexity",
+    "size",
+    "timeline",
+    "result",
+  ];
+
+  // Tracking stays outside the state updater on purpose. React invokes updaters
+  // more than once (StrictMode, and any future concurrent re-render), which
+  // silently double-counted every step and fired estimator_completed twice.
+  const next = () => {
+    const to = Math.min(step + 1, 7);
+    if (to === step) return;
+
+    track({ name: "estimator_step_completed", step, field: STEP_FIELDS[step] ?? String(step) });
+    if (to === 7) {
+      track({
+        name: "estimator_completed",
+        base: state.base,
+        low: estimate.lowValue,
+        high: estimate.highValue,
+        modules: state.modules.length,
+      });
+    }
+    setStep(to);
+  };
   const back = () => setStep((s) => Math.max(s - 1, 0));
 
   const canContinue = [
