@@ -11,6 +11,7 @@ import {
 import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import { site } from "@/data/site";
 import { Navigation, WhatsAppFab } from "@/components/site/Navigation";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -87,7 +88,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "author", content: "Tharigopula Technologies" },
       { property: "og:site_name", content: "Tharigopula Technologies" },
       { property: "og:type", content: "website" },
+      // twitter:card was already summary_large_image, but no image was ever set —
+      // so shared links rendered an empty card. These fill it.
+      { property: "og:image", content: `${site.url}/og-image.png` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "Tharigopula Technologies — technology built around your business" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:image", content: `${site.url}/og-image.png` },
     ],
     links: [
       {
@@ -100,9 +108,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap",
       },
-      { rel: "icon", href: "/tharigopula-logo.png?v=tharigopula-2", type: "image/png" },
-      { rel: "shortcut icon", href: "/tharigopula-logo.png?v=tharigopula-2", type: "image/png" },
-      { rel: "canonical", href: "https://tharigopula.com" },
+      { rel: "icon", href: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      // NOTE: canonical is intentionally not set here. A single hardcoded value
+      // told search engines every page was a duplicate of the homepage, which
+      // de-indexed all of them. <CanonicalUrl /> below emits the correct
+      // per-page URL instead.
     ],
   }),
 
@@ -126,6 +137,30 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+/**
+ * Emits the canonical URL and og:url for the page actually being viewed.
+ *
+ * React 19 hoists <link> and <meta> rendered anywhere in the tree into <head>,
+ * so this stays correct on every route without each route repeating itself.
+ * Demo routes are excluded from indexing already, so they get nothing.
+ */
+function CanonicalUrl() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+
+  if (pathname.startsWith("/demo")) return null;
+
+  // Strip any trailing slash so "/pricing/" and "/pricing" do not compete.
+  const path = pathname !== "/" && pathname.endsWith("/") ? pathname.slice(0, -1) : pathname;
+  const url = path === "/" ? site.url : `${site.url}${path}`;
+
+  return (
+    <>
+      <link rel="canonical" href={url} />
+      <meta property="og:url" content={url} />
+    </>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const isDemo = useRouterState({
@@ -143,6 +178,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <CanonicalUrl />
       <div className="flex min-h-screen flex-col">
         <Navigation />
         <main className="flex-1">

@@ -15,7 +15,7 @@ export default defineConfig({
   },
   plugins: [
     tanstackStart(),
-    nitro({ preset: process.env.VERCEL ? "vercel" : "cloudflare-module" }),
+    nitro({ preset: process.env["VERCEL"] ? "vercel" : "cloudflare-module" }),
     viteReact(),
     tailwindcss(),
   ],

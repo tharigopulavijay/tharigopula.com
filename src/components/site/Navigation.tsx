@@ -29,8 +29,10 @@ export function Navigation() {
       <Container className="flex h-16 max-w-[1500px] items-center justify-between gap-4 px-4 sm:px-6">
         <Link to="/" className="flex shrink-0 items-center gap-2.5" aria-label={site.name}>
           <img
-            src="/tharigopula-logo.png"
+            src="/logo-mark.png"
             alt=""
+            width={96}
+            height={96}
             className="h-10 w-10 shrink-0 object-contain"
             aria-hidden="true"
           />
