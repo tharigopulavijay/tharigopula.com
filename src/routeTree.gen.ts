@@ -33,8 +33,15 @@ import { Route as LiveDemosMobileAppsRouteImport } from './routes/live-demos.mob
 import { Route as LiveDemosWebsitesRouteImport } from './routes/live-demos.websites'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio.index'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
+import { Route as ShowcaseIndexRouteImport } from './routes/showcase.index'
+import { Route as ShowcaseAutomationRouteImport } from './routes/showcase.automation'
+import { Route as ShowcaseBusinessSoftwareRouteImport } from './routes/showcase.business-software'
+import { Route as ShowcaseDashboardsRouteImport } from './routes/showcase.dashboards'
+import { Route as ShowcaseMobileAppsRouteImport } from './routes/showcase.mobile-apps'
+import { Route as ShowcaseWebsitesRouteImport } from './routes/showcase.websites'
 import { Route as WebsiteStudioIndexRouteImport } from './routes/website-studio.index'
 import { Route as WebsiteStudioSlugRouteImport } from './routes/website-studio.$slug'
+import { Route as ShowcaseTemplatesSlugRouteImport } from './routes/showcase.templates.$slug'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -157,6 +164,37 @@ const PortfolioSlugRoute = PortfolioSlugRouteImport.update({
   path: '/portfolio/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ShowcaseIndexRoute = ShowcaseIndexRouteImport.update({
+  id: '/showcase/',
+  path: '/showcase/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowcaseAutomationRoute = ShowcaseAutomationRouteImport.update({
+  id: '/showcase/automation',
+  path: '/showcase/automation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowcaseBusinessSoftwareRoute =
+  ShowcaseBusinessSoftwareRouteImport.update({
+    id: '/showcase/business-software',
+    path: '/showcase/business-software',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ShowcaseDashboardsRoute = ShowcaseDashboardsRouteImport.update({
+  id: '/showcase/dashboards',
+  path: '/showcase/dashboards',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowcaseMobileAppsRoute = ShowcaseMobileAppsRouteImport.update({
+  id: '/showcase/mobile-apps',
+  path: '/showcase/mobile-apps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowcaseWebsitesRoute = ShowcaseWebsitesRouteImport.update({
+  id: '/showcase/websites',
+  path: '/showcase/websites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WebsiteStudioIndexRoute = WebsiteStudioIndexRouteImport.update({
   id: '/website-studio/',
   path: '/website-studio/',
@@ -165,6 +203,11 @@ const WebsiteStudioIndexRoute = WebsiteStudioIndexRouteImport.update({
 const WebsiteStudioSlugRoute = WebsiteStudioSlugRouteImport.update({
   id: '/website-studio/$slug',
   path: '/website-studio/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShowcaseTemplatesSlugRoute = ShowcaseTemplatesSlugRouteImport.update({
+  id: '/showcase/templates/$slug',
+  path: '/showcase/templates/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -190,11 +233,18 @@ export interface FileRoutesByFullPath {
   '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
   '/live-demos/websites': typeof LiveDemosWebsitesRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/showcase/automation': typeof ShowcaseAutomationRoute
+  '/showcase/business-software': typeof ShowcaseBusinessSoftwareRoute
+  '/showcase/dashboards': typeof ShowcaseDashboardsRoute
+  '/showcase/mobile-apps': typeof ShowcaseMobileAppsRoute
+  '/showcase/websites': typeof ShowcaseWebsitesRoute
   '/website-studio/$slug': typeof WebsiteStudioSlugRoute
   '/industries/': typeof IndustriesIndexRoute
   '/live-demos/': typeof LiveDemosIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
+  '/showcase/': typeof ShowcaseIndexRoute
   '/website-studio/': typeof WebsiteStudioIndexRoute
+  '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -218,11 +268,18 @@ export interface FileRoutesByTo {
   '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
   '/live-demos/websites': typeof LiveDemosWebsitesRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/showcase/automation': typeof ShowcaseAutomationRoute
+  '/showcase/business-software': typeof ShowcaseBusinessSoftwareRoute
+  '/showcase/dashboards': typeof ShowcaseDashboardsRoute
+  '/showcase/mobile-apps': typeof ShowcaseMobileAppsRoute
+  '/showcase/websites': typeof ShowcaseWebsitesRoute
   '/website-studio/$slug': typeof WebsiteStudioSlugRoute
   '/industries': typeof IndustriesIndexRoute
   '/live-demos': typeof LiveDemosIndexRoute
   '/portfolio': typeof PortfolioIndexRoute
+  '/showcase': typeof ShowcaseIndexRoute
   '/website-studio': typeof WebsiteStudioIndexRoute
+  '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -247,11 +304,18 @@ export interface FileRoutesById {
   '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
   '/live-demos/websites': typeof LiveDemosWebsitesRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
+  '/showcase/automation': typeof ShowcaseAutomationRoute
+  '/showcase/business-software': typeof ShowcaseBusinessSoftwareRoute
+  '/showcase/dashboards': typeof ShowcaseDashboardsRoute
+  '/showcase/mobile-apps': typeof ShowcaseMobileAppsRoute
+  '/showcase/websites': typeof ShowcaseWebsitesRoute
   '/website-studio/$slug': typeof WebsiteStudioSlugRoute
   '/industries/': typeof IndustriesIndexRoute
   '/live-demos/': typeof LiveDemosIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
+  '/showcase/': typeof ShowcaseIndexRoute
   '/website-studio/': typeof WebsiteStudioIndexRoute
+  '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -277,11 +341,18 @@ export interface FileRouteTypes {
     | '/live-demos/mobile-apps'
     | '/live-demos/websites'
     | '/portfolio/$slug'
+    | '/showcase/automation'
+    | '/showcase/business-software'
+    | '/showcase/dashboards'
+    | '/showcase/mobile-apps'
+    | '/showcase/websites'
     | '/website-studio/$slug'
     | '/industries/'
     | '/live-demos/'
     | '/portfolio/'
+    | '/showcase/'
     | '/website-studio/'
+    | '/showcase/templates/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -305,11 +376,18 @@ export interface FileRouteTypes {
     | '/live-demos/mobile-apps'
     | '/live-demos/websites'
     | '/portfolio/$slug'
+    | '/showcase/automation'
+    | '/showcase/business-software'
+    | '/showcase/dashboards'
+    | '/showcase/mobile-apps'
+    | '/showcase/websites'
     | '/website-studio/$slug'
     | '/industries'
     | '/live-demos'
     | '/portfolio'
+    | '/showcase'
     | '/website-studio'
+    | '/showcase/templates/$slug'
   id:
     | '__root__'
     | '/'
@@ -333,11 +411,18 @@ export interface FileRouteTypes {
     | '/live-demos/mobile-apps'
     | '/live-demos/websites'
     | '/portfolio/$slug'
+    | '/showcase/automation'
+    | '/showcase/business-software'
+    | '/showcase/dashboards'
+    | '/showcase/mobile-apps'
+    | '/showcase/websites'
     | '/website-studio/$slug'
     | '/industries/'
     | '/live-demos/'
     | '/portfolio/'
+    | '/showcase/'
     | '/website-studio/'
+    | '/showcase/templates/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -362,11 +447,18 @@ export interface RootRouteChildren {
   LiveDemosMobileAppsRoute: typeof LiveDemosMobileAppsRoute
   LiveDemosWebsitesRoute: typeof LiveDemosWebsitesRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
+  ShowcaseAutomationRoute: typeof ShowcaseAutomationRoute
+  ShowcaseBusinessSoftwareRoute: typeof ShowcaseBusinessSoftwareRoute
+  ShowcaseDashboardsRoute: typeof ShowcaseDashboardsRoute
+  ShowcaseMobileAppsRoute: typeof ShowcaseMobileAppsRoute
+  ShowcaseWebsitesRoute: typeof ShowcaseWebsitesRoute
   WebsiteStudioSlugRoute: typeof WebsiteStudioSlugRoute
   IndustriesIndexRoute: typeof IndustriesIndexRoute
   LiveDemosIndexRoute: typeof LiveDemosIndexRoute
   PortfolioIndexRoute: typeof PortfolioIndexRoute
+  ShowcaseIndexRoute: typeof ShowcaseIndexRoute
   WebsiteStudioIndexRoute: typeof WebsiteStudioIndexRoute
+  ShowcaseTemplatesSlugRoute: typeof ShowcaseTemplatesSlugRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -539,6 +631,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PortfolioSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/showcase/': {
+      id: '/showcase/'
+      path: '/showcase'
+      fullPath: '/showcase/'
+      preLoaderRoute: typeof ShowcaseIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showcase/automation': {
+      id: '/showcase/automation'
+      path: '/showcase/automation'
+      fullPath: '/showcase/automation'
+      preLoaderRoute: typeof ShowcaseAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showcase/business-software': {
+      id: '/showcase/business-software'
+      path: '/showcase/business-software'
+      fullPath: '/showcase/business-software'
+      preLoaderRoute: typeof ShowcaseBusinessSoftwareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showcase/dashboards': {
+      id: '/showcase/dashboards'
+      path: '/showcase/dashboards'
+      fullPath: '/showcase/dashboards'
+      preLoaderRoute: typeof ShowcaseDashboardsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showcase/mobile-apps': {
+      id: '/showcase/mobile-apps'
+      path: '/showcase/mobile-apps'
+      fullPath: '/showcase/mobile-apps'
+      preLoaderRoute: typeof ShowcaseMobileAppsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showcase/websites': {
+      id: '/showcase/websites'
+      path: '/showcase/websites'
+      fullPath: '/showcase/websites'
+      preLoaderRoute: typeof ShowcaseWebsitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/website-studio/': {
       id: '/website-studio/'
       path: '/website-studio'
@@ -551,6 +685,13 @@ declare module '@tanstack/react-router' {
       path: '/website-studio/$slug'
       fullPath: '/website-studio/$slug'
       preLoaderRoute: typeof WebsiteStudioSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/showcase/templates/$slug': {
+      id: '/showcase/templates/$slug'
+      path: '/showcase/templates/$slug'
+      fullPath: '/showcase/templates/$slug'
+      preLoaderRoute: typeof ShowcaseTemplatesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -578,11 +719,18 @@ const rootRouteChildren: RootRouteChildren = {
   LiveDemosMobileAppsRoute: LiveDemosMobileAppsRoute,
   LiveDemosWebsitesRoute: LiveDemosWebsitesRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,
+  ShowcaseAutomationRoute: ShowcaseAutomationRoute,
+  ShowcaseBusinessSoftwareRoute: ShowcaseBusinessSoftwareRoute,
+  ShowcaseDashboardsRoute: ShowcaseDashboardsRoute,
+  ShowcaseMobileAppsRoute: ShowcaseMobileAppsRoute,
+  ShowcaseWebsitesRoute: ShowcaseWebsitesRoute,
   WebsiteStudioSlugRoute: WebsiteStudioSlugRoute,
   IndustriesIndexRoute: IndustriesIndexRoute,
   LiveDemosIndexRoute: LiveDemosIndexRoute,
   PortfolioIndexRoute: PortfolioIndexRoute,
+  ShowcaseIndexRoute: ShowcaseIndexRoute,
   WebsiteStudioIndexRoute: WebsiteStudioIndexRoute,
+  ShowcaseTemplatesSlugRoute: ShowcaseTemplatesSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

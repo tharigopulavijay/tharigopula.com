@@ -71,7 +71,7 @@ export function TemplateCard({ template }: { template: Template }) {
   return (
     <div className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card transition-all hover:-translate-y-0.5 hover:shadow-lift">
       <Link
-        to="/website-studio/$slug"
+        to="/showcase/templates/$slug"
         params={{ slug: template.slug }}
         className="relative block overflow-hidden border-b border-border"
         aria-label={`${template.name} template preview`}
@@ -109,7 +109,7 @@ export function TemplateCard({ template }: { template: Template }) {
             Preview live
           </a>
           <Link
-            to="/website-studio/$slug"
+            to="/showcase/templates/$slug"
             params={{ slug: template.slug }}
             className="flex-1 rounded-md bg-ink px-3 py-2 text-center text-sm font-medium text-ink-foreground transition-opacity hover:opacity-90"
           >

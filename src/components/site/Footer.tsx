@@ -8,7 +8,7 @@ const columns = [
     links: [
       { to: "/solutions", label: "Solutions" },
       { to: "/industries", label: "Industries" },
-      { to: "/website-studio", label: "Website Studio" },
+      { to: "/showcase/websites", label: "Showcase" },
       { to: "/portfolio", label: "Portfolio" },
     ],
   },
@@ -38,15 +38,22 @@ export function Footer() {
           <div>
             <p className="font-display text-lg font-semibold text-ink-foreground">{site.name}</p>
             <p className="mt-2 max-w-xs text-sm text-ink-muted">{site.positioning}</p>
-            <p className="mt-6 font-mono text-xs tracking-[0.18em] text-ink-muted uppercase">{site.domain}</p>
+            <p className="mt-6 font-mono text-xs tracking-[0.18em] text-ink-muted uppercase">
+              {site.domain}
+            </p>
           </div>
           {columns.map((col) => (
             <div key={col.title}>
-              <p className="font-mono text-[11px] tracking-[0.16em] text-ink-muted uppercase">{col.title}</p>
+              <p className="font-mono text-[11px] tracking-[0.16em] text-ink-muted uppercase">
+                {col.title}
+              </p>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((l) => (
                   <li key={l.to}>
-                    <Link to={l.to} className="text-sm text-ink-foreground/85 transition-colors hover:text-signal">
+                    <Link
+                      to={l.to}
+                      className="text-sm text-ink-foreground/85 transition-colors hover:text-signal"
+                    >
                       {l.label}
                     </Link>
                   </li>

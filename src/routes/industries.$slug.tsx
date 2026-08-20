@@ -138,7 +138,7 @@ function IndustryPage() {
                         See it live
                       </a>
                       <Link
-                        to="/website-studio"
+                        to="/showcase/websites"
                         className="rounded-md px-3.5 py-2 text-sm font-medium text-muted-foreground hover:text-foreground"
                       >
                         Compare all

@@ -9,7 +9,7 @@ import { priceLabel, tierById, systemById, inr } from "./catalog";
  */
 
 export type DemoCategory = {
-  slug: "mobile-apps" | "websites" | "business-software" | "automation";
+  slug: "websites" | "mobile-apps" | "business-software" | "dashboards" | "automation";
   name: string;
   /** Shown on the gateway card — what the category is, in the visitor's terms. */
   blurb: string;
@@ -30,7 +30,7 @@ export const demoCategories: DemoCategory[] = [
     blurb:
       "Open a working app in a real phone and tablet frame — ordering, booking, customer and business apps you can tap through.",
     previews: ["Ordering apps", "Booking apps", "Customer apps", "Business apps"],
-    to: "/live-demos/mobile-apps",
+    to: "/showcase/mobile-apps",
     cta: "View Mobile Demos",
     startingFrom: `From ${inr(systemById("mobile").low)}`,
     accent: "#2563EB",
@@ -41,7 +41,7 @@ export const demoCategories: DemoCategory[] = [
     blurb:
       "The same business built five times over, from a clean brochure site to a 3D interactive experience. This is what the website tiers mean, shown rather than described.",
     previews: ["Essential", "Dynamic", "Interactive", "Cinematic", "3D"],
-    to: "/live-demos/websites",
+    to: "/showcase/websites",
     cta: "View Website Demos",
     startingFrom: priceLabel(tierById("essential")),
     accent: "#0EA36B",
@@ -52,10 +52,21 @@ export const demoCategories: DemoCategory[] = [
     blurb:
       "A complete business system you can click through — leads, customers, sales, purchases, stock, service and dashboards, with real records and five staff roles.",
     previews: ["CRM & leads", "Sales & purchases", "Stock & service", "Dashboards"],
-    to: "/live-demos/business-software",
+    to: "/showcase/business-software",
     cta: "View Software Demos",
     startingFrom: `From ${inr(systemById("crm").low)}`,
     accent: "#7C4DDA",
+  },
+  {
+    slug: "dashboards",
+    name: "Dashboard Demos",
+    blurb:
+      "A working dashboard on twelve months of data — change the period, branch or product group and every figure recomputes.",
+    previews: ["Live filtering", "Branch & product drill-down", "Margin & trend", "Period compare"],
+    to: "/showcase/dashboards",
+    cta: "View Dashboard Demos",
+    startingFrom: `From ${inr(systemById("dashboard").low)}`,
+    accent: "#0E8F9E",
   },
   {
     slug: "automation",
@@ -63,7 +74,7 @@ export const demoCategories: DemoCategory[] = [
     blurb:
       "Watch a lead move from a website form all the way to an updated dashboard without anyone touching it — step by step, at your own pace.",
     previews: ["Lead capture", "Notifications", "Approvals", "Reporting"],
-    to: "/live-demos/automation",
+    to: "/showcase/automation",
     cta: "View Automation Demos",
     startingFrom: `From ${inr(systemById("automation").low)}`,
     accent: "#E08411",

@@ -36,7 +36,7 @@ export const pillars: Pillar[] = [
       "Website maintenance",
       "Speed, SEO & security",
     ],
-    to: "/website-studio",
+    to: "/showcase/websites",
     accent: "#2563EB",
     accentSoft: "#E8F0FE",
   },

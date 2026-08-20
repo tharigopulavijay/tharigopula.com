@@ -514,7 +514,7 @@ export function Estimator({
             <div className="mt-5 grid gap-3 sm:grid-cols-2">
               {recommendedTemplate ? (
                 <Link
-                  to="/website-studio/$slug"
+                  to="/showcase/templates/$slug"
                   params={{ slug: recommendedTemplate.slug }}
                   className="rounded-lg border border-border p-4 transition-colors hover:border-foreground/25"
                 >

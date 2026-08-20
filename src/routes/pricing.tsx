@@ -91,7 +91,7 @@ function PricingPage() {
 
         <div className="mt-8">
           <a
-            href="/live-demos/websites"
+            href="/showcase/websites"
             className="text-sm font-medium text-foreground underline-offset-4 hover:text-signal hover:underline"
           >
             See all experience levels →

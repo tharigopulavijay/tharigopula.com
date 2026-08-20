@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { Container } from "./primitives";
 
 /**
- * The shared top of every Live Demos child page.
+ * The shared top of every Showcase child page.
  *
  * All four pages open the same way — breadcrumb, split heading, lead, two
  * actions, three assurances, visual on the right. Writing that four times over
@@ -43,8 +43,8 @@ export function DemoPageHeader({
           <span aria-hidden className="px-2">
             ›
           </span>
-          <Link to="/live-demos" className="hover:text-foreground">
-            Live Demos
+          <Link to="/showcase" className="hover:text-foreground">
+            Showcase
           </Link>
           <span aria-hidden className="px-2">
             ›

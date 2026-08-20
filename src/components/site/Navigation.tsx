@@ -50,7 +50,7 @@ export function Navigation() {
         </Link>
 
         <nav className="mr-auto hidden items-center gap-0.5 xl:ml-5 xl:flex 2xl:ml-7 2xl:gap-1">
-          {nav.slice(1).map((item) => (
+          {nav.map((item) => (
             <Link
               key={item.to}
               to={item.to}

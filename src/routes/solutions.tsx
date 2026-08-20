@@ -81,7 +81,7 @@ function SolutionsPage() {
                   Explore solutions <span aria-hidden>→</span>
                 </a>
                 <Link
-                  to="/live-demos"
+                  to="/showcase"
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3.5 text-sm font-semibold transition-colors hover:border-foreground/25"
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>

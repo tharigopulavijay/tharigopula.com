@@ -49,7 +49,7 @@ const PILLARS: (GridItem & { to: string })[] = [
     title: "Websites & Digital Presence",
     body: "High-performing websites that build trust, generate leads and deliver results.",
     icon: <Icons.customers />,
-    to: "/website-studio",
+    to: "/showcase/websites",
   },
   {
     title: "Business Software & Apps",
@@ -284,7 +284,7 @@ function Home() {
             Try the live business platform <span aria-hidden>→</span>
           </Link>
           <Link
-            to="/live-demos/websites"
+            to="/showcase/websites"
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3.5 text-sm font-semibold transition-colors hover:border-foreground/25"
           >
             Compare website experiences

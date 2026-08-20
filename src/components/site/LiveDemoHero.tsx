@@ -4,7 +4,7 @@ import { presetById } from "@/data/demo-apps";
 import { DashboardScreen, WebsiteScreen } from "./DemoScreens";
 
 /**
- * The multi-product composition at the top of the Live Demos gateway.
+ * The multi-product composition at the top of the Showcase gateway.
  *
  * Four things are being sold on this page and a single screenshot can only
  * carry one of them, so all three device classes appear at once. The phone runs
