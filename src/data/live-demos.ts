@@ -50,8 +50,8 @@ export const demoCategories: DemoCategory[] = [
     slug: "business-software",
     name: "Business Software Demos",
     blurb:
-      "A running operations system with real records — leads, orders, inventory, invoices and reports for six different kinds of business.",
-    previews: ["CRM & leads", "Orders & operations", "Inventory & billing", "Dashboards"],
+      "A complete business system you can click through — leads, customers, sales, purchases, stock, service and dashboards, with real records and five staff roles.",
+    previews: ["CRM & leads", "Sales & purchases", "Stock & service", "Dashboards"],
     to: "/live-demos/business-software",
     cta: "View Software Demos",
     startingFrom: `From ${inr(systemById("crm").low)}`,
