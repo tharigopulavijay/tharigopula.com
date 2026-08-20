@@ -16,7 +16,6 @@ export type OrbitIndustry = {
   name: string;
   note: string;
   icon: React.ReactNode;
-  tint: string;
   color: string;
 };
 
@@ -26,7 +25,6 @@ export const ORBIT: OrbitIndustry[] = [
     name: "Manufacturing",
     note: "Smart operations",
     icon: <Icons.factory />,
-    tint: "#E8F0FE",
     color: "#2563EB",
   },
   {
@@ -34,7 +32,6 @@ export const ORBIT: OrbitIndustry[] = [
     name: "Healthcare",
     note: "Better care",
     icon: <Icons.clinic />,
-    tint: "#E3F5ED",
     color: "#0EA36B",
   },
   {
@@ -42,7 +39,6 @@ export const ORBIT: OrbitIndustry[] = [
     name: "Restaurants",
     note: "Seamless service",
     icon: <Icons.restaurant />,
-    tint: "#FDF0DC",
     color: "#E08411",
   },
   {
@@ -50,7 +46,6 @@ export const ORBIT: OrbitIndustry[] = [
     name: "Retail",
     note: "Unified commerce",
     icon: <Icons.retail />,
-    tint: "#F0EAFC",
     color: "#7C4DDA",
   },
   {
@@ -58,7 +53,6 @@ export const ORBIT: OrbitIndustry[] = [
     name: "Real Estate",
     note: "Stronger deals",
     icon: <Icons.realEstate />,
-    tint: "#E3F5ED",
     color: "#0EA36B",
   },
   {
@@ -66,7 +60,6 @@ export const ORBIT: OrbitIndustry[] = [
     name: "Professional Services",
     note: "Smarter delivery",
     icon: <Icons.professional />,
-    tint: "#F0EAFC",
     color: "#7C4DDA",
   },
 ];
@@ -76,7 +69,10 @@ function Chip({ item }: { item: OrbitIndustry }) {
     <div className="flex items-center gap-2.5 rounded-xl border border-border bg-card px-3 py-2.5 shadow-sm">
       <span
         className="grid h-8 w-8 shrink-0 place-items-center rounded-lg"
-        style={{ background: item.tint, color: item.color }}
+        style={{
+          background: `color-mix(in srgb, ${item.color} 14%, transparent)`,
+          color: `color-mix(in oklab, ${item.color}, white var(--accent-lift))`,
+        }}
         aria-hidden
       >
         {item.icon}

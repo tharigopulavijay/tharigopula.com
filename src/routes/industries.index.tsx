@@ -123,7 +123,10 @@ function IndustriesPage() {
             >
               <span
                 className="grid h-14 w-14 place-items-center rounded-full"
-                style={{ background: i.tint, color: i.color }}
+                style={{
+                  background: `color-mix(in srgb, ${i.color} 14%, transparent)`,
+                  color: `color-mix(in oklab, ${i.color}, white var(--accent-lift))`,
+                }}
                 aria-hidden
               >
                 {i.icon}
@@ -132,7 +135,10 @@ function IndustriesPage() {
               <p className="mt-2 text-[13px] leading-snug text-muted-foreground">
                 {SUMMARY[i.slug]}
               </p>
-              <span className="mt-auto pt-4 text-[13px] font-medium" style={{ color: i.color }}>
+              <span
+                className="mt-auto pt-4 text-[13px] font-medium"
+                style={{ color: `color-mix(in oklab, ${i.color}, white var(--accent-lift))` }}
+              >
                 View solutions{" "}
                 <span
                   aria-hidden

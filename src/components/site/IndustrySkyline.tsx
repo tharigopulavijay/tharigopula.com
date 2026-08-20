@@ -37,18 +37,18 @@ export function IndustrySkyline() {
       <svg viewBox="0 0 640 440" className="w-full" role="presentation">
         <defs>
           <linearGradient id="tower" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#BFD8F5" />
-            <stop offset="55%" stopColor="#8FB6E4" />
-            <stop offset="100%" stopColor="#6D9BD1" />
+            <stop offset="0%" stopColor="var(--sky-1)" />
+            <stop offset="55%" stopColor="var(--sky-2)" />
+            <stop offset="100%" stopColor="var(--sky-3)" />
           </linearGradient>
           <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor="#D7E5F6" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#D7E5F6" stopOpacity="0.15" />
+            <stop offset="0%" stopColor="var(--sky-far)" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="var(--sky-far)" stopOpacity="0.15" />
           </linearGradient>
           <linearGradient id="ground" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="#CBDCF1" stopOpacity="0" />
-            <stop offset="50%" stopColor="#CBDCF1" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#CBDCF1" stopOpacity="0" />
+            <stop offset="0%" stopColor="var(--sky-far)" stopOpacity="0" />
+            <stop offset="50%" stopColor="var(--sky-far)" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="var(--sky-far)" stopOpacity="0" />
           </linearGradient>
         </defs>
 
@@ -76,7 +76,7 @@ export function IndustrySkyline() {
             height="282"
             rx="6"
             fill="none"
-            stroke="#5B87BC"
+            stroke="var(--sky-line)"
             strokeOpacity="0.4"
           />
           {/* window grid */}
@@ -89,7 +89,7 @@ export function IndustrySkyline() {
                 width="18"
                 height="14"
                 rx="1.5"
-                fill="#FFFFFF"
+                fill="var(--sky-window)"
                 opacity={(r * 4 + c) % 5 === 0 ? 0.75 : 0.32}
               />
             )),
@@ -100,13 +100,13 @@ export function IndustrySkyline() {
         </g>
 
         {/* Podium and ground line. */}
-        <rect x="222" y="368" width="196" height="32" rx="4" fill="#B9D0EA" opacity="0.8" />
+        <rect x="222" y="368" width="196" height="32" rx="4" fill="var(--sky-far)" opacity="0.8" />
         <rect x="60" y="398" width="520" height="4" rx="2" fill="url(#ground)" />
 
         {/* Arcs from the marks toward the tower. */}
         <g
           fill="none"
-          stroke="#8FB0D6"
+          stroke="var(--sky-line)"
           strokeOpacity="0.55"
           strokeWidth="1.2"
           strokeDasharray="4 6"

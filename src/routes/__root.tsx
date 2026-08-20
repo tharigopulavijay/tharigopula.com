@@ -12,6 +12,7 @@ import type { ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { site } from "@/data/site";
+import { THEME_INIT_SCRIPT } from "@/lib/theme";
 import { Navigation, WhatsAppFab } from "@/components/site/Navigation";
 import { Footer } from "@/components/site/Footer";
 import { Toaster } from "@/components/ui/sonner";
@@ -127,8 +128,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Must run before first paint. A dark-mode visitor would otherwise get
+            a full-brightness flash of the light theme on every page load —
+            which is exactly what someone choosing dark mode is avoiding. */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <HeadContent />
       </head>
       <body>

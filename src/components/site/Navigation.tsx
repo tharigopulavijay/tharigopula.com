@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { Menu, X, MessageCircle } from "lucide-react";
 import { nav, site, whatsappLink } from "@/data/site";
 import { Container } from "./primitives";
+import { ThemeToggle } from "./ThemeToggle";
 import { cn } from "@/lib/utils";
 
 export function Navigation() {
@@ -62,6 +63,7 @@ export function Navigation() {
         </nav>
 
         <div className="hidden shrink-0 items-center gap-2 xl:flex">
+          <ThemeToggle />
           <Link
             to="/portfolio"
             className="whitespace-nowrap rounded-md border border-border px-3.5 py-2 text-sm font-medium transition-colors hover:bg-secondary"
@@ -76,15 +78,18 @@ export function Navigation() {
           </Link>
         </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          className="grid h-11 w-11 place-items-center rounded-md border border-border xl:hidden"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        <div className="flex items-center gap-2 xl:hidden">
+          <ThemeToggle />
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            aria-expanded={open}
+            className="grid h-11 w-11 place-items-center rounded-md border border-border"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </Container>
 
       {open ? (

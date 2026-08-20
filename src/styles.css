@@ -109,11 +109,103 @@
   --sidebar-accent-foreground: #0b2a55;
   --sidebar-border: #dbe7fa;
   --sidebar-ring: #1769ff;
+
+  /*
+   * How far a brand accent is lifted toward white before being used as text.
+   * Zero in light: those accents already pass against a white ground.
+   */
+  --accent-lift: 0%;
+
+  /* Drawn skyline on the industries hero. */
+  --sky-1: #bfd8f5;
+  --sky-2: #8fb6e4;
+  --sky-3: #6d9bd1;
+  --sky-far: #cbdcf1;
+  --sky-line: #5b87bc;
+  --sky-window: #ffffff;
+}
+
+/**
+ * Dark palette.
+ *
+ * Not an inversion of the light one. Pure white text on near-black is harsh to
+ * read for long, so the foreground is pulled back to a soft blue-white and the
+ * ground lifted off true black — easier on the eye in a dim room, which is the
+ * reason people reach for this setting in the first place.
+ *
+ * The signal blue is brightened, because #1769ff is legible on white but muddy
+ * on a dark ground.
+ */
+.dark {
+  --paper: #0a121f;
+  --background: #0a121f;
+  --foreground: #e6edf7;
+  --card: #111c2e;
+  --card-foreground: #e6edf7;
+  --popover: #111c2e;
+  --popover-foreground: #e6edf7;
+  --primary: #e6edf7;
+  --primary-foreground: #0a121f;
+  --secondary: #16233a;
+  --secondary-foreground: #c7d6ec;
+  --muted: #16233a;
+  --muted-foreground: #93a6c1;
+  --accent: #16233a;
+  --accent-foreground: #e6edf7;
+  --destructive: oklch(0.62 0.19 27);
+  --destructive-foreground: #0a121f;
+  --border: #22314a;
+  --input: #22314a;
+  --ring: #4d93ff;
+  --ink: #060e1a;
+  --ink-foreground: #e6edf7;
+  --ink-muted: #8fa3c0;
+  --ink-border: #ffffff1f;
+  --signal: #4d93ff;
+  --signal-foreground: #06101f;
+  --azure: #6fb3ff;
+  --aqua: #4fe9d5;
+  --sidebar: #0a121f;
+  --sidebar-foreground: #e6edf7;
+  --sidebar-primary: #e6edf7;
+  --sidebar-primary-foreground: #0a121f;
+  --sidebar-accent: #16233a;
+  --sidebar-accent-foreground: #e6edf7;
+  --sidebar-border: #22314a;
+  --sidebar-ring: #4d93ff;
+
+  /* Shadows need more contrast to register against a dark ground. */
+  --shadow-lift: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 28px -18px rgb(0 0 0 / 0.7);
+  --shadow-plate: 0 24px 60px -32px rgb(0 0 0 / 0.75);
+
+  /*
+   * The industry accents (green #0EA36B, amber #E08411, violet #7C4DDA) land at
+   * ~3.2:1 on the dark ground, under the 4.5:1 body text needs. Lifting each
+   * toward white clears it while keeping the hue that identifies the sector.
+   */
+  --accent-lift: 34%;
+
+  /* Skyline retuned: a lit building at night rather than the same pale blue
+     glowing off a dark page. Windows warm slightly, the mass darkens. */
+  --sky-1: #2b4870;
+  --sky-2: #22395a;
+  --sky-3: #1a2c47;
+  --sky-far: #1b2c45;
+  --sky-line: #3c5b85;
+  --sky-window: #9dc4f5;
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+
+  /* Let form controls and scrollbars follow the theme too. */
+  :root {
+    color-scheme: light;
+  }
+  .dark {
+    color-scheme: dark;
   }
 
   html {
