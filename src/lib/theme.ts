@@ -1,45 +1,43 @@
 /**
- * Theme preference: light, dark, or follow the device.
+ * Theme preference: light or dark.
  *
- * Three states rather than two on purpose. A plain toggle forces a permanent
- * choice, but most people want the site to follow their phone — bright by day,
- * dark at night — without thinking about it. "System" is the default for that
- * reason, and an explicit choice overrides it until they change it back.
+ * Two states, not three. A "follow my device" option looked like a duplicate of
+ * whichever mode the device was already in — two of the three buttons rendered
+ * the same page — so the choice is now explicit and the device preference is
+ * used only to pick the starting side on a first visit.
  *
  * The applied class lives on <html> so Tailwind's `dark` variant and the
  * `color-scheme` property both pick it up.
  */
 
-export type Theme = "light" | "dark" | "system";
+export type Theme = "light" | "dark";
 
 export const THEME_KEY = "tg:theme";
 
-/** Reads the stored preference. Returns "system" when nothing is set. */
-export function readTheme(): Theme {
-  if (typeof window === "undefined") return "system";
-  try {
-    const v = window.localStorage.getItem(THEME_KEY);
-    return v === "light" || v === "dark" ? v : "system";
-  } catch {
-    return "system";
-  }
-}
-
-/** Resolves "system" to whatever the device is actually asking for. */
-export function resolveTheme(theme: Theme): "light" | "dark" {
-  if (theme !== "system") return theme;
+/** What the device asks for, used only when nothing has been chosen yet. */
+export function devicePreference(): Theme {
   if (typeof window === "undefined") return "light";
   return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+}
+
+/** The stored choice, falling back to the device on a first visit. */
+export function readTheme(): Theme {
+  if (typeof window === "undefined") return "light";
+  try {
+    const v = window.localStorage.getItem(THEME_KEY);
+    if (v === "light" || v === "dark") return v;
+  } catch {
+    /* private mode — fall through to the device preference */
+  }
+  return devicePreference();
 }
 
 /** Applies a preference to the document and remembers it. */
 export function applyTheme(theme: Theme): void {
   if (typeof document === "undefined") return;
-  const resolved = resolveTheme(theme);
-  document.documentElement.classList.toggle("dark", resolved === "dark");
+  document.documentElement.classList.toggle("dark", theme === "dark");
   try {
-    if (theme === "system") window.localStorage.removeItem(THEME_KEY);
-    else window.localStorage.setItem(THEME_KEY, theme);
+    window.localStorage.setItem(THEME_KEY, theme);
   } catch {
     /* private mode — the theme still applies for this visit */
   }

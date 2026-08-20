@@ -1,39 +1,29 @@
 import { useEffect, useState } from "react";
-import { applyTheme, readTheme, resolveTheme, type Theme } from "@/lib/theme";
+import { applyTheme, readTheme, type Theme } from "@/lib/theme";
 import { cn } from "@/lib/utils";
 
 /**
- * Light / System / Dark, as a three-way segmented control.
+ * Light / Dark, as a two-way segmented control.
  *
- * Shown as a labelled group rather than a single cycling icon button, because a
- * lone sun-or-moon gives no indication of what the third state even is, and
- * "follow my device" is the option most people actually want.
+ * There used to be a third "follow my device" option in the middle. On a device
+ * already set to dark it rendered exactly the same page as the Dark button, so
+ * two of the three controls looked broken. The device preference still decides
+ * which side a first-time visitor lands on — it just is not a button any more.
  */
 
 const OPTIONS: { value: Theme; label: string; icon: React.ReactNode }[] = [
   { value: "light", label: "Light", icon: <SunIcon /> },
-  { value: "system", label: "System", icon: <SystemIcon /> },
   { value: "dark", label: "Dark", icon: <MoonIcon /> },
 ];
 
 export function ThemeToggle({ className }: { className?: string }) {
-  const [theme, setTheme] = useState<Theme>("system");
+  const [theme, setTheme] = useState<Theme>("light");
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     setTheme(readTheme());
     setReady(true);
   }, []);
-
-  // Follow the device while the preference is "system", so a phone switching to
-  // night mode changes the page without a reload.
-  useEffect(() => {
-    if (theme !== "system" || typeof window === "undefined") return;
-    const mq = window.matchMedia("(prefers-color-scheme: dark)");
-    const onChange = () => applyTheme("system");
-    mq.addEventListener("change", onChange);
-    return () => mq.removeEventListener("change", onChange);
-  }, [theme]);
 
   const choose = (next: Theme) => {
     setTheme(next);
@@ -59,11 +49,7 @@ export function ThemeToggle({ className }: { className?: string }) {
             type="button"
             onClick={() => choose(o.value)}
             aria-pressed={active}
-            title={
-              o.value === "system"
-                ? `Follow my device (currently ${resolveTheme("system")})`
-                : `${o.label} theme`
-            }
+            title={`${o.label} theme`}
             className={cn(
               "grid h-7 w-7 place-items-center rounded-full transition-colors",
               active
@@ -111,13 +97,4 @@ function SunIcon() {
 
 function MoonIcon() {
   return base(<path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.8 6.8 0 0 0 10.5 10.5Z" />);
-}
-
-function SystemIcon() {
-  return base(
-    <>
-      <rect x="2.5" y="4" width="19" height="13" rx="2" />
-      <path d="M8.5 21h7M12 17v4" />
-    </>,
-  );
 }
