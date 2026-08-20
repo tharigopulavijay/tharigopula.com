@@ -17,7 +17,8 @@ export const Route = createFileRoute("/pricing")({
       { property: "og:title", content: "Pricing | Tharigopula Technologies" },
       {
         property: "og:description",
-        content: "Custom technology without traditional agency overhead — clear starting points for every engagement.",
+        content:
+          "Custom technology without traditional agency overhead — clear starting points for every engagement.",
       },
     ],
   }),
@@ -78,7 +79,9 @@ function PricingPage() {
                         </li>
                       ))}
                     </ul>
-                    {t.note ? <p className="mt-4 text-xs text-muted-foreground/80 italic">{t.note}</p> : null}
+                    {t.note ? (
+                      <p className="mt-4 text-xs text-muted-foreground italic">{t.note}</p>
+                    ) : null}
                   </div>
                 ))}
               </div>
@@ -87,7 +90,10 @@ function PricingPage() {
         </Tabs>
 
         <div className="mt-8">
-          <a href="/experience-lab" className="text-sm font-medium text-foreground underline-offset-4 hover:text-signal hover:underline">
+          <a
+            href="/live-demos/websites"
+            className="text-sm font-medium text-foreground underline-offset-4 hover:text-signal hover:underline"
+          >
             See all experience levels →
           </a>
         </div>
@@ -114,14 +120,18 @@ function PricingPage() {
             "Deployment",
             "Documentation and support",
           ].map((step) => (
-            <div key={step} className="rounded-lg border border-border bg-card px-4 py-3 text-sm font-medium">
+            <div
+              key={step}
+              className="rounded-lg border border-border bg-card px-4 py-3 text-sm font-medium"
+            >
               {step}
             </div>
           ))}
         </div>
         <p className="mt-8 max-w-3xl text-base leading-relaxed text-muted-foreground">
-          Software tools are increasingly affordable. The difficult part is deciding what to build, connecting it
-          correctly to your business, testing it, deploying it and ensuring people can actually use it.
+          Software tools are increasingly affordable. The difficult part is deciding what to build,
+          connecting it correctly to your business, testing it, deploying it and ensuring people can
+          actually use it.
         </p>
       </Section>
 
@@ -134,7 +144,10 @@ function PricingPage() {
       </Section>
 
       <Section>
-        <SectionHeading eyebrow="What moves the price" title="Cost depends on scope, not guesswork" />
+        <SectionHeading
+          eyebrow="What moves the price"
+          title="Cost depends on scope, not guesswork"
+        />
         <ul className="mt-8 flex flex-wrap gap-2">
           {costFactors.map((f) => (
             <li key={f}>
@@ -190,7 +203,10 @@ function PricingPage() {
         </ul>
       </Section>
 
-      <CTASection title="Get an indicative estimate for your project" body="Answer a few questions and we will come back with a scoped, transparent range." />
+      <CTASection
+        title="Get an indicative estimate for your project"
+        body="Answer a few questions and we will come back with a scoped, transparent range."
+      />
     </>
   );
 }

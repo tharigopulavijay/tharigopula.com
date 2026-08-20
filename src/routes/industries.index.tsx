@@ -86,7 +86,7 @@ function IndustriesPage() {
                   Explore solutions <span aria-hidden>→</span>
                 </a>
                 <Link
-                  to="/experience-lab"
+                  to="/live-demos"
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3.5 text-sm font-semibold transition-colors hover:border-foreground/25"
                 >
                   <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
@@ -125,7 +125,7 @@ function IndustriesPage() {
                 className="grid h-14 w-14 place-items-center rounded-full"
                 style={{
                   background: `color-mix(in srgb, ${i.color} 14%, transparent)`,
-                  color: `color-mix(in oklab, ${i.color}, white var(--accent-lift))`,
+                  color: `color-mix(in oklab, ${i.color}, var(--accent-toward) var(--accent-lift))`,
                 }}
                 aria-hidden
               >
@@ -137,7 +137,9 @@ function IndustriesPage() {
               </p>
               <span
                 className="mt-auto pt-4 text-[13px] font-medium"
-                style={{ color: `color-mix(in oklab, ${i.color}, white var(--accent-lift))` }}
+                style={{
+                  color: `color-mix(in oklab, ${i.color}, var(--accent-toward) var(--accent-lift))`,
+                }}
               >
                 View solutions{" "}
                 <span

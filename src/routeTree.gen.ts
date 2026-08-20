@@ -26,6 +26,11 @@ import { Route as DemoInteractiveRouteImport } from './routes/demo.interactive'
 import { Route as DemoPlatformRouteImport } from './routes/demo.platform'
 import { Route as IndustriesIndexRouteImport } from './routes/industries.index'
 import { Route as IndustriesSlugRouteImport } from './routes/industries.$slug'
+import { Route as LiveDemosIndexRouteImport } from './routes/live-demos.index'
+import { Route as LiveDemosAutomationRouteImport } from './routes/live-demos.automation'
+import { Route as LiveDemosBusinessSoftwareRouteImport } from './routes/live-demos.business-software'
+import { Route as LiveDemosMobileAppsRouteImport } from './routes/live-demos.mobile-apps'
+import { Route as LiveDemosWebsitesRouteImport } from './routes/live-demos.websites'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio.index'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as WebsiteStudioIndexRouteImport } from './routes/website-studio.index'
@@ -116,6 +121,32 @@ const IndustriesSlugRoute = IndustriesSlugRouteImport.update({
   path: '/industries/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LiveDemosIndexRoute = LiveDemosIndexRouteImport.update({
+  id: '/live-demos/',
+  path: '/live-demos/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiveDemosAutomationRoute = LiveDemosAutomationRouteImport.update({
+  id: '/live-demos/automation',
+  path: '/live-demos/automation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiveDemosBusinessSoftwareRoute =
+  LiveDemosBusinessSoftwareRouteImport.update({
+    id: '/live-demos/business-software',
+    path: '/live-demos/business-software',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const LiveDemosMobileAppsRoute = LiveDemosMobileAppsRouteImport.update({
+  id: '/live-demos/mobile-apps',
+  path: '/live-demos/mobile-apps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiveDemosWebsitesRoute = LiveDemosWebsitesRouteImport.update({
+  id: '/live-demos/websites',
+  path: '/live-demos/websites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortfolioIndexRoute = PortfolioIndexRouteImport.update({
   id: '/portfolio/',
   path: '/portfolio/',
@@ -154,9 +185,14 @@ export interface FileRoutesByFullPath {
   '/demo/interactive': typeof DemoInteractiveRoute
   '/demo/platform': typeof DemoPlatformRoute
   '/industries/$slug': typeof IndustriesSlugRoute
+  '/live-demos/automation': typeof LiveDemosAutomationRoute
+  '/live-demos/business-software': typeof LiveDemosBusinessSoftwareRoute
+  '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
+  '/live-demos/websites': typeof LiveDemosWebsitesRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/website-studio/$slug': typeof WebsiteStudioSlugRoute
   '/industries/': typeof IndustriesIndexRoute
+  '/live-demos/': typeof LiveDemosIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
   '/website-studio/': typeof WebsiteStudioIndexRoute
 }
@@ -177,9 +213,14 @@ export interface FileRoutesByTo {
   '/demo/interactive': typeof DemoInteractiveRoute
   '/demo/platform': typeof DemoPlatformRoute
   '/industries/$slug': typeof IndustriesSlugRoute
+  '/live-demos/automation': typeof LiveDemosAutomationRoute
+  '/live-demos/business-software': typeof LiveDemosBusinessSoftwareRoute
+  '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
+  '/live-demos/websites': typeof LiveDemosWebsitesRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/website-studio/$slug': typeof WebsiteStudioSlugRoute
   '/industries': typeof IndustriesIndexRoute
+  '/live-demos': typeof LiveDemosIndexRoute
   '/portfolio': typeof PortfolioIndexRoute
   '/website-studio': typeof WebsiteStudioIndexRoute
 }
@@ -201,9 +242,14 @@ export interface FileRoutesById {
   '/demo/interactive': typeof DemoInteractiveRoute
   '/demo/platform': typeof DemoPlatformRoute
   '/industries/$slug': typeof IndustriesSlugRoute
+  '/live-demos/automation': typeof LiveDemosAutomationRoute
+  '/live-demos/business-software': typeof LiveDemosBusinessSoftwareRoute
+  '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
+  '/live-demos/websites': typeof LiveDemosWebsitesRoute
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/website-studio/$slug': typeof WebsiteStudioSlugRoute
   '/industries/': typeof IndustriesIndexRoute
+  '/live-demos/': typeof LiveDemosIndexRoute
   '/portfolio/': typeof PortfolioIndexRoute
   '/website-studio/': typeof WebsiteStudioIndexRoute
 }
@@ -226,9 +272,14 @@ export interface FileRouteTypes {
     | '/demo/interactive'
     | '/demo/platform'
     | '/industries/$slug'
+    | '/live-demos/automation'
+    | '/live-demos/business-software'
+    | '/live-demos/mobile-apps'
+    | '/live-demos/websites'
     | '/portfolio/$slug'
     | '/website-studio/$slug'
     | '/industries/'
+    | '/live-demos/'
     | '/portfolio/'
     | '/website-studio/'
   fileRoutesByTo: FileRoutesByTo
@@ -249,9 +300,14 @@ export interface FileRouteTypes {
     | '/demo/interactive'
     | '/demo/platform'
     | '/industries/$slug'
+    | '/live-demos/automation'
+    | '/live-demos/business-software'
+    | '/live-demos/mobile-apps'
+    | '/live-demos/websites'
     | '/portfolio/$slug'
     | '/website-studio/$slug'
     | '/industries'
+    | '/live-demos'
     | '/portfolio'
     | '/website-studio'
   id:
@@ -272,9 +328,14 @@ export interface FileRouteTypes {
     | '/demo/interactive'
     | '/demo/platform'
     | '/industries/$slug'
+    | '/live-demos/automation'
+    | '/live-demos/business-software'
+    | '/live-demos/mobile-apps'
+    | '/live-demos/websites'
     | '/portfolio/$slug'
     | '/website-studio/$slug'
     | '/industries/'
+    | '/live-demos/'
     | '/portfolio/'
     | '/website-studio/'
   fileRoutesById: FileRoutesById
@@ -296,9 +357,14 @@ export interface RootRouteChildren {
   DemoInteractiveRoute: typeof DemoInteractiveRoute
   DemoPlatformRoute: typeof DemoPlatformRoute
   IndustriesSlugRoute: typeof IndustriesSlugRoute
+  LiveDemosAutomationRoute: typeof LiveDemosAutomationRoute
+  LiveDemosBusinessSoftwareRoute: typeof LiveDemosBusinessSoftwareRoute
+  LiveDemosMobileAppsRoute: typeof LiveDemosMobileAppsRoute
+  LiveDemosWebsitesRoute: typeof LiveDemosWebsitesRoute
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   WebsiteStudioSlugRoute: typeof WebsiteStudioSlugRoute
   IndustriesIndexRoute: typeof IndustriesIndexRoute
+  LiveDemosIndexRoute: typeof LiveDemosIndexRoute
   PortfolioIndexRoute: typeof PortfolioIndexRoute
   WebsiteStudioIndexRoute: typeof WebsiteStudioIndexRoute
 }
@@ -424,6 +490,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndustriesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/live-demos/': {
+      id: '/live-demos/'
+      path: '/live-demos'
+      fullPath: '/live-demos/'
+      preLoaderRoute: typeof LiveDemosIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/live-demos/automation': {
+      id: '/live-demos/automation'
+      path: '/live-demos/automation'
+      fullPath: '/live-demos/automation'
+      preLoaderRoute: typeof LiveDemosAutomationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/live-demos/business-software': {
+      id: '/live-demos/business-software'
+      path: '/live-demos/business-software'
+      fullPath: '/live-demos/business-software'
+      preLoaderRoute: typeof LiveDemosBusinessSoftwareRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/live-demos/mobile-apps': {
+      id: '/live-demos/mobile-apps'
+      path: '/live-demos/mobile-apps'
+      fullPath: '/live-demos/mobile-apps'
+      preLoaderRoute: typeof LiveDemosMobileAppsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/live-demos/websites': {
+      id: '/live-demos/websites'
+      path: '/live-demos/websites'
+      fullPath: '/live-demos/websites'
+      preLoaderRoute: typeof LiveDemosWebsitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portfolio/': {
       id: '/portfolio/'
       path: '/portfolio'
@@ -472,9 +573,14 @@ const rootRouteChildren: RootRouteChildren = {
   DemoInteractiveRoute: DemoInteractiveRoute,
   DemoPlatformRoute: DemoPlatformRoute,
   IndustriesSlugRoute: IndustriesSlugRoute,
+  LiveDemosAutomationRoute: LiveDemosAutomationRoute,
+  LiveDemosBusinessSoftwareRoute: LiveDemosBusinessSoftwareRoute,
+  LiveDemosMobileAppsRoute: LiveDemosMobileAppsRoute,
+  LiveDemosWebsitesRoute: LiveDemosWebsitesRoute,
   PortfolioSlugRoute: PortfolioSlugRoute,
   WebsiteStudioSlugRoute: WebsiteStudioSlugRoute,
   IndustriesIndexRoute: IndustriesIndexRoute,
+  LiveDemosIndexRoute: LiveDemosIndexRoute,
   PortfolioIndexRoute: PortfolioIndexRoute,
   WebsiteStudioIndexRoute: WebsiteStudioIndexRoute,
 }

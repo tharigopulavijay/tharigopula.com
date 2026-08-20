@@ -75,7 +75,12 @@ function SoftwareStrip({ accent }: { accent: string }) {
           </div>
           <div>
             <span className="block text-[7px] text-muted-foreground">Orders</span>
-            <span className="block text-[10px] font-bold" style={{ color: `color-mix(in oklab, ${accent}, white var(--accent-lift))` }}>
+            <span
+              className="block text-[10px] font-bold"
+              style={{
+                color: `color-mix(in oklab, ${accent}, var(--accent-toward) var(--accent-lift))`,
+              }}
+            >
               1,245
             </span>
           </div>
@@ -110,7 +115,9 @@ function AutomationStrip({ accent }: { accent: string }) {
         <div key={n} className="flex items-center gap-2">
           <span
             className="grid h-8 w-8 place-items-center rounded-lg border border-border bg-card text-[9px] font-bold"
-            style={{ color: `color-mix(in oklab, ${accent}, white var(--accent-lift))` }}
+            style={{
+              color: `color-mix(in oklab, ${accent}, var(--accent-toward) var(--accent-lift))`,
+            }}
           >
             {n}
           </span>
@@ -215,7 +222,9 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
       <Link
         to={pillar.to}
         className="mt-5 inline-flex w-fit items-center gap-1.5 text-sm font-medium"
-        style={{ color: `color-mix(in oklab, ${pillar.accent}, white var(--accent-lift))` }}
+        style={{
+          color: `color-mix(in oklab, ${pillar.accent}, var(--accent-toward) var(--accent-lift))`,
+        }}
       >
         Learn more{" "}
         <span aria-hidden className="inline-block transition-transform group-hover:translate-x-1">

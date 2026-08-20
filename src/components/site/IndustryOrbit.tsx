@@ -71,7 +71,7 @@ function Chip({ item }: { item: OrbitIndustry }) {
         className="grid h-8 w-8 shrink-0 place-items-center rounded-lg"
         style={{
           background: `color-mix(in srgb, ${item.color} 14%, transparent)`,
-          color: `color-mix(in oklab, ${item.color}, white var(--accent-lift))`,
+          color: `color-mix(in oklab, ${item.color}, var(--accent-toward) var(--accent-lift))`,
         }}
         aria-hidden
       >

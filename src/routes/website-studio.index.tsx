@@ -16,7 +16,10 @@ export const Route = createFileRoute("/website-studio/")({
           "Five website experience levels with indicative pricing: essential, dynamic business, premium interactive, cinematic and 3D immersive websites.",
       },
       { property: "og:title", content: "Website Studio | Tharigopula Technologies" },
-      { property: "og:description", content: "Choose how your business should appear online — with clear price ranges." },
+      {
+        property: "og:description",
+        content: "Choose how your business should appear online — with clear price ranges.",
+      },
     ],
   }),
   component: StudioPage,
@@ -37,13 +40,14 @@ function StudioPage() {
         />
         <div className="mt-6 flex flex-wrap items-center gap-4 rounded-xl border border-border bg-secondary/60 p-5">
           <p className="text-sm text-muted-foreground">
-            Rather see the difference than read about it? The Experience Lab has the same business built five ways, live.
+            Rather see the difference than read about it? The website demos show the same business
+            built five ways, live.
           </p>
           <Link
-            to="/experience-lab"
+            to="/live-demos/websites"
             className="inline-flex items-center rounded-md bg-signal px-4 py-2.5 text-sm font-medium text-signal-foreground"
           >
-            Open the Experience Lab
+            See the website demos
           </Link>
         </div>
       </Section>
@@ -51,11 +55,16 @@ function StudioPage() {
       <Section className="pt-0">
         <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
           {websiteCategories.map((c) => (
-            <div key={c.slug} className="flex h-full flex-col rounded-xl border border-border bg-card p-6">
+            <div
+              key={c.slug}
+              className="flex h-full flex-col rounded-xl border border-border bg-card p-6"
+            >
               <span className="font-mono text-xs text-signal">0{c.index}</span>
               <h2 className="mt-2 font-display text-xl font-semibold">{c.name}</h2>
               <p className="mt-2 text-sm text-muted-foreground">{c.headline}</p>
-              <p className="mt-4 font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">Suitable for</p>
+              <p className="mt-4 font-mono text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
+                Suitable for
+              </p>
               <p className="text-sm">{c.suitableFor.join(" · ")}</p>
               <ul className="mt-4 flex flex-wrap gap-1.5">
                 {c.features.map((f) => (
@@ -64,8 +73,12 @@ function StudioPage() {
                   </li>
                 ))}
               </ul>
-              {c.note ? <p className="mt-4 text-xs text-muted-foreground italic">{c.note}</p> : null}
-              <p className="mt-auto border-t border-border pt-4 text-sm font-medium">{c.priceRange}</p>
+              {c.note ? (
+                <p className="mt-4 text-xs text-muted-foreground italic">{c.note}</p>
+              ) : null}
+              <p className="mt-auto border-t border-border pt-4 text-sm font-medium">
+                {c.priceRange}
+              </p>
             </div>
           ))}
         </div>
@@ -108,11 +121,16 @@ function StudioPage() {
           ))}
         </div>
         <p className="mt-8">
-          <Pill>Heavy cinematic and 3D demos load separately so the main site stays fast on mobile.</Pill>
+          <Pill>
+            Heavy cinematic and 3D demos load separately so the main site stays fast on mobile.
+          </Pill>
         </p>
       </Section>
 
-      <CTASection title="Found a direction that fits?" body="Tell us which style you liked and what your business does. We will come back with a scoped proposal." />
+      <CTASection
+        title="Found a direction that fits?"
+        body="Tell us which style you liked and what your business does. We will come back with a scoped proposal."
+      />
     </>
   );
 }

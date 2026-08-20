@@ -284,7 +284,7 @@ function Home() {
             Try the live business platform <span aria-hidden>→</span>
           </Link>
           <Link
-            to="/experience-lab"
+            to="/live-demos/websites"
             className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3.5 text-sm font-semibold transition-colors hover:border-foreground/25"
           >
             Compare website experiences

@@ -111,10 +111,13 @@
   --sidebar-ring: #1769ff;
 
   /*
-   * How far a brand accent is lifted toward white before being used as text.
-   * Zero in light: those accents already pass against a white ground.
+   * Brand accents are chosen for icons and fills, where contrast barely
+   * matters. As text they need help in BOTH directions: amber and green sit at
+   * ~2.8:1 on white, and all of them go muddy on the dark ground. So each is
+   * mixed toward the ground it is fighting — darker in light, lighter in dark.
    */
-  --accent-lift: 0%;
+  --accent-toward: black;
+  --accent-lift: 26%;
 
   /* Drawn skyline on the industries hero. */
   --sky-1: #bfd8f5;
@@ -178,11 +181,8 @@
   --shadow-lift: 0 1px 2px rgb(0 0 0 / 0.4), 0 12px 28px -18px rgb(0 0 0 / 0.7);
   --shadow-plate: 0 24px 60px -32px rgb(0 0 0 / 0.75);
 
-  /*
-   * The industry accents (green #0EA36B, amber #E08411, violet #7C4DDA) land at
-   * ~3.2:1 on the dark ground, under the 4.5:1 body text needs. Lifting each
-   * toward white clears it while keeping the hue that identifies the sector.
-   */
+  /* See --accent-toward in :root. On dark the mix goes the other way. */
+  --accent-toward: white;
   --accent-lift: 34%;
 
   /* Skyline retuned: a lit building at night rather than the same pale blue

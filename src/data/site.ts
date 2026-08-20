@@ -10,15 +10,16 @@ export const site = {
   whatsapp: "919398604302",
 };
 
-export const whatsappLink = (message = "Hello Tharigopula Technologies, I would like to discuss a project.") =>
-  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
+export const whatsappLink = (
+  message = "Hello Tharigopula Technologies, I would like to discuss a project.",
+) => `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
 
 export const nav = [
   { to: "/", label: "Home" },
   { to: "/solutions", label: "Solutions" },
   { to: "/industries", label: "Industries" },
   { to: "/website-studio", label: "Website Studio" },
-  { to: "/experience-lab", label: "Experience Lab" },
+  { to: "/live-demos", label: "Live Demos" },
   { to: "/portfolio", label: "Portfolio" },
   { to: "/pricing", label: "Pricing" },
   { to: "/about", label: "About" },
