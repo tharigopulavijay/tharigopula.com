@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Container, Section } from "@/components/site/primitives";
-import { IndustryOrbit, ORBIT } from "@/components/site/IndustryOrbit";
+import { IndustrySkyline } from "@/components/site/IndustrySkyline";
+import { ORBIT } from "@/components/site/IndustryOrbit";
 import { CTABanner } from "@/components/site/CTABanner";
 import { Icons } from "@/components/site/HomeGrids";
 import { industries } from "@/data/industries";
@@ -16,63 +17,45 @@ export const Route = createFileRoute("/industries/")({
       {
         name: "description",
         content:
-          "Websites, software, automation, dashboards and AI built around how each industry actually works — manufacturing, healthcare, restaurants, retail, real estate and professional services.",
+          "Industry-focused websites, software, automation, dashboards and AI built to solve real challenges — manufacturing, healthcare, restaurants, retail, real estate and professional services.",
       },
       { property: "og:title", content: "Industry Solutions | Tharigopula Technologies" },
       {
         property: "og:description",
-        content: "The problems we usually find in your sector, and the systems that solve them.",
+        content: "Every business is unique. Solutions built around how yours actually works.",
       },
     ],
   }),
   component: IndustriesPage,
 });
 
-/** One line each, written from the operator's side rather than ours. */
+/** Written from the operator's side — what changes for them, not what we supply. */
 const SUMMARY: Record<string, string> = {
-  manufacturing: "Streamline production, quality and supply chain operations.",
-  healthcare: "Improve patient care, records and day-to-day clinic operations.",
-  restaurants: "Enhance the customer experience and tighten daily operations.",
-  retail: "Unify sales channels and deliver better customer experiences.",
-  "real-estate": "Manage properties, leads and transactions efficiently.",
-  "professional-services": "Deliver engagements, track time and grow client relationships.",
+  manufacturing: "Streamline production, manage inventory and improve operational efficiency.",
+  healthcare: "Improve patient care, manage operations and keep records in order.",
+  restaurants: "Manage orders, kitchen, inventory and customer experience seamlessly.",
+  retail: "Enhance sales, manage stock and deliver exceptional customer experiences.",
+  "real-estate": "Manage properties, leads and deals with complete visibility and control.",
+  "professional-services": "Manage projects, clients and teams to deliver more value every day.",
 };
 
 /**
- * What actually differs between industries.
- *
- * Worth stating plainly, because "we serve your industry" is the emptiest claim
- * on most agency sites. These are the three things that genuinely change.
+ * The reassurance strip. These are commitments rather than statistics — an
+ * early practice quoting client counts invites the reader to weigh them, and
+ * every one of these can be held to on day one.
  */
-const ADAPT = [
-  {
-    title: "Business workflows",
-    body: "We map how your business runs end to end before designing anything — enquiry to order to service.",
-    icon: <Icons.custom />,
-    tint: "#E8F0FE",
-    color: "#2563EB",
-  },
-  {
-    title: "Customer journeys",
-    body: "We design around what your customers actually value at each step, not a generic funnel.",
-    icon: <Icons.customers />,
-    tint: "#E3F5ED",
-    color: "#0EA36B",
-  },
-  {
-    title: "Operational systems",
-    body: "We build systems that integrate, automate and scale with you as the business grows.",
-    icon: <Icons.operations />,
-    tint: "#F0EAFC",
-    color: "#7C4DDA",
-  },
+const ASSURANCES = [
+  { title: "Built for", strong: "every business", icon: <Icons.custom /> },
+  { title: "Secure &", strong: "reliable", icon: <Icons.operations /> },
+  { title: "Customisable", strong: "& scalable", icon: <Icons.reporting /> },
+  { title: "Ongoing support", strong: "you can count on", icon: <Icons.customers /> },
 ];
 
 function IndustriesPage() {
   return (
     <>
       <section className="relative overflow-hidden border-b border-border bg-gradient-to-b from-secondary/50 to-background">
-        <Container className="relative py-10 sm:py-14 lg:py-16">
+        <Container className="relative py-10 sm:py-12 lg:py-14">
           <nav aria-label="Breadcrumb" className="mb-8 text-sm text-muted-foreground">
             <Link to="/" className="hover:text-foreground">
               Home
@@ -83,16 +66,16 @@ function IndustriesPage() {
             <span className="text-signal">Industries</span>
           </nav>
 
-          <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr]">
+          <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.15fr]">
             <div className="reveal">
               <h1 className="font-display text-4xl leading-[1.06] font-semibold tracking-tight sm:text-5xl lg:text-[3.35rem]">
-                Solutions tailored
+                Technology solutions
                 <br />
-                for your <span className="text-signal">industry.</span>
+                for <span className="text-signal">every industry</span>
               </h1>
-              <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                We build websites, software, automation, dashboards and AI based on how each kind of
-                business actually works — not a template with the industry name swapped in.
+              <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Every business is unique. Our industry-focused solutions are built to solve real
+                challenges and drive measurable growth.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -100,19 +83,22 @@ function IndustriesPage() {
                   href="#industries"
                   className="inline-flex items-center justify-center gap-2 rounded-lg bg-signal px-6 py-3.5 text-sm font-semibold text-signal-foreground transition-opacity hover:opacity-90"
                 >
-                  Explore industries <span aria-hidden>→</span>
+                  Explore solutions <span aria-hidden>→</span>
                 </a>
                 <Link
-                  to="/start-project"
+                  to="/experience-lab"
                   className="inline-flex items-center justify-center gap-2 rounded-lg border border-border bg-card px-6 py-3.5 text-sm font-semibold transition-colors hover:border-foreground/25"
                 >
-                  Get project estimate
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                    <path d="M8 5.5v13l11-6.5-11-6.5Z" />
+                  </svg>
+                  See live demos
                 </Link>
               </div>
             </div>
 
             <div className="reveal" style={{ animationDelay: "120ms" }}>
-              <IndustryOrbit />
+              <IndustrySkyline />
             </div>
           </div>
         </Container>
@@ -126,31 +112,28 @@ function IndustriesPage() {
           <span aria-hidden className="mx-auto mt-5 block h-1 w-14 rounded-full bg-signal" />
         </div>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {/* Six across only from xl — below that the descriptions become unreadable. */}
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
           {ORBIT.map((i) => (
             <Link
               key={i.slug}
               to="/industries/$slug"
               params={{ slug: i.slug }}
-              className="group flex h-full flex-col rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-lift"
+              className="group flex h-full flex-col rounded-2xl border border-border bg-card p-5 transition-all hover:-translate-y-0.5 hover:shadow-lift"
             >
-              <div className="flex items-start gap-4">
-                <span
-                  className="grid h-12 w-12 shrink-0 place-items-center rounded-full"
-                  style={{ background: i.tint, color: i.color }}
-                  aria-hidden
-                >
-                  {i.icon}
-                </span>
-                <div>
-                  <h3 className="font-display text-lg leading-snug font-semibold">{i.name}</h3>
-                  <p className="mt-1.5 text-sm leading-snug text-muted-foreground">
-                    {SUMMARY[i.slug]}
-                  </p>
-                </div>
-              </div>
-              <span className="mt-5 text-sm font-medium" style={{ color: i.color }}>
-                Learn more{" "}
+              <span
+                className="grid h-14 w-14 place-items-center rounded-full"
+                style={{ background: i.tint, color: i.color }}
+                aria-hidden
+              >
+                {i.icon}
+              </span>
+              <h3 className="mt-5 font-display text-[15px] leading-snug font-semibold">{i.name}</h3>
+              <p className="mt-2 text-[13px] leading-snug text-muted-foreground">
+                {SUMMARY[i.slug]}
+              </p>
+              <span className="mt-auto pt-4 text-[13px] font-medium" style={{ color: i.color }}>
+                View solutions{" "}
                 <span
                   aria-hidden
                   className="inline-block transition-transform group-hover:translate-x-1"
@@ -162,51 +145,53 @@ function IndustriesPage() {
           ))}
         </div>
 
-        <p className="mt-8 text-center text-sm text-muted-foreground">
-          We work with {industries.length} industries in total —{" "}
-          <Link to="/industries" hash="all" className="font-medium text-signal hover:underline">
-            see the full list
-          </Link>
-          .
-        </p>
-      </Section>
-
-      <Section className="bg-secondary/40">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-2xl leading-tight font-semibold tracking-tight sm:text-[2rem]">
-            How we adapt by industry
-          </h2>
-          <span aria-hidden className="mx-auto mt-5 block h-1 w-14 rounded-full bg-signal" />
-        </div>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-3">
-          {ADAPT.map((a) => (
-            <div key={a.title} className="rounded-2xl border border-border bg-card p-6">
-              <span
-                className="grid h-12 w-12 place-items-center rounded-xl"
-                style={{ background: a.tint, color: a.color }}
-                aria-hidden
+        {/* Assurance strip */}
+        <div className="mt-6 rounded-2xl border border-border bg-secondary/50 px-2 py-5">
+          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            {ASSURANCES.map((a, idx) => (
+              <li
+                key={a.title}
+                className={
+                  idx > 0
+                    ? "flex items-center gap-3 px-5 lg:border-l lg:border-border"
+                    : "flex items-center gap-3 px-5"
+                }
               >
-                {a.icon}
-              </span>
-              <h3 className="mt-4 font-display text-base font-semibold">{a.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{a.body}</p>
-            </div>
-          ))}
+                <span
+                  aria-hidden
+                  className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-card text-signal"
+                >
+                  {a.icon}
+                </span>
+                <span className="text-sm leading-tight">
+                  {a.title}
+                  <br />
+                  <span className="font-semibold">{a.strong}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       </Section>
 
-      {/* The full thirteen, for anyone whose sector is not one of the six above. */}
-      <Section id="all">
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="font-display text-xl font-semibold tracking-tight sm:text-2xl">
-            Every industry we work with
-          </h2>
-          <p className="mt-3 text-sm text-muted-foreground">
-            Each has its own page with the problems we usually find and what it costs to fix them.
-          </p>
-        </div>
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
+      {/* Answers the obvious objection for the seven sectors not shown above. */}
+      <Section className="pt-0">
+        <CTABanner
+          title="Don't see your industry?"
+          body={`We work with businesses of all types and sizes — ${industries.length} industries have their own page. Let us build something that fits yours.`}
+          primary={{ to: "/start-project", label: "Get project estimate" }}
+          whatsapp={whatsappLink(
+            "Hello Tharigopula Technologies, I would like to discuss technology for my business.",
+          )}
+        />
+      </Section>
+
+      {/* Every sector stays reachable, so nobody outside the six hits a dead end. */}
+      <Section className="pt-0">
+        <p className="text-center text-sm text-muted-foreground">
+          All {industries.length} industries we work with:
+        </p>
+        <div className="mt-5 flex flex-wrap justify-center gap-2">
           {industries.map((i) => (
             <Link
               key={i.slug}
@@ -218,17 +203,6 @@ function IndustriesPage() {
             </Link>
           ))}
         </div>
-      </Section>
-
-      <Section className="pt-0">
-        <CTABanner
-          title="Need technology built around your business?"
-          body="Let us build solutions that fit your industry and drive real results."
-          primary={{ to: "/experience-lab", label: "View live demos" }}
-          whatsapp={whatsappLink(
-            "Hello Tharigopula Technologies, I would like to discuss technology for my industry.",
-          )}
-        />
       </Section>
     </>
   );
