@@ -19,13 +19,23 @@ function Panel({
   label,
   className,
   children,
+  /** Seconds of delay on the drift, so the four never bob in unison. */
+  float,
 }: {
   label: string;
   className?: string;
   children: React.ReactNode;
+  float?: number | undefined;
 }) {
   return (
-    <figure className={cn("m-0", className)}>
+    <figure
+      className={cn("m-0", className)}
+      style={
+        float === undefined
+          ? undefined
+          : { animation: `orbit-float 9s ease-in-out ${float}s infinite` }
+      }
+    >
       <figcaption className="mb-1.5 text-center text-[11px] font-medium text-muted-foreground">
         {label}
       </figcaption>
@@ -97,7 +107,13 @@ function SoftwareMini() {
         </div>
         <div className="mt-1.5 flex flex-col gap-1">
           {rows.map(([name, status], i) => (
-            <div key={name} className="flex items-center justify-between gap-1">
+            <div
+              key={name}
+              className="flex items-center justify-between gap-1"
+              style={{
+                animation: `pv-row-in 7s ease-out ${i * 0.5}s infinite`,
+              }}
+            >
               <span className="text-[7.5px]" style={{ color: "#8FA3BD" }}>
                 {name}
               </span>
@@ -124,7 +140,11 @@ function AutomationMini() {
     <div className="w-full p-2">
       <div className="flex flex-col gap-1">
         {steps.map((s, i) => (
-          <div key={s} className="flex items-center gap-1.5">
+          <div
+            key={s}
+            className="flex items-center gap-1.5"
+            style={{ animation: `pv-step 7s ease-in-out ${i * 0.55}s infinite` }}
+          >
             <span
               className={cn(
                 "grid h-3.5 w-3.5 shrink-0 place-items-center rounded-full text-[7px] font-bold",
@@ -156,6 +176,11 @@ function DataMini() {
             strokeWidth="1.6"
             strokeLinecap="round"
             strokeLinejoin="round"
+            style={{
+              ["--pv-len" as string]: "70",
+              strokeDasharray: 70,
+              animation: "pv-draw 7s cubic-bezier(0.4,0,0.2,1) infinite",
+            }}
           />
         </svg>
         <div className="mt-1 flex h-5 items-end gap-0.5">
@@ -163,7 +188,12 @@ function DataMini() {
             <span
               key={i}
               className="flex-1 rounded-t-sm bg-signal"
-              style={{ height: `${h}%`, opacity: i === bars.length - 1 ? 1 : 0.35 }}
+              style={{
+                height: `${h}%`,
+                opacity: i === bars.length - 1 ? 1 : 0.35,
+                transformOrigin: "bottom",
+                animation: `pv-grow 7s cubic-bezier(0.22,1,0.36,1) ${i * 0.09}s infinite`,
+              }}
             />
           ))}
         </div>
@@ -186,10 +216,13 @@ function DataMini() {
             fill="none"
             stroke="var(--color-signal, #2563eb)"
             strokeWidth="6"
-            strokeDasharray="88"
-            strokeDashoffset="30"
             transform="rotate(-90 18 18)"
             strokeLinecap="round"
+            style={{
+              strokeDasharray: 88,
+              strokeDashoffset: 30,
+              animation: "pv-sweep-mini 7s cubic-bezier(0.4,0,0.2,1) infinite",
+            }}
           />
         </svg>
       </div>
@@ -221,10 +254,21 @@ export function HeroShowcase() {
         <div
           aria-hidden
           className="absolute top-1/2 left-1/2 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-border"
+          style={{ animation: "orbit-spin 64s linear infinite" }}
         />
+        {/* Two echoes on opposite phases, so a signal is always on its way out
+            to something rather than the ring pulsing and then going dead. */}
+        {[0, 2.6].map((delay) => (
+          <span
+            key={delay}
+            aria-hidden
+            className="absolute top-1/2 left-1/2 h-[62%] w-[62%] rounded-full border border-signal/45"
+            style={{ animation: `orbit-emit 5.2s ease-out ${delay}s infinite` }}
+          />
+        ))}
         <div
           aria-hidden
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-border bg-card p-3 shadow-sm"
+          className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-border bg-card p-3 shadow-sm"
         >
           <img
             src="/logo-mark.png"
@@ -238,18 +282,20 @@ export function HeroShowcase() {
         <Panel
           label={PANELS[0]!.label}
           className="absolute top-0 left-1/2 w-[46%] -translate-x-[42%]"
+          float={0}
         >
           {PANELS[0]!.node}
         </Panel>
-        <Panel label={PANELS[1]!.label} className="absolute top-[34%] left-0 w-[42%]">
+        <Panel label={PANELS[1]!.label} className="absolute top-[34%] left-0 w-[42%]" float={1.5}>
           {PANELS[1]!.node}
         </Panel>
-        <Panel label={PANELS[2]!.label} className="absolute top-[32%] right-0 w-[42%]">
+        <Panel label={PANELS[2]!.label} className="absolute top-[32%] right-0 w-[42%]" float={3}>
           {PANELS[2]!.node}
         </Panel>
         <Panel
           label={PANELS[3]!.label}
           className="absolute bottom-0 left-1/2 w-[44%] -translate-x-[52%]"
+          float={4.5}
         >
           {PANELS[3]!.node}
         </Panel>

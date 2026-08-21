@@ -64,13 +64,13 @@ function SolutionsPage() {
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.05fr]">
             <div className="reveal">
               <h1 className="font-display text-4xl leading-[1.06] font-semibold tracking-tight sm:text-5xl lg:text-[3.35rem]">
-                Solutions built
+                Websites. Business software.
                 <br />
-                around <span className="text-signal">your business.</span>
+                <span className="text-signal">Automation. Dashboards.</span>
               </h1>
               <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg">
-                From websites to business systems, automation, dashboards and AI — we build
-                technology that fits the way you work and helps you grow.
+                Four things we build, each one shaped around how your business already works.
+                Everything below is running on this site — open it and use it.
               </p>
 
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -113,18 +113,8 @@ function SolutionsPage() {
         </Container>
       </section>
 
-      <Section id="core-solutions">
-        <div className="mx-auto max-w-2xl text-center">
-          <p className="font-mono text-[11px] tracking-[0.16em] text-signal uppercase">
-            Our core solutions
-          </p>
-          <h2 className="mt-3 font-display text-2xl leading-tight font-semibold tracking-tight sm:text-[2rem]">
-            End-to-end technology for every stage of your business
-          </h2>
-          <span aria-hidden className="mx-auto mt-5 block h-1 w-14 rounded-full bg-signal" />
-        </div>
-
-        <div className="mt-10 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
+      <Section id="core-solutions" className="pt-4">
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
           {pillars.map((p) => (
             <PillarCard key={p.id} pillar={p} />
           ))}

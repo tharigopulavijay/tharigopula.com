@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { PillarPreview } from "./PillarPreview";
 import type { Pillar } from "@/data/pillars";
 import { Icons } from "./HomeGrids";
 
@@ -232,8 +233,8 @@ export function PillarCard({ pillar }: { pillar: Pillar }) {
         </span>
       </Link>
 
-      <div className="mt-5 h-[86px] overflow-hidden rounded-xl border border-border bg-secondary/40">
-        <Strip pillar={pillar} />
+      <div className="mt-5 h-[150px] overflow-hidden rounded-xl border border-border">
+        <PillarPreview id={pillar.id} accent={pillar.accent} />
       </div>
     </div>
   );

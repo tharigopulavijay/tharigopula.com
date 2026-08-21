@@ -274,3 +274,100 @@
     transition-duration: 0.001ms !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+ * Pillar previews.
+ *
+ * The four solution cards used to carry still drawings, which read as pictures
+ * OF software rather than as software. These loops give each one the single
+ * motion that makes its subject legible at a glance — a page scrolling, rows
+ * arriving, a workflow firing, a chart drawing itself.
+ *
+ * All transform/opacity only, so they composite on the GPU and cost nothing to
+ * run. The global prefers-reduced-motion rule collapses them to a static frame.
+ * ------------------------------------------------------------------------- */
+
+/* A long page scrolling past inside a browser frame. */
+@keyframes pv-scroll {
+  0%, 8% { transform: translateY(0); }
+  92%, 100% { transform: translateY(calc(-100% + 150px)); }
+}
+
+/* Table rows arriving one after another, then holding. */
+@keyframes pv-row-in {
+  0%, 6% { opacity: 0; transform: translateY(7px); }
+  18%, 88% { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-4px); }
+}
+
+/* A step in a workflow lighting up as the run reaches it. */
+@keyframes pv-step {
+  0%, 10% { opacity: 0.32; }
+  22%, 82% { opacity: 1; }
+  100% { opacity: 0.32; }
+}
+
+/* The pulse travelling down the connector between steps. */
+@keyframes pv-pulse {
+  0% { transform: translateY(-6px) scale(0.6); opacity: 0; }
+  35% { opacity: 1; }
+  100% { transform: translateY(34px) scale(0.6); opacity: 0; }
+}
+
+/* A stroked path drawing itself. */
+@keyframes pv-draw {
+  0%, 5% { stroke-dashoffset: var(--pv-len); }
+  70%, 100% { stroke-dashoffset: 0; }
+}
+
+/* A bar growing from the axis. */
+@keyframes pv-grow {
+  0%, 8% { transform: scaleY(0.06); }
+  60%, 100% { transform: scaleY(1); }
+}
+
+/* A donut sweeping round. */
+@keyframes pv-sweep {
+  0%, 6% { stroke-dashoffset: 126; }
+  72%, 100% { stroke-dashoffset: 38; }
+}
+
+/* A digit reel rolling to its final value. */
+@keyframes pv-reel {
+  0%, 8% { transform: translateY(0); }
+  68%, 100% { transform: translateY(var(--pv-stop)); }
+}
+
+/* ---------------------------------------------------------------------------
+ * Hero orbital.
+ *
+ * The four product panels around the mark were entirely still, which is what
+ * made the composition read as a diagram rather than as working software. These
+ * give it a heartbeat: the ring turns slowly, each panel breathes on its own
+ * offset, and a signal travels out from the mark to each product in turn —
+ * which is literally what the business does, everything connected to one core.
+ * ------------------------------------------------------------------------- */
+
+@keyframes orbit-spin {
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Each panel drifts a few pixels on its own phase so the group never pulses in
+   lockstep, which would look mechanical. */
+@keyframes orbit-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* The mark's pulse, echoing outward. */
+@keyframes orbit-emit {
+  0% { transform: translate(-50%, -50%) scale(0.55); opacity: 0.55; }
+  70% { opacity: 0; }
+  100% { transform: translate(-50%, -50%) scale(1.65); opacity: 0; }
+}
+
+/* The hero donut has a different circumference from the pillar one. */
+@keyframes pv-sweep-mini {
+  0%, 6% { stroke-dashoffset: 88; }
+  72%, 100% { stroke-dashoffset: 30; }
+}
