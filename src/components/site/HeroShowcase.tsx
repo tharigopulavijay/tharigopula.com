@@ -46,6 +46,15 @@ function Panel({
   );
 }
 
+/*
+ * Ring geometry. The dash length is derived from the circumference so a whole
+ * number of dashes fits exactly — any remainder shows up as a visible seam.
+ */
+const RING_R = 29; // 29% of the box — the radius every panel centre sits on
+const RING_SEGMENTS = 44;
+const RING_STEP = (2 * Math.PI * RING_R) / RING_SEGMENTS;
+const RING_DASH = `${(RING_STEP * 0.42).toFixed(4)} ${(RING_STEP * 0.58).toFixed(4)}`;
+
 /* ---------- the four product miniatures ---------- */
 
 function WebsiteMini() {
@@ -249,23 +258,56 @@ export function HeroShowcase() {
         ))}
       </div>
 
-      {/* Large screens: the four products orbiting the mark. */}
-      <div className="relative hidden aspect-[4/3.4] w-full lg:block">
-        <div
+      {/*
+        Large screens: the four products orbiting the mark.
+
+        The box is square deliberately. It used to be 4/3.4, and the ring was
+        sized w-[62%] h-[62%] — 62% of two different numbers, which produced an
+        ellipse measuring 480 by 436. A percentage only describes a circle when
+        the box it sits in is square.
+      */}
+      <div className="relative hidden aspect-square w-full lg:block">
+        {/*
+          The ring is an SVG circle, not a CSS dashed border. A dashed border
+          cannot divide its pattern evenly around a rounded box, so it leaves a
+          seam where the pattern wraps — and rotating it walked that flat spot
+          around the circle like a puncture. Here the dash length is derived
+          from the circumference, so a whole number of dashes fits exactly and
+          there is no seam to find.
+        */}
+        <svg
           aria-hidden
-          className="absolute top-1/2 left-1/2 h-[62%] w-[62%] -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-dashed border-border"
-          style={{ animation: "orbit-spin 64s linear infinite" }}
-        />
+          viewBox="0 0 100 100"
+          className="absolute inset-0 h-full w-full text-border"
+          style={{ animation: "orbit-rotate 64s linear infinite" }}
+        >
+          <circle
+            cx="50"
+            cy="50"
+            r={RING_R}
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.6"
+            vectorEffect="non-scaling-stroke"
+            strokeDasharray={RING_DASH}
+          />
+        </svg>
+
         {/* Two echoes on opposite phases, so a signal is always on its way out
             to something rather than the ring pulsing and then going dead. */}
         {[0, 2.6].map((delay) => (
           <span
             key={delay}
             aria-hidden
-            className="absolute top-1/2 left-1/2 h-[62%] w-[62%] rounded-full border border-signal/45"
-            style={{ animation: `orbit-emit 5.2s ease-out ${delay}s infinite` }}
+            className="absolute top-1/2 left-1/2 rounded-full border border-signal/45"
+            style={{
+              height: `${RING_R * 2}%`,
+              width: `${RING_R * 2}%`,
+              animation: `orbit-emit 5.2s ease-out ${delay}s infinite`,
+            }}
           />
         ))}
+
         <div
           aria-hidden
           className="absolute top-1/2 left-1/2 z-10 -translate-x-1/2 -translate-y-1/2 rounded-full border border-border bg-card p-3 shadow-sm"
@@ -279,22 +321,36 @@ export function HeroShowcase() {
           />
         </div>
 
+        {/*
+          Each panel is centred on its own compass point rather than nudged into
+          place by eye. The previous values were hand-tuned and asymmetric: the
+          top panel sat 24px right of the mark and the two side panels 41 and
+          44px above it, which is what made the arrangement look crooked.
+        */}
         <Panel
           label={PANELS[0]!.label}
-          className="absolute top-0 left-1/2 w-[46%] -translate-x-[42%]"
+          className="absolute top-[21%] left-1/2 w-[46%] -translate-x-1/2 -translate-y-1/2"
           float={0}
         >
           {PANELS[0]!.node}
         </Panel>
-        <Panel label={PANELS[1]!.label} className="absolute top-[34%] left-0 w-[42%]" float={1.5}>
+        <Panel
+          label={PANELS[1]!.label}
+          className="absolute top-1/2 left-0 w-[42%] -translate-y-1/2"
+          float={1.5}
+        >
           {PANELS[1]!.node}
         </Panel>
-        <Panel label={PANELS[2]!.label} className="absolute top-[32%] right-0 w-[42%]" float={3}>
+        <Panel
+          label={PANELS[2]!.label}
+          className="absolute top-1/2 right-0 w-[42%] -translate-y-1/2"
+          float={3}
+        >
           {PANELS[2]!.node}
         </Panel>
         <Panel
           label={PANELS[3]!.label}
-          className="absolute bottom-0 left-1/2 w-[44%] -translate-x-[52%]"
+          className="absolute top-[79%] left-1/2 w-[46%] -translate-x-1/2 -translate-y-1/2"
           float={4.5}
         >
           {PANELS[3]!.node}

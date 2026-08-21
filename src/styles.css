@@ -348,8 +348,8 @@
  * which is literally what the business does, everything connected to one core.
  * ------------------------------------------------------------------------- */
 
-@keyframes orbit-spin {
-  to { transform: translate(-50%, -50%) rotate(360deg); }
+@keyframes orbit-rotate {
+  to { transform: rotate(360deg); }
 }
 
 /* Each panel drifts a few pixels on its own phase so the group never pulses in
