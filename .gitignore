@@ -34,3 +34,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Client site staged for Vercel deploys - never commit into this repo
+ayurveda-publish/
