@@ -1,0 +1,1011 @@
+=== PAGE 1 ===
+PERSONAL HEALTH
+SMART REPORT
+Prepared for
+Madhusudhan
+Basic Info
+Male /30 Yrs
+Sample collection date
+20/05/2026
+View detailed health
+insights, and trends on
+Tata 1mg app.
+Click here
+
+=== PAGE 2 ===
+Patient ID Date of Collection Prepared for Gender/age
+HYD827331 20/05/26 MadhusudhanMale /30 Yrs
+Doctor Summary
+Men Health Checkup Advanced With Smart Report
+Note This is an electronically generated summary of clinically significant parameters of the attached report. It is advised to read
+this summary in conjunction with the attached report and to correlate it clinically. For the trends section, the out-of-range
+values are highlighted with respect to the bio-reference range of respective reports.
+Test Name Result Bio. Ref. Interval Trends (For last three tests)
+Complete Blood Count 20 May 26 14 May 25 - -
+17.4 - -
+Hemoglobin 17 g/dL 13.0 - 17.0
+(13.0 - 17.0)
+6.15 - -
+RBC 5.92 10^6/cu.mm 4.5 - 5.5
+(4.5 - 5.5)
+50.9 - -
+HCT 49.3 % 40 - 50
+(40 - 50)
+82.7 - -
+MCV 83.2 fL 83 - 101
+(83 - 101)
+14.3 - -
+RDW-CV 14.5 % 11.5 - 14
+(11.5 - 14)
+8.57 - -
+Total Leucocyte Count 9.10 10^3/ÂµL 4 - 10
+(4 - 10)
+48.7 - -
+Neutrophils 53.8 % 40 - 80
+(40 - 80)
+35.8 - -
+Lymphocytes 32.1 % 20 - 40
+(20 - 40)
+9.1 - -
+Monocytes 9.3 % 2 - 10
+(2 - 10)
+5.9 - -
+Eosinophils 4.2 % 1 - 6
+(1 - 6)
+0.5 - -
+Basophils 0.6 % 0 - 2
+(0 - 2)
+3.07 - -
+Absolute Lymphocyte 2.92 10^3/ÂµL 1 - 3
+(1 - 3)
+Count
+0.51 - -
+Absolute Eosinophil Count 0.38 10^3/ÂµL 0.02 - 0.5
+(0.02 - 0.5)
+246 - -
+Platelet Count 232 10^3/ÂµL 150 - 410
+(150 - 410)
+Inflammatory markers 20 May 26 14 May 25 - -
+Erythrocyte Sedimentation
+2 mm/hr 0.5 - 10 3 - -
+Rate
+(0 - 10)
+Page 2/6
+
+=== PAGE 3 ===
+Patient ID Date of Collection Prepared for Gender/age
+HYD827331 20/05/26 MadhusudhanMale /30 Yrs
+Doctor Summary
+Men Health Checkup Advanced With Smart Report
+Test Name Result Bio. Ref. Interval Trends (For last three tests)
+Inflammatory markers 20 May 26 14 May 25 - -
+C-Reactive Protein
+13.00 mg/L 0 - 4.9 9.20 - -
+(Quantitative)
+(0 - 3.3)
+Iron Studies 20 May 26 14 May 25 - -
+72 - -
+Iron Serum 74 Âµg/dL 65 - 175
+(65 - 175)
+Unsaturated Iron Binding
+265 Âµg/dL 69 - 240 260 - -
+Capacity
+(111 - 343)
+Total Iron Binding Capacity
+339 Âµg/dL 250 - 460 332 - -
+(TIBC)
+(250 - 460)
+Diabetes Profile 20 May 26 14 May 25 - -
+Glycosylated Hemoglobin
+5.5 % 4 - 5.6 5.4 - -
+(HbA1c)
+(4 - 5.6)
+77 - -
+Glucose - Fasting 88 mg/dL 70 - 99
+(70 - 99)
+Kidney Health 20 May 26 14 May 25 - -
+8 - -
+Blood Urea Nitrogen 9 mg/dL 8.9 - 20.6
+(9 - 23)
+16.86 - -
+Urea 19.26 mg/dL 19.0 - 44.0
+0.96 - -
+Creatinine 0.88 mg/dL 0.6 - 1.2
+(0.7 - 1.3)
+7.9 - -
+Uric Acid 7.0 mg/dL 3.7 - 7.7
+(3.5 - 7.2)
+140 - -
+Sodium 139 mmol/L 136 - 145
+(132 - 146)
+3.67 - -
+Potassium 5.40 mmol/L 3.5 - 5.1
+(3.5 - 5.5)
+Page 3/6
+
+=== PAGE 4 ===
+Patient ID Date of Collection Prepared for Gender/age
+HYD827331 20/05/26 MadhusudhanMale /30 Yrs
+Doctor Summary
+Men Health Checkup Advanced With Smart Report
+Test Name Result Bio. Ref. Interval Trends (For last three tests)
+Lipid Profile 20 May 26 14 May 25 - -
+252 - -
+Cholesterol - Total 234 mg/dL <= 199.9
+(<= 199.9)
+302 - -
+Triglycerides 277 mg/dL <= 149.9
+(<= 149.9)
+33 - -
+Cholesterol - HDL 31 mg/dL >= 39.5
+(>= 39.9)
+159 - -
+Cholesterol - LDL 148 mg/dl <= 99.9
+(<= 99.9)
+60 - -
+Cholesterol- VLDL 55 mg/dl <= 29.9
+(<= 29.9)
+Cholesterol : HDL
+7.6 Ratio 0 - 5.0 7.7 - -
+Cholesterol
+(0 - 5.0)
+4.84 - -
+LDL : HDL Cholesterol 4.76 Ratio 0 - 3.5
+(0 - 3.5)
+219 - -
+Non HDL Cholesterol 203 mg/dL <= 129.9
+(<= 129.9)
+Liver Health 20 May 26 14 May 25 - -
+1.26 - -
+Bilirubin - Total 1.00 mg/dL 0.3 - 1.2
+(0.3 - 1.2)
+7.54 - -
+Protein, Total 7.90 g/dL 6.4 - 8.3
+(5.7 - 8.2)
+4.68 - -
+Albumin 4.60 g/dL 3.5 - 5.0
+(3.4 - 4.8)
+Aspartate Transaminase
+48 U/L 11 - 34 45 - -
+(SGOT)
+(<= 34)
+Alanine Transaminase
+82 U/L 0 - 45 68 - -
+(SGPT)
+(10 - 49)
+90 - -
+Alkaline Phosphatase 124 U/L 50 - 116
+(46 - 116)
+Gamma
+113 U/L 0 - 54.9 76 - -
+Glutamyltransferase (GGT)
+(<= 72)
+Page 4/6
+
+=== PAGE 5 ===
+Patient ID Date of Collection Prepared for Gender/age
+HYD827331 20/05/26 MadhusudhanMale /30 Yrs
+Doctor Summary
+Men Health Checkup Advanced With Smart Report
+Test Name Result Bio. Ref. Interval Trends (For last three tests)
+Urine Routine & Microscopy 20 May 26 14 May 25 - -
+1.010 - -
+Specific gravity 1.005 1.003 - 1.035
+(1.003 - 1.035)
+6.0 - -
+pH 6.0 4.6 - 8
+(4.6 - 8)
+Negative - -
+Glucose Negativ e Negative
+(Negative)
+Negative - -
+Protein Negativ e Negative
+(Negative)
+Negative - -
+Ketones Negativ e Negative
+(Negative)
+1-2 - -
+Pus cells 2-3 /hpf 0 - 5
+(0 - 5)
+Nil - -
+Red blood cell N i l /hpf 0 - 2
+(0 - 2)
+1-2 - -
+Epithelial cells 1-2 /hpf Few
+(Few)
+Nil - -
+Casts N i l /lpf Nil
+(Nil)
+Nil - -
+Crystals N i l Nil
+(Nil)
+Calcium and Bone Health 20 May 26 14 May 25 - -
+10.0 - -
+Calcium 9.6 mg/dL 9.1 - 10.4
+(8.7 - 10.4)
+9.5 - -
+Vitamin D (25-OH) 11.4 ng/mL 30 - 100
+(30 - 100)
+Vitamins & Minerals 20 May 26 14 May 25 - -
+313.0 - -
+Vitamin B12 233.0 pg/mL 187 - 833
+(211 - 911)
+6.60 - -
+Vitamin B9 4.20 ng/mL 3.1 - 20.5
+(>= 5.38)
+Page 5/6
+
+=== PAGE 6 ===
+Patient ID Date of Collection Prepared for Gender/age
+HYD827331 20/05/26 MadhusudhanMale /30 Yrs
+Doctor Summary
+Men Health Checkup Advanced With Smart Report
+Test Name Result Bio. Ref. Interval Trends (For last three tests)
+Thyroid Health 20 May 26 14 May 25 - -
+1.14 - -
+T3, Total 0.99 ng/mL 0.35 - 1.93
+(0.60 - 1.81)
+9.3 - -
+T4, Total 7.7 Âµg/dL 4.87 - 11.72
+(4.5 - 10.9)
+Thyroid Stimulating
+17.51 9 ÂµIU/mL 0.35 - 4.94 17.163 - -
+Hormone - Ultra Sensitive
+(0.55 - 4.78)
+Arthritis Screening 20 May 26 14 May 25 - -
+Rheumatoid Factor -
+< 20. 0 IU/mL 0 - 29.9 < 3.5 - -
+Quantitative
+(0 - 13.9)
+Reproductive Health 20 May 26 - - -
+- - -
+Testosterone, total 330.9 3 ng/dL 240.24 - 870.68
+Page 6/6
+
+=== PAGE 7 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705970 / 17049013 Report Date : 20/May/2026 01:56PM
+Sample Type : Whole Blood-EDTA Report Status : Final Report
+HAEMATOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+Complete Blood Count
+Hemoglobin 17 g/dL 13.0-17.0 Spectrophotometry
+(Cyanide-free)
+RBC 5.92 10^6/cu.mm 4.5 - 5.5 Impedance
+HCT 49.3 % 40 - 50 Calculated
+MCV 83.2 fL 83 - 101 Calculated
+MCH 28.7 pg 27 - 32 Calculated
+MCHC 34.5 g/dL 31.5 - 34.5 Calculated
+RDW-CV 14.5 % 11.5-14 Calculated
+Total Leucocyte Count 9.10 10^3/µL 4 - 10 Impedance
+Differential Leucocyte Count
+Neutrophils 53.8 % 40-80 DHSS/Microscopy
+Lymphocytes 32.1 % 20-40 DHSS/Microscopy
+Monocytes 9.3 % 2-10 DHSS/Microscopy
+Eosinophils 4.2 % 1-6 DHSS/Microscopy
+Basophils 0.6 % 0-2 Impedance/Microscopy
+Absolute Leucocyte Count
+Absolute Neutrophil Count 4.9 10^3/µL 2 - 7 Calculated
+Absolute Lymphocyte Count 2.92 10^3/µL 1-3 Calculated
+Absolute Monocyte Count 0.85 10^3/µL 0.2 - 1 Calculated
+Absolute Eosinophil Count 0.38 10^3/µL 0.02 - 0.5 Calculated
+Absolute Basophil Count 0.05 10^3/µL 0.02-0.1 Calculated
+Platelet Count 232 10^3/µL 150-410 Impedance /Microscopy
+MPV 8.5 fL 6.5 - 12 Calculated
+PDW 14.6 fL 9 - 17 Calculated
+Comment:
+As per the recommendation of International council for Standardization in Hematology, the differential leucocyte counts are
+additionally being reported as absolute numbers of each cell in per unit volume of blood.
+DHSS : Double Hydrodynamic Sequential System Flowcytometry
+Calculated parameters are either derived from Impedence measure, RBC pulse measurement, RBC/platelet histograms or
+formula derived.
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 1 of 17
+
+=== PAGE 8 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705970 / 17049013 Report Date : 20/May/2026 03:42PM
+Sample Type : WHOLE BLOOD-EDTA Report Status : Final Report
+HAEMATOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+Erythrocyte Sedimentation Rate
+Erythrocyte Sedimentation Rate 2 mm/hr 0-10 Modified Westergren
+Comment:
+ESR provides an index of progress of the disease and is widely used as an indicator of inflammation, infection, trauma, or
+malignant diseases. Changes are more significant than a single abnormal test
+It is specifically indicated to monitor the course or response to the treatment of diseases like rheumatoid arthritis,
+tuberculosis bacterial endocarditis ,acute rheumatic fever ,Hodgkins disease,temporal arthritis , and systemic lupus
+erythematosis; and to diagnose and monitor giant cell arteritis and polymyalgia rheumatica.
+An elevated ESR may also be associated with many other conditions, including autoimmune disease, anemia,
+infection,malignancy,pregnancy, multiple myeloma, menstruation, and hypothyroidism.
+Although a normal ESR cannot be taken to exclude the presence of organic disease, its rate is dependent on various
+physiologic and pathologic factors.
+The most important component influencing ESR is the composition of plasma. High level of C-Reactive Protein, fibrinogen,
+haptoglobin, alpha-1antitrypsin, ceruloplasmin and immunoglobulins causes the elevation of Erythrocyte Sedimentation
+Rate.
+Drugs that may cause increase ESR levels include: dextran, methyldopa, oral contraceptives, penicillamine, procainamide,
+theophylline, and Vitamin A. Drugs that may cause decrease levels include: aspirin, cortisone, and quinine
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 2 of 17
+
+=== PAGE 9 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705970 / 17049013 Report Date : 20/May/2026 02:21PM
+Sample Type : WHOLE BLOOD-EDTA Report Status : Final Report
+HAEMATOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+HbA1c (Glycosylated Hemoglobin)
+Glycosylated Hemoglobin (HbA1c) 5.5 % 4-5.6 HPLC (NGSP certified)
+Estimated average glucose (eAG) 111.15 mg/dL Calculated
+Comment:
+Interpretation: HbA1c%
+≤5.6 Normal
+5.7-6.4 At Risk For Diabetes
+≥6.5 Diabetes
+Adapted from American Diabetes Association.
+Comments:
+A 3 to 6 monthly monitoring is recommended in diabetics. People with diabetes should get the test done more often if their blood
+sugar stays too high or if their healthcare provider makes any change in the treatment plan. HbA1c concentration represent the
+integrated values for blood glucose over the preceding 8-12 weeks and is not affected by daily glucose fluctuation, exercise &
+recent food intake.
+Please note, Glycemic goal should be individualized based on duration of diabetes, age/life expectancy, comorbid conditions,
+known CVD or advanced microvascular complications, hypoglycemia unawareness, and individual patient considerations.
+Factors that interfere with HbA1c Measurement: Hemoglobin variants, elevated fetal hemoglobin (HbF) and chemically modified
+derivatives of hemoglobin (e.g. carbamylated Hb in patients with renal failure) can affect the accuracy of HbA1c measurements.
+Factors that affect interpretation of HbA1c Measurement: Any condition that shortens erythrocyte survival or decrease mean
+erythrocyte age (e. g., recovery from acute blood loss, hemolytic anemia, HbSS, HbCC, and HbSC) will falsely lower HbA1c test
+results regardless of the assay method used. Iron deficiency anemia is associated with higher HbA1c.
+Note: Presence of Hemoglobin variants and/or conditions that affect red cell turnover must be considered, particularly when the
+HbA1c result does not correlate with the patient's blood glucose levels.
+• HPLC - High performance liquid chromatography
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 3 of 17
+
+=== PAGE 10 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705971 / 17049013 Report Date : 20/May/2026 02:18PM
+Sample Type : Fluoride Plasma F Report Status : Final Report
+BIOCHEMISTRY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+FBS (Fasting Blood Sugar)
+Glucose - Fasting 88 mg/dL 70-99 Hexokinase/G-6-PDH
+Fasting Plasma Glucose (mg/dL) 2 hr plasma Glucose (mg/dL) Diagnosis
+99 or below 139 or below Normal
+100 to 125 140 to 199 Pre-Diabetes (IGT)
+126 or above 200 or above Diabetes
+Reference : American Diabetes Association
+Comment:
+Impaired glucose tolerance (IGT) fasting, means a person has an increased risk of developing type 2 diabetes but does not
+have it yet. A level of 126 mg/dL or above, confirmed by repeating the test on another day, means a person has diabetes.
+IGT (2 hrs Post meal ), means a person has an increased risk of developing type 2 diabetes but does not have it yet. A 2-hour
+glucose level of 200 mg/dL or above, confirmed by repeating the test on another day, means a person has diabetes
+Plasma Glucose Goals For people with Diabetes
+Before meal 70-130 mg/dL
+2 Hours after meal Less than 180 mg/dL
+Less than 7%
+HbA1c
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 4 of 17
+
+=== PAGE 11 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 02:32PM
+Sample Type : Serum Report Status : Final Report
+BIOCHEMISTRY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+Lipid Profile
+Cholesterol - Total 234 mg/dL Low (desirable): < 200 Enzymatic
+mg/dL
+Moderate (borderline)
+200–239 mg/dL
+High: >/= 240 mg/dL
+Triglycerides 277 mg/dL Normal: <150, Glycerol Phosphate
+Borderline: 150 - 199, Oxidase
+High:200-499,
+Very High>=500
+Cholesterol - HDL 31 mg/dL High risk <40mg/dL Accelerator Selective
+Low risk>=40mg/dL Detergent
+Cholesterol - LDL 148 mg/dl Desirable: <100 Calculated
+Above desirable: 100 -
+129
+Borderline high : 130 -
+159
+High : 160 - 189
+Very high : >=190
+Cholesterol- VLDL 55 mg/dl <30 Calculated
+Cholesterol : HDL Cholesterol 7.6 Ratio Desirable : 3.5-4.5 Calculated
+High Risk : >5
+LDL : HDL Cholesterol 4.76 Ratio Desirable : 2.5-3.0 Calculated
+High risk : >3.5
+Non HDL Cholesterol 203 mg/dL Desirable:< 130, Calculated
+Above Desirable:130 -
+159,
+Borderline High:160 -
+189,
+High:190 - 219,
+Very High: >= 220
+Comment:
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 5 of 17
+
+=== PAGE 12 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 02:32PM
+Sample Type : Serum Report Status : Final Report
+BIOCHEMISTRY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+•Lipid results show analytical and biological variation; repeat testing may be recommended before diagnosis or treatment
+decisions.
+•Indians lie at high risk of developing early (a decade earlier than western populations) and more severe cardiovascular
+disease (ASCVD); higher mortality. Dyslipidemia (abnormal lipid profile) affects nearly 80% of population.
+•Total cholesterol is the sum of all cholesterol in the blood, including HDL, LDL, VLDL, and remnants.
+•LDL Cholesterol (LDL-C), is the main “bad” cholesterol that contributes to plaque buildup, increasing the risk of heart disease
+and stroke, typically calculated by the Friedewald formula. Direct LDL-C measurement by homogeneous enzymatic assays
+carried out when triglycerides >400 mg/dL or dysbetalipoproteinemia.
+•High-density lipoprotein (HDL) or “good” cholesterol is anti-atherogenic (protective). Low HDL-C is a cardiovascular risk
+factor; seen in almost two-third of Indians. Values above 60 mg/dl are considered protective.
+•Triglyceride (TG) are a key driver of CVD. Indians are especially prone to atherogenic dyslipidemia—high TG, low HDL-C, and
+high LDL-C—closely linked to diabetes, metabolic syndrome, and insulin resistance; making TG management crucial.
+•Non-HDL-Cholesterol (non-HDL-C) Non-HDL-C measures all plaque-forming lipoproteins and is vital to monitor in high-TG
+patients (e.g., diabetics, obese) and those on statin therapy.
+•Lipid Association of India (LAI-2020) recommends:-
+Screening of all Indians above the age of 20 years for CVD risk factors, esp. lipid profile.
+Identification of Major Risk factors: Age (male ≥45 years, female ≥55 years); Family h/o heart disease at younger age
+(<55 yrs in males, <65 yrs in female or before menopause), current smoking/tobacco use, High blood pressure, Low HDL
+(males <40 mg/dl and females <50mg/dl).
+Fasting not mandatory; both fasting and non-fasting lipid profiles are useful for screening in Indian patients.
+LAI identifies both LDL-C and non-HDL-C as risk factors and recommends LDL-C, non-HDL-C and Apo-B as targets of lipid-
+lowering therapy.
+Lifestyle changes are the first-line approach for managing and preventing dyslipidemia. Treatment in low-risk individuals is
+initiated only after 3 months of unsuccessful lifestyle modification.
+Testing for Apolipoprotein B(Apo-B), hsCRP, Lp(a ) should be considered for patients in moderate risk group.
+Treatment targets for lipid-lowering therapy for various ASCVD risk groups
+Risk Group Treatment targets
+LDL-C, mg/dL Non-HDL-C, mg/dL Apo-B, mg/dL
+(primary target) (co-primary target) (secondary target)
+Low-risk group <100 <130 <90
+<100 <130
+Moderate-risk group <90
+(optional <70) (optional <100)
+High-risk group <70 <100 <80
+Very high-risk group <50 <80 <65
+<50 <80
+Extreme-risk group- category A <65
+(optional ≤30) (optional ≤60)
+Extreme-risk group- category B ≤30 ≤60 <50
+Extreme-risk group- category C 10-15 40-45 -
+Source: LAI (2024) Consensus Statement IV
+•Per NCEP Expert Panel (2011) guidelines, universal dyslipidemia screening is advised at 9–11 years and repeated at 17–21
+years. Screening before age 2 yrs is not recommended; from age 2 onward, selective screening is done for children with a family
+history of premature CVD or risk factors such as obesity, diabetes, or hypertension.
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 6 of 17
+
+=== PAGE 13 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 02:32PM
+Sample Type : Serum Report Status : Final Report
+BIOCHEMISTRY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+Note: Biological Reference Interval as per National Cholesterol Education Program (NCEP) ATP III and LAI guidelines
+LIVER FUNCTION TEST
+Liver Function Test
+Bilirubin-Total 1.00 mg/dL 0.3-1.2 Diazonium Salt
+Bilirubin-Direct 0.30 mg/dL 0-0.5 Diazo
+Bilirubin-Indirect 0.70 mg/dL 0.2-0.8 Calculated
+Protein, Total 7.90 g/dL 6.4-8.3 Biuret
+Albumin 4.60 g/dL 3.5-5.0 Bromocresol Green
+Globulin 3.3 g/dL 2.1 - 3.9 Calculated
+A/G Ratio 1.39 Ratio 0.8 - 2.1 Calculated
+SGOT (Aspartate Aminotransferase) 48 U/L 11-34 NADH w/o P-5’-P
+SGPT (Alanine Transaminase) 82 U/L 0-45 NADH w/o P-5’-P
+SGOT/SGPT 0.59 Ratio Calculated
+Alkaline Phosphatase 124 U/L 50-116 Para-Nitrophenyl
+Phosphate
+Gamma Glutamyltransferase (GGT) 113 U/L <55 L-gamma-glutamyl-3-
+Carboxy-4-Nitroanilide
+Comment:
+Raised ALT and AST indicate hepatocellular damage (e.g. viral or drugs etc). ALT is more liver-specific while AST is also
+found in heart, skeletal muscle, and kidney. Mild elevation (less than twice normal) often resolves on its own. Fatty liver
+disease (especially with metabolic syndrome) is a common cause in asymptomatic cases. Certain drugs (paracetamol,
+statins), herbal supplements, energy drinks, and antibiotics may also affect liver function.
+SGOT/SGPT Ratio: Typically <1 in healthy individuals (vary between 0.7-1.4; higher in women than men). High SGPT (ratio
+<1) seen in acute or chronic hepatitis, autoimmune disorders, medications, toxins while ratio >1 indicates alcoholic
+hepatitis, cirrhosis, metastasis or non-hepatic issues (hemolytic diseases, CVS disorders).
+Elevated Alkaline Phosphatase and GGT: Suggest cholestatic diseases (e.g. bile duct obstruction, primary biliary
+cirrhosis etc.) and can also be due to bone disease, pregnancy, chronic renal failure, malignancy, and congestive heart
+failure.
+High Bilirubin: Indicates jaundice due to increased RBC breakdown, liver damage (e.g., infections, toxins), or cholestasis
+(e.g., gallstones, tumors).
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 7 of 17
+
+=== PAGE 14 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 02:32PM
+Sample Type : Serum Report Status : Final Report
+BIOCHEMISTRY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+High Protein Levels: Seen in dehydration (e.g., severe vomiting, diarrhea) or increased production (e.g., inflammation,
+hematopoietic neoplasms). Low protein and albumin: Result from impaired synthesis (liver disease), decreased intake,
+tissue damage, malabsorption, or increased renal excretion.
+Kidney Function Test.
+Blood Urea Nitrogen 9 mg/dL 8.9-20.6 Urease
+Urea 19.26 mg/dL 19.0 - 44.0 Calculated
+Creatinine 0.88 mg/dL 0.6-1.2 Kinetic Alkaline Picrate
+Uric Acid 7.0 mg/dL 3.7-7.7 Uricase
+Sodium 139 mmol/L 136-145 INDIRECT ISE
+Potassium 5.40 mmol/L 3.5-5.1 INDIRECT ISE
+Chloride 105.0 mmol/L 98-107 INDIRECT ISE
+BUN/Creatinine Ratio 10.2 Ratio 12:1 - 20:1 Calculated
+Note: Mildly elevated potassium levels without symptoms may be retested with a fresh sample if needed. Causes can include
+kidney issues, dehydration, certain medications (e.g., ACE inhibitors, potassium-sparing diuretics), high-potassium foods (e.g.,
+bananas, spinach, avocados), tissue damage, or blood collection errors. Persistent high levels should be discussed with your
+physician to explore potential underlying conditions or medication effects.
+Comment:
+BUN is directly related to protein intake and nitrogen metabolism and inversely related to the rate of excretion of urea.Blood
+urea nitrogen (BUN) levels reflect the balance between the production and excretion of urea. Increased levels are seen in renal
+failure (acute or chronic), urinary tract obstruction, dehydration, shock, burns, CHF, GI bleeding, nephrotoxic drugs. Decreased
+levels are seen in hepatic failure, nephrotic syndrome, cachexia (low-protein and high-carbohydrate diets).
+Urea is a non-proteinous nitrogen compound formed in the liver from ammonia as an end product of protein metabolism. Urea
+diffuses freely into extracellular and intracellular fluid and is ultimately excreted by the kidneys. Increased levels are found in
+acute renal failure, chronic glomerulonephritis, congestive heart failure, decreased renal perfusion, diabetes, excessive protein
+ingestion, gastrointestinal (GI) bleeding, hyperalimentation, hypovolemia, ketoacidosis, muscle wasting from starvation,
+neoplasms, pyelonephritis, shock, urinary tract obstruction, nephrotoxic drugs. Decreased levels are seen in inadequate dietary
+protein, low-protein/high-carbohydrate diet, malabsorption syndromes, pregnancy, severe liver disease, certain drugs.
+Creatinine is catabolic product of creatinine phosphate, which is excreted by filtration through the glomerulus and by tubular
+secretion. Creatinine clearance is an acceptable clinical measure of glomerular filtration rate (GFR). Increased levels are seen in
+acute/chronic renal failure, urinary tract obstruction, hypothyroidism, nephrotoxic drugs, shock, dehydration, congestive heart
+failure, diabetes. Decreased levels are found in muscular dystrophy.
+BUN/Creatinine ratio (normally 12:1–20:1) is decreased in acute tubular necrosis, advanced liver disease, low protein intake,
+and following hemodialysis. BUN/Creatinine ratio is increased in dehydration, GI bleeding, and increased catabolism.
+Uric acid levels show diurnal variation. The level is usually higher in the morning and lower in the evening. Increased levels are
+seen in starvation, strenuous exercise, malnutrition, or lead poisoning, gout, renal disorders, increased breakdown of body cells
+in some cancers (including leukemia, lymphoma, and multiple myeloma) or cancer treatments, hemolytic anemia, sickle cell
+anemia, or heart failure, pre-eclampsia, liver disease (cirrhosis), obesity, psoriasis, hypothyroidism, low blood levels of
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 8 of 17
+
+=== PAGE 15 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 02:32PM
+Sample Type : Serum Report Status : Final Report
+BIOCHEMISTRY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+parathyroid hormone (PTH), certain drugs, foods that are very high in purines - such as organ meats, red meats, some seafood
+and beer. Decreased levels are seen in liver disease, Wilson's disease, Syndrome of inappropriate antidiuretic hormone (SIADH),
+certain drugs.
+Calcium
+Calcium 9.6 mg/dL 9.1 - 10.4 Arsenazo III
+Comment:
+Increased in: Hyperparathyroidism primary and secondary, Acute and chronic renal failure, Following renal transplantation,
+Osteomalacia with malabsorption, Acute osteoprosis, Malignant tumours (specially of breast, lung and kidney), Drugs: Vit. D and
+A intoxication, Diuretics, estrogen, androgen, tamoxifen, lithium
+Decreased in: Hypoparathyroidism, Surgical and Idiopathic, Pseudohypoparathyroidism, Chronic renal disease with uremia and
+phophate retention, Malabsorption of Calcium and Vit.D, obstructive jaundice, Bone Disease ( Osteomalacia and rickets), Drugs:
+Cancer chemotherapy drugs, calcitonin, loop-actives diuretics, Hypomagnesemia,Hypoalbuminemia
+Iron Studies, Basic
+Iron Serum 74 µg/dL 65 - 175 Ferene
+Unsaturated Iron Binding Capacity 265 µg/dL 69 - 240 Ferrizone
+Total Iron Binding Capacity ( TIBC) 339 µg/dL 250-460 Calculated
+Transferrin Saturation 21.83 % 20 - 50 Calculated
+Comment:
+Iron is an essential trace mineral element which forms an important component of hemoglobin, metallocompounds and Vitamin
+A. Deficiency of iron is seen in iron deficiency and anaemia of chronic disorders.
+Increased iron concentration are seen in hemolytic anaemias, hemochromatosis and acute liver disease. Serum Iron alone is
+unreliable due to considerable physiologic diurnal variation in the results with highest values in the morning and lowest values in
+the evening as well as variation in response to iron therapy .
+Total Iron Binding capacity (TIBC) is a direct measure of the protein Transferrin which transports iron from the gut to storage
+sites in the bone marrow. Increased levels of TIBC suggest that total iron body stores are low, increased concentration may be
+the sign of Iron deficiency anaemia, polycythemia vera ,and may occur during the third trimester of pregnancy. Decreased levels
+may be seen in hemolytic anaemia, hemochromatosis, chronic liver disease, hypoproteinemia ,malnutrition.
+Unsaturated Iron Binding Capacity (UIBC) is increased in low iron state and decreased in high iron concentration such as
+hemochromatosis. In case of anaemia of chronic disease the patient may be anaemic but has adequate iron reserve and a low
+uIBC.
+Transferrin Saturation occurs in Idiopathic hemochromatosis and Transfusional hemosiderosis where no unsaturated iron
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 9 of 17
+
+=== PAGE 16 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 02:32PM
+Sample Type : Serum Report Status : Final Report
+BIOCHEMISTRY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+binding capacity is available for iron mobilization. Similar condition is seen in congenital deficiency of Transferrin.
+C-Reactive Protein Quantitative
+C-Reactive Protein (Quantitative) 13.00 mg/L <5.0 Turbidimetry
+Comment:
+•C-Reactive Protein [CRP] is an acute phase reactant ,hepatic secretion of which is stimulated in response to inflammatory
+cytokines.
+•CRP is a very sensitive but nonspecific marker of inflammation and infection.
+•The CRP test is useful in patient with Inflammatory bowel disease, arthritis, Autoimmune diseases, Pelvic inflammatory disease
+(PID), tissue injury or necrosis and infections.
+•CRP levels can be elevated in the later stages of pregnancy as well as with use of birth control pills or hormone replacement
+therapy i.e. estrogen. Higher levels of CRP have also been observed in the obese.
+•As compared to ESR, CRP shows an earlier rise in inflammatory disorders which begins in 4-6 hrs, he intensity of the rise being
+higher than ESR and the recovery being earlier than ESR. Unlike ESR, CRP levels are not influenced by hematologic conditions
+like Anemia, Polycythemia.
+Rheumatoid Factor - Quantitative
+Rheumatoid Factor - Quantitative < 20.0 IU/mL <30 Negative Immunoturbidimetric
+30-50 Weak Positive
+>50 Positive
+Comment:
+The detection of Rheumatoid factor (RF) is one of the criteria of the American Rheumatism Association (ARA) for the
+diagnosis of Rheumatoid Arthritis (RA).
+RF are heterogeneous group of auto antibodies directed against Fc- region of IgG molecules.
+They are useful in diagnosis of Rheumatoid Arthritis, but can also be found in other inflammatory diseases and in various
+non-rheumatic diseases.
+These occur in all the immunoglobulin classes, although the usual analytical methods are limited to the detection of
+Rheumatoid Factors of the IgM type.Healthy individuals >65 years of age may also show positive RF results.
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 10 of 17
+
+=== PAGE 17 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 04:12PM
+Sample Type : Serum Report Status : Final Report
+IMMUNOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+Thyroid profile Total
+T3, Total 0.99 ng/mL 0.35-1.93 CMIA
+T4, Total 7.7 µg/dL 4.87-11.72 CMIA
+Thyroid Stimulating Hormone - 17.519 µIU/mL 0.35-4.94 CMIA
+Ultrasensitive
+Comment:
+Below mentioned are the guidelines for pregnancy related reference ranges for TSH, total T3 & Total T4.
+Pregnancy
+TSH (μIU/mL) (as per
+American Thyroid Total T3 (ng/mL) Total T4(μg/dL)
+Association )
+1st trimester 0.1-2.5 0.81-1.90 7.33-14.8
+2nd trimester 0.2-3.0 1.00-2.60 7.93-16.1
+3rd trimester 0.3-3.0 1.00-2.60 6.95-15.7
+TSH levels are subject to circadian variation, reaching peak levels between 2 - 4.a.m. and at a minimum between 6-10 pm
+.
+The variation is of the order of 50%, hence time of the day has influence on the measured serum TSH concentrations.
+TSH is secreted in a dual fashion: Intermittent pulses constitute 60-70% of total amount, background continuous secretion
+is 30-40%.These pulses occur regularly every 1-3 hrs.
+Total T3 & T4 concentrations are altered by physiological or pathological changes in thyroxine binding globulin (TBG)
+capacity .
+The determination of free T3 & free T4 has the advantage of being independent of changes in the concentrations and
+binding properties of the binding proteins.
+Changes in thyroid status are typically associated with concordant changes in T3, T4 and TSH levels.
+Unexpectedly abnormal or discordant thyroid test values may be seen with some rare, but clinically significant conditions
+such as central hypothyroidism, TSH-secreting pituitary tumors, thyroid hormone resistance, or the presence of
+heterophilic antibodies (HAMA) or thyroid hormone autoantibodies.
+For diagnostic purposes, results should be used in conjunction with other data.
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 11 of 17
+
+=== PAGE 18 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 04:12PM
+Sample Type : Serum Report Status : Final Report
+IMMUNOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+TSH T3 T4 Interpretation
+High Normal Normal Subclinical Hypothyroidism
+Low Normal Normal Subclinical Hyperthyroidism
+High High High Secondary Hyperthyroidism
+Low High/Normal High/Normal Hyperthyroidism
+Non thyroidal illness / Secondary
+Low Low Low Hypothyroidism
+Vitamin D (25-OH)
+Vitamin D (25-OH) 11.4 ng/mL Deficiency:< 20, CMIA
+Insufficiency:20-29,
+Sufficiency:30 - 100,
+Toxicity possible:> 100
+Comment:
+Vitamin D is a fat-soluble steroid prohormone involved in the intestinal absorption of calcium and the regulation of calcium
+homeostasis.
+Two forms of vitamin D are biologically relevant - vitamin D3 (Cholecalciferol) and vitamin D2 (Ergocalciferol).
+Both vitamins D3 and D2 can be absorbed from food but only an estimated 10-20perc. of vitamin D is supplied through
+nutritional intake.
+Vitamin D is converted to the active hormone 1,25-(OH)2-vitamin D (Calcitriol) through two hydroxylation reactions. The
+first hydroxylation converts vitamin D into 25-OH vitamin D and occurs in the liver. The second hydroxylation converts 25-
+OH vitamin D into the biologically active 1,25-(OH)2-vitamin D and occurs in the kidneys as well as in many other cells of
+the body.
+Most cells express the vitamin D receptor and about 3perc. of the human genome is directly or indirectly regulated by the
+vitamin D endocrine system.
+The major storage form of vitamin D is 25-OH vitamin D and is present in the blood at up to 1,000 fold higher
+concentration compared to the active 1,25-(OH)2-vitamin D. 25-OH vitamin D has a half-life of 2-3 weeks vs. 4 hours for
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 12 of 17
+
+=== PAGE 19 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 04:12PM
+Sample Type : Serum Report Status : Final Report
+IMMUNOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+1,25-(OH)2-vitamin D. Therefore, 25-OH vitamin D is the analyte of choice for determination of the vitamin D status.
+Risk factors for vitamin D deficiency include low sun exposure, inadequate intake, decreased absorption, abnormal
+metabolism, vitamin D resistance and and liver or kidney diseases.
+Vitamin D deficiency is a cause of secondary hyperparathyroidism and diseases resulting in impaired bone metabolism (like
+rickets, osteomalacia).
+Recently, many chronic diseases such as cancer, high blood pressure, osteoporosis and several autoimmune diseases
+have been linked to vitamin D deficiency.
+The assay measures both D2 (Ergocalciferol) and D3 (Cholecalciferol) metabolites of vitamin D
+Utility Quantitative determination of 25-hydroxyvitamin D (25-OH vitamin D).
+Vitamin B12
+Vitamin B12 233.0 pg/mL 187-833 CMIA
+Comment:
+Vitamin B12 along with folate is essential for DNA synthesis and myelin formation.
+Decreased levels are seen in anaemia, term pregnancy, vegetarian diet, intrinsic factor deficiency, partial
+gastrectomy/ileal damage, celiac disease, oral contraceptive use, parasitic infestation, pancreatic deficiency, treated
+epilepsy, smoking, hemodialysis and advanced age.
+Increased levels are seen in renal failure, hepatocelluar disorders, myeloproliferative disorders and at times with excess
+supplementation of vitamins pills.
+Vitamin B9 (Folic Acid)
+Vitamin B9 (Folic Acid) 4.20 ng/mL 3.1-20.5 CMIA
+Comment:
+Folate plays an important role in the synthesis of purine & pyrimidines in the body and is important for the maturation of
+erythrocytes. It is widely available from plants and to a lesser extent organ meats, but more than half the folate content of food
+is lost during cooking. Folate deficiency is commonly prevalent in alcoholic liver disease, pregnancy, and the elderly. It may result
+from poor intestinal absorption, nutrition deficiency, excessive demand as in pregnancy or in malignancy, and in response to
+certain drugs like Methotrexate & anticonvulsants. It is now routine practice to recommend dietary folate supplements from
+conception to the 12th week of pregnancy; such supplementation has been proven to reduce the incidence of neural tube
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 13 of 17
+
+=== PAGE 20 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 04:12PM
+Sample Type : Serum Report Status : Final Report
+IMMUNOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+defects.
+Decreased Levels: Megaloblastic anemia, Infantile hyperthyroidism, Alcoholism, Malnutrition, Scurvy, Liver disease, B12
+deficiency, dietary amino acid excess, adult Celiac disease, Tropical Sprue, Crohn’s disease, Hemolytic anemias, Carcinomas,
+Myelofibrosis, vitamin B6 deficiency, pregnancy, Whipple’s disease, extensive intestinal resection, and severe exfoliative
+dermatitis.
+Note:
+Certain drugs like Pyrimethamine, methotrexate, and trimethoprim are all folate antagonists i.e. they stop the action of the folic
+acid; phenytoin can decrease the intestinal absorption of folates, and ethanol both decreases absorption and increases
+excretion of folic acid.
+To differentiate vitamin B12 & folate deficiency, measurement of Methylmalonic acid in urine & serum Homocysteine level is
+suggested.
+Testosterone Total
+Testosterone, total 330.93 ng/dL 240.24-870.68 CMIA
+Comment:
+Stage Male Female
+Tanner Stage I <7.0 - 13.06 ng/dL <7.0 - 10.06 ng/dL
+Tanner Stage II <7.0 - 79.13 ng/dL <7.0 - 30.11 ng/dL
+Tanner Stage III <7.0 - 499.18 ng/dL <7.0 - 30.49 ng/dL
+Tanner Stage IV 79.10 - 747.17 ng/dL <7.0 - 35.19 ng/dL
+Tanner Stage V 224.83 - 669.65 ng/dL 1.88 - 39.30 ng/dL
+Testosterone is the major androgen in males produced by the Leydig cells of the testes.In females, it is secreted by
+adrenal cortex and ovaries.
+In serum, testosterone is largely bound to a specific steroid hormone-binding globulin (SHBG) (60%and to albumin (38%),
+but it is the free
+hormone (2%) that is physiologically active.
+The total testosterone level measures both bound and free testosterone in the serum.
+Increased in: Idiopathic sexual precocity, adrenal hyperplasia (boys), adrenocortical tumors, trophoblastic disease during
+pregnancy, idiopathic hirsutism, virilizing ovarian tumors, PCOD, arrhenoblastoma, virilizing luteoma, testicular feminization
+(normal or moderately elevated), hyperthyroidism, Cushing’s Disease, drugs (anticonvulsants, barbiturates, estrogens, oral
+contraceptives).
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 14 of 17
+
+=== PAGE 21 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705969 / 17049013 Report Date : 20/May/2026 04:12PM
+Sample Type : Serum Report Status : Final Report
+IMMUNOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+Decreased in: Hypogonadism (primary and secondary), orchidectomy, Klinefelter syndrome, uremia, hemodialysis, hepatic
+insufficiency, ethanol, drugs (digoxin, spironolactone, acarbose), excessive exercise.
+Note
+Free testosterone should be measured in symptomatic patients with normal total testosterone levels.
+In men, there is a diurnal variation in serum testosterone with a 20% elevation in levels in the evenings.
+Physiological episodic secretion of testosterone may lead to variation in serum levels.
+Time of day, age, sex, puberty, pre & post menopause have an influence on testosterone concentration.
+Please note test values may very depending on the assay method used.
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 15 of 17
+
+=== PAGE 22 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705972 / 17049013 Report Date : 20/May/2026 01:41PM
+Sample Type : Urine Report Status : Final Report
+CLINICAL PATHOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+Urine Routine & Microscopy
+Urine Routine Manual
+Physical & Chemical Examination
+Colour Pale Yellow Pale Yellow Manual
+Appearance Clear Clear Manual
+Specific gravity 1.005 1.003 - 1.035 pKa change
+pH 6.0 4.6 - 8.0 Double Indicator
+Glucose Negative Negative GOD-POD
+Protein Negative Negative Protein Error Principle
+Ketones Negative Negative Nitroprusside
+Blood Negative Negative Peroxidase
+Bilirubin Negative Negative Diazonium
+Urobilinogen Normal Normal Ehrlich
+Leucocyte Esterase Negative Negative Pyrrole
+Nitrite Negative Negative P-arsanilic acid
+Microscopic Examination
+Pus cells 2-3 /hpf 0-5 Microscopy
+Red Blood Cells Nil /hpf 0-2 Microscopy
+Epithelial cells 1-2 /hpf Few Microscopy
+Casts Nil /lpf Nil Microscopy
+Crystals Nil Nil Microscopy
+Yeast Nil Nil Microscopy
+Bacteria Nil Nil Microscopy
+Comment:
+•Note: Pre-test condition to be observed while submitting the sample-first void, mid stream urine, collected in a clean, dry, sterile
+container is recommended for routine urine analysis, avoid contamination with any discharge from vaginal, urethra, perineum,
+Avoid prolonged transit time & undue exposure to sunlight.
+•During interpretation, points to be considered are Negative nitrite test does not exclude the urinary tract infections. Trace
+proteinuria can be seen with many physiological conditions like prolonged recumbency, exercise, high protein diet. False positive
+reactions for bile pigments, proteins, glucose and nitrites can be caused by peroxidase like activity by disinfectants, therapeutic
+dyes, ascorbic acid and certain drugs.• Urine microscopy is done in centrifuged urine specimens
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 16 of 17
+
+=== PAGE 23 ===
+PO No :PO10002402197-853
+Customer Name : Mr.MADHUSUDHAN Collected Via : TATA 1MG HYDERABAD
+Age/Gender : 30Y 3M 4D /Male Referred By : Dr.
+Lab Visit ID : HYD827331 Collection Date : 20/May/2026 06:31AM
+Barcode ID/Order ID : D28705972 / 17049013 Report Date : 20/May/2026 01:41PM
+Sample Type : Urine Report Status : Final Report
+CLINICAL PATHOLOGY
+MEN HEALTH CHECKUP ADVANCED WITH SMART REPORT
+Test Name Result Unit Bio. Ref. Interval Method
+*** End Of Report ***
+Disclaimer:
+1. The reported results based on laboratory investigation, are only for the purposes of diagnosis and should be clinically correlated and interpreted
+by the referring physician/ medical practitioner. For any queries relating to the reported results, you may write to our customer support team
+on care@1mg.com
+2. It is presumed that the tests performed are, on the specimen / sample being to the patient named or identified and the verifications of
+particulars have been confirmed by the patient or his / her representative at the point of generation of said specimen.
+3. The reported results are restricted to the given specimen only. Results may vary from lab to lab and from time to time for the same parameter
+for the same patient (within subject biological variation).
+4. The patient's details along with their results in certain cases like notifiable diseases and as per local regulatory requirements will be
+communicated to the assigned regulatory bodies.
+5. The patient samples can be used as part of internal quality control, test verification, data analysis purposes within the testing scope of the
+laboratory.
+6. This report is not valid for medico legal purposes. It is performed to facilitate medical diagnosis only.
+7. Pregnant women should seek guidance from a qualified obstetrician as test parameters may vary during pregnancy
+This test has been performed at
+TATA 1MG HYDERABAD
+Roxana Padela Estate, 2nd floor,
+M.No.8-1-366/1/RPE/201 to 204, Tolichowki,
+Hyderabad, Telangana - 500008
+Page 17 of 17
+
+=== PAGE 24 ===
+edicines
+Financial
+&more
