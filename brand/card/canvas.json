@@ -1,0 +1,14 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html",    "x": 0,    "y": 0,   "w": 1050, "h": 600, "title": "A - Front (details)", "print": "fixed" },
+    { "file": "Reverse.dc.html", "x": 1180, "y": 0,   "w": 1050, "h": 600, "title": "A - Back (brand)",    "print": "fixed" },
+    { "file": "AltFront.dc.html","x": 0,    "y": 880, "w": 1050, "h": 600, "title": "B - Front (details)", "print": "fixed" },
+    { "file": "AltBack.dc.html", "x": 1180, "y": 880, "w": 1050, "h": 600, "title": "B - Back (brand)",    "print": "fixed" }
+  ],
+  "annotations": [
+    { "id": "dir-a", "x": 0, "y": -170, "w": 900, "text": "DIRECTION A - Dark front, light back.\nMatches the brochure. Looks premium in hand. Ask the printer for MATTE lamination - a glossy dark card shows every fingerprint." },
+    { "id": "dir-b", "x": 0, "y": 700, "w": 900, "text": "DIRECTION B - Light front, dark back.\nSafer, cheaper to print, easier to write on. The blue edge bar keeps it from looking plain." },
+    { "id": "todo", "x": 1180, "y": 700, "w": 900, "text": "TO FILL IN: office address + GSTIN on the A-Back card. Also confirm the name - the brochure says \"Vijay Kumar\"." }
+  ],
+  "launch": { "view": "canvas" }
+}
