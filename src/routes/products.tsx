@@ -112,16 +112,43 @@ function ProductCard({ product }: { product: Product }) {
         <div className="flex items-start gap-3.5">
           <span
             aria-hidden
-            className="grid h-12 w-12 shrink-0 place-items-center rounded-xl"
+            className="grid h-12 w-12 shrink-0 place-items-center overflow-hidden rounded-xl"
             style={{
               background: `color-mix(in srgb, ${product.accent} 14%, transparent)`,
               color: `color-mix(in oklab, ${product.accent}, var(--accent-toward) var(--accent-lift))`,
             }}
           >
-            <Icon />
+            {product.logo ? (
+              <img
+                src={product.logo.mark}
+                alt=""
+                width={160}
+                height={146}
+                loading="lazy"
+                decoding="async"
+                className="h-full w-full object-contain p-0.5"
+              />
+            ) : (
+              <Icon />
+            )}
           </span>
           <div className="min-w-0">
-            <h2 className="font-display text-lg leading-snug font-semibold">{product.name}</h2>
+            <h2 className="font-display text-lg leading-snug font-semibold">
+              {product.logo ? (
+                /* The alt text names the heading, so no duplicate label is needed. */
+                <img
+                  src={product.logo.wordmark}
+                  alt={product.logo.alt}
+                  width={360}
+                  height={98}
+                  loading="lazy"
+                  decoding="async"
+                  className="h-[22px] w-auto"
+                />
+              ) : (
+                product.name
+              )}
+            </h2>
             <p className="mt-1 text-[13px] text-muted-foreground">{product.audience}</p>
           </div>
         </div>

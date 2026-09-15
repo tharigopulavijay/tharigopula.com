@@ -35,6 +35,8 @@ export type Product = {
   externalUrl?: string | undefined;
   /** Shown under the status chip when the plain status needs a qualifier. */
   note?: string | undefined;
+  /** Real brand mark, for products that have one. Falls back to a drawn icon. */
+  logo?: { mark: string; wordmark: string; alt: string } | undefined;
 };
 
 export const products: Product[] = [
@@ -125,6 +127,11 @@ export const products: Product[] = [
     status: "internal-product",
     accent: "#0E8F9E",
     externalUrl: "https://znuffi.com",
+    logo: {
+      mark: "/products/znuffi-mascot.webp",
+      wordmark: "/products/znuffi-wordmark.webp",
+      alt: "Znuffi",
+    },
     note: "A separate venture, built in partnership. Parts of it are live.",
   },
 ];
