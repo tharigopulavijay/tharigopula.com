@@ -15,6 +15,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ExperienceLabRouteImport } from './routes/experience-lab'
 import { Route as PricingRouteImport } from './routes/pricing'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as ProductsRouteImport } from './routes/products'
 import { Route as SolutionsRouteImport } from './routes/solutions'
 import { Route as StartProjectRouteImport } from './routes/start-project'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -71,6 +72,11 @@ const PricingRoute = PricingRouteImport.update({
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SolutionsRoute = SolutionsRouteImport.update({
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/experience-lab': typeof ExperienceLabRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRoute
   '/solutions': typeof SolutionsRoute
   '/start-project': typeof StartProjectRoute
   '/terms': typeof TermsRoute
@@ -253,6 +260,7 @@ export interface FileRoutesByTo {
   '/experience-lab': typeof ExperienceLabRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRoute
   '/solutions': typeof SolutionsRoute
   '/start-project': typeof StartProjectRoute
   '/terms': typeof TermsRoute
@@ -289,6 +297,7 @@ export interface FileRoutesById {
   '/experience-lab': typeof ExperienceLabRoute
   '/pricing': typeof PricingRoute
   '/privacy': typeof PrivacyRoute
+  '/products': typeof ProductsRoute
   '/solutions': typeof SolutionsRoute
   '/start-project': typeof StartProjectRoute
   '/terms': typeof TermsRoute
@@ -326,6 +335,7 @@ export interface FileRouteTypes {
     | '/experience-lab'
     | '/pricing'
     | '/privacy'
+    | '/products'
     | '/solutions'
     | '/start-project'
     | '/terms'
@@ -361,6 +371,7 @@ export interface FileRouteTypes {
     | '/experience-lab'
     | '/pricing'
     | '/privacy'
+    | '/products'
     | '/solutions'
     | '/start-project'
     | '/terms'
@@ -396,6 +407,7 @@ export interface FileRouteTypes {
     | '/experience-lab'
     | '/pricing'
     | '/privacy'
+    | '/products'
     | '/solutions'
     | '/start-project'
     | '/terms'
@@ -432,6 +444,7 @@ export interface RootRouteChildren {
   ExperienceLabRoute: typeof ExperienceLabRoute
   PricingRoute: typeof PricingRoute
   PrivacyRoute: typeof PrivacyRoute
+  ProductsRoute: typeof ProductsRoute
   SolutionsRoute: typeof SolutionsRoute
   StartProjectRoute: typeof StartProjectRoute
   TermsRoute: typeof TermsRoute
@@ -503,6 +516,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy'
       fullPath: '/privacy'
       preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/solutions': {
@@ -704,6 +724,7 @@ const rootRouteChildren: RootRouteChildren = {
   ExperienceLabRoute: ExperienceLabRoute,
   PricingRoute: PricingRoute,
   PrivacyRoute: PrivacyRoute,
+  ProductsRoute: ProductsRoute,
   SolutionsRoute: SolutionsRoute,
   StartProjectRoute: StartProjectRoute,
   TermsRoute: TermsRoute,

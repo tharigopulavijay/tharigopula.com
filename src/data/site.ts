@@ -18,6 +18,7 @@ export const nav = [
   { to: "/", label: "Home" },
   { to: "/solutions", label: "Solutions" },
   { to: "/industries", label: "Industries" },
+  { to: "/products", label: "Products" },
   { to: "/showcase", label: "Showcase" },
   { to: "/portfolio", label: "Portfolio" },
   { to: "/pricing", label: "Pricing" },

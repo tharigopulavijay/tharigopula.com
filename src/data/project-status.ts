@@ -10,7 +10,7 @@
  */
 
 export type ProjectStatus =
-  "live-client" | "client-prototype" | "internal-product" | "concept" | "demo";
+  "live-client" | "client-prototype" | "internal-product" | "in-build" | "concept" | "demo";
 
 export type StatusMeta = {
   /** Short label shown on cards. */
@@ -36,6 +36,12 @@ export const projectStatuses: Record<ProjectStatus, StatusMeta> = {
   "internal-product": {
     label: "Internal product",
     meaning: "Built and used by Tharigopula, not for an external client.",
+    weight: "partial",
+  },
+  "in-build": {
+    label: "In development",
+    meaning:
+      "Actively being built. Shown here so you know it is coming, not so you can buy it today.",
     weight: "partial",
   },
   concept: {
