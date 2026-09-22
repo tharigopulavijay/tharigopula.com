@@ -1,0 +1,1595 @@
+/* =========================================================================
+   TCOS — clinical theme.
+
+   This is an instrument, not a brochure. A doctor opens it forty times a day,
+   often on an old monitor in a room with bad light, and needs to find one
+   number fast. So the design brief is: high contrast, dense but calm,
+   numbers that line up, state you can read at a glance.
+
+   The warm cream-and-gold palette this replaces belongs to the clinic's
+   marketing site. It is the wrong register for a working record system —
+   it reads spa, not clinic.
+
+   Colour rules:
+     - one primary (slate blue) for structure and actions
+     - one interactive accent (cyan) for focus and links
+     - semantic colours mean exactly one thing each and are never decorative
+     - text on any surface clears 4.5:1. No exceptions.
+   ========================================================================= */
+
+:root {
+  /* THIS ONE LINE IS WHY THE PHONE LOOKED WRONG.
+   *
+     With no colour scheme declared, Android Chrome applies its own
+     "auto dark theme": it recolours the whole page algorithmically to suit
+     a phone set to dark. Every value below was chosen against white and
+     checked for contrast on white, and the inversion throws all of that
+     away - which is exactly what Vijay was looking at when he said "the
+     buttons are bare visible". The tab bar's grey labels and deep teal
+     accent came out of the machine nearly the same shade.
+   *
+     Declaring the scheme tells the browser this design is a light one and
+     to leave it alone. It is not a preference about dark mode; a real dark
+     theme means a second set of these tokens and every screen checked
+     again, which is its own piece of work rather than something a browser
+     can be trusted to guess. */
+  color-scheme: light;
+
+  /* Neutrals sit a touch green, so white cards read as calm rather than
+     clinical-cold, and the teal never looks like it was dropped in. */
+  --ground:      #F7F8FA;
+  --card:        #FFFFFF;
+  --surface-2:   #F4F6F9;
+  --line:        #E4E9F0;
+  --line-soft:   #EFF2F6;
+
+  --ink:         #0F2748;
+  --ink-2:       #3E5063;
+  --muted:       #6B7A90;
+
+  /* The rail. Deep enough that white type on it is unarguable, and dark
+     enough that the workspace beside it reads as the lit surface. */
+  --navy:        #02254B;
+  --navy-2:      #04315A;
+  --navy-3:      #0B4A7A;
+
+  /* Light clinical navigation keeps the navy logo legible while preserving
+     the calm blue/teal hierarchy used throughout the workspace. */
+  --rail-bg:     #02254B;
+  --rail-bg-2:   #02254B;
+  --rail-ink:    #AEC2D6;
+  --rail-muted:  #7F94AC;
+
+  /* One brand colour, and it is the only thing allowed to be teal.
+     Primary actions, the active rail item, focus. Nothing decorative. */
+  --cyan:        #008796;
+  --cyan-soft:   #E0F5F7;
+  --cyan-deep:   #00707C;
+  --spark:       #00CDDB;
+
+  /* Semantic — each means exactly one thing, and never decorates. */
+  --ok:          #0B7A5F;
+  --ok-soft:     #DAF2EA;
+  --warn:        #8A5A00;
+  --warn-soft:   #FDF0D5;
+  --bad:         #A62B21;
+  --bad-soft:    #FDE3E1;
+  --info:        #1B4F9C;
+  --info-soft:   #DCEAFB;
+
+  /* names kept from the previous theme so the page stylesheets keep working */
+  --paper:       var(--ground);
+  --shell:       var(--surface-2);
+  --green:       var(--navy);
+  --green-light: var(--navy-3);
+  --gold:        var(--cyan);
+  --gold-soft:   var(--cyan-soft);
+  --ink-3:       var(--muted);
+
+  --radius:      13px;
+  --radius-sm:   9px;
+  /* Two shallow layers rather than one deep one: a card should look lifted a
+     millimetre off the page, not floating above it. */
+  --shadow:      0 1px 2px rgba(15,39,72,.04);
+  --shadow-lg:   0 24px 60px rgba(11,36,50,.20);
+
+  --font: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font);
+  background: var(--ground);
+  color: var(--ink);
+  line-height: 1.5;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--cyan); }
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* Numbers line up wherever they are compared. */
+.qty, .stat b, td.value, .num, table.grid td { font-variant-numeric: tabular-nums; }
+
+/* One visible focus treatment everywhere. */
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------------- brand mark ---------------- */
+.mark {
+  display: inline-grid; place-items: center;
+  width: 34px; height: 34px; border-radius: var(--radius-sm);
+  background: transparent; color: #3FD2AC;
+  font-family: var(--font); font-weight: 700; font-size: .78rem;
+  letter-spacing: .02em; flex-shrink: 0;
+}
+.mark svg { width: 34px; height: 34px; }
+/* Where the mark sits on a light ground it needs the brand colour, not the
+   mint that only works against the dark rail. */
+.auth-card .mark, .workspace .mark { color: var(--cyan); }
+.auth-card .mark svg path, .workspace .mark svg path { stroke: #fff; }
+.mark.lg { width: 46px; height: 46px; }
+.mark.lg svg { width: 46px; height: 46px; }
+
+/* Who is signed in, at the foot of the rail. */
+.rail .rail-who {
+  display: flex; align-items: center; gap: 11px;
+  padding: 14px 6px 16px; margin-bottom: 4px;
+  border-top: 1px solid rgba(18,54,75,.14);
+}
+.rail .rail-who b {
+  display: block; color: var(--rail-ink); font-size: .845rem; font-weight: 600;
+  line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.rail .rail-who small { display: block; color: var(--rail-muted); font-size: .74rem; }
+.rail .avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  background: rgba(0,205,219,.16); color: var(--spark);
+  font-size: .78rem; font-weight: 700; letter-spacing: .03em;
+}
+
+/* ---------------- buttons ---------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 17px; border: 1px solid transparent; border-radius: var(--radius-sm);
+  font-size: .87rem; font-weight: 600; cursor: pointer; white-space: nowrap;
+  transition: background .13s ease, border-color .13s ease, color .13s ease;
+}
+.btn { text-decoration: none; }
+/* Beats .btn's own display, which otherwise overrides the browser rule. */
+.btn[hidden], [hidden] { display: none !important; }
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+
+.btn-primary { background: var(--cyan); color: #fff; box-shadow: 0 1px 2px rgba(11,36,50,.10); }
+.btn-primary:hover:not(:disabled) { background: var(--cyan-deep); }
+
+.btn-ghost { background: var(--card); border-color: var(--line); color: var(--ink); }
+.btn-ghost:hover:not(:disabled) { background: var(--surface-2); border-color: var(--muted); }
+
+.btn-danger { background: var(--bad-soft); color: var(--bad); border-color: #EFC9C5; }
+.btn-danger:hover:not(:disabled) { background: #F6DAD7; }
+
+.btn-sm { padding: 6px 11px; font-size: .81rem; }
+.btn-full { width: 100%; }
+
+/* The consultation bar remains dark; its ghost controls must invert. */
+.consult-bar .btn-ghost {
+  background: rgba(255,255,255,.10);
+  border-color: rgba(255,255,255,.34);
+  color: #FFFFFF;
+}
+.consult-bar .btn-ghost:hover {
+  background: rgba(255,255,255,.20);
+  border-color: rgba(255,255,255,.55);
+  color: #FFFFFF;
+}
+
+/* ---------------- fields ---------------- */
+.field { display: block; margin-bottom: 13px; }
+.field > span {
+  display: block; font-size: .72rem; font-weight: 600;
+  letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-2); margin-bottom: 5px;
+}
+.field input, .field select, .field textarea {
+  width: 100%; padding: 9px 11px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--card); color: var(--ink);
+}
+.field input:focus, .field select:focus, .field textarea:focus {
+  outline: none; border-color: var(--cyan);
+  box-shadow: 0 0 0 3px var(--cyan-soft);
+}
+.field input:disabled, .field select:disabled, .field textarea:disabled {
+  background: var(--surface-2); color: var(--muted);
+}
+.field small { display: block; margin-top: 4px; font-size: .76rem; color: var(--muted); }
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0 13px; }
+
+/* ---------------- notices ---------------- */
+.notice {
+  padding: 10px 13px; border-radius: var(--radius-sm);
+  font-size: .85rem; margin-bottom: 13px; border: 1px solid transparent;
+}
+.notice.error { background: var(--bad-soft); color: var(--bad); border-color: #EFC9C5; }
+.notice.ok    { background: var(--ok-soft);  color: var(--ok);  border-color: #C4E4D3; }
+.notice.info  { background: var(--warn-soft); color: var(--warn); border-color: #EEDDBE; }
+.notice code {
+  display: block; margin-top: 6px; font-family: var(--mono);
+  font-size: 1.15rem; font-weight: 600; letter-spacing: .2em; color: var(--ink);
+}
+
+.proto-banner {
+  background: var(--navy); color: #CFE3EE;
+  font-size: .78rem; text-align: center; padding: 7px 14px;
+}
+
+/* ---------------- sign in ---------------- */
+.auth-wrap { min-height: 100vh; display: grid; grid-template-columns: minmax(520px,1.2fr) minmax(390px,.8fr); }
+.auth-side {
+  background: linear-gradient(155deg, #E7F7F7 0%, #D6ECEF 58%, #CDE4EA 100%);
+  color: var(--ink); padding: 46px 44px;
+  display: flex; flex-direction: column; justify-content: space-between;
+  min-width: 0; overflow: hidden;
+}
+.auth-side h1 {
+  font-size: clamp(2rem, 3vw, 3.15rem); line-height: 1.04; margin: 14px 0;
+  font-weight: 700; max-width: 13ch; letter-spacing: -.035em; text-wrap: balance;
+}
+.auth-side p { color: var(--ink-2); font-size: .93rem; max-width: 58ch; }
+.auth-side ul { list-style: none; margin-top: 26px; display: grid; gap: 10px; }
+.auth-side li { display: flex; gap: 10px; font-size: .88rem; color: var(--rail-ink); }
+.auth-side li::before { content: '—'; color: var(--cyan); font-weight: 700; }
+.auth-side .foot { font-size: .76rem; color: var(--rail-muted); }
+.auth-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 600; letter-spacing: .1em; font-family: var(--mono); font-size: .9rem;
+}
+
+.auth-main { display: grid; place-items: center; padding: 40px 26px; background: var(--ground); }
+.auth-card { width: 100%; max-width: 400px; }
+.auth-card h2 { font-size: 1.42rem; margin-bottom: 4px; font-weight: 600; }
+.auth-card .sub { color: var(--muted); font-size: .89rem; margin-bottom: 22px; }
+.auth-links {
+  margin-top: 15px; display: flex; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap; font-size: .84rem;
+}
+.auth-links button {
+  background: none; border: none; color: var(--cyan);
+  font-weight: 500; cursor: pointer; padding: 0; font-size: .84rem;
+}
+.auth-links button:hover { text-decoration: underline; }
+
+/* ---------------- sign-in: the product's own pitch ----------------
+   The left half of the sign-in page is the only marketing surface in
+   TCOS, and each product fills it with its own words (js/products.js).
+   Everything here is layout: nothing names a discipline, so all three
+   products render through the same rules. */
+.auth-eyebrow {
+  display: inline-block; margin-top: 22px;
+  color: var(--cyan-deep); font-size: .72rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.auth-side .auth-lead {
+  font-size: 1rem; line-height: 1.65; color: var(--ink-2); max-width: 52ch;
+}
+.auth-benefits {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px; margin-top: 24px; max-width: 720px;
+}
+.auth-benefits article {
+  padding: 14px 15px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); background: rgba(255, 255, 255, .55);
+}
+.auth-benefits b {
+  display: block; color: var(--ink); font-size: .85rem; margin-bottom: 5px;
+}
+.auth-benefits span {
+  display: block; color: var(--ink-2); font-size: .76rem; line-height: 1.45;
+}
+.auth-trust { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+.auth-trust span {
+  padding: 6px 10px; border-radius: 999px;
+  background: var(--cyan-soft); color: var(--cyan-deep);
+  font-size: .7rem; font-weight: 600;
+}
+.onboarding-card {
+  margin-top: 26px; padding: 18px; border: 1px solid var(--line);
+  border-radius: var(--radius); background: var(--card); box-shadow: var(--shadow);
+}
+.onboarding-card .onboarding-kicker {
+  display: block; color: var(--cyan-deep); font-size: .69rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; margin-bottom: 4px;
+}
+.onboarding-card h3 { font-size: 1rem; margin: 0 0 6px; }
+.onboarding-card p {
+  color: var(--muted); font-size: .78rem; line-height: 1.5; margin-bottom: 13px;
+}
+.onboarding-card small {
+  display: block; color: var(--muted); font-size: .7rem; line-height: 1.4; margin-top: 9px;
+}
+.btn-secondary {
+  border: 1px solid var(--cyan); color: var(--cyan-deep);
+  background: var(--cyan-soft); text-decoration: none; text-align: center;
+}
+
+.demo-hint {
+  margin-top: 20px; padding: 12px 14px; border: 1px solid var(--line);
+  border-left: 3px solid var(--cyan); border-radius: var(--radius-sm);
+  font-size: .82rem; color: var(--ink-2); background: var(--card);
+}
+.demo-hint b { color: var(--ink); }
+
+/* ---------------- console shell ---------------- */
+.console { display: grid; grid-template-columns: 252px 1fr; min-height: 100vh; }
+
+.rail {
+  background: var(--rail-bg); color: var(--rail-muted);
+  padding: 20px 14px 22px; display: flex; flex-direction: column; gap: 2px;
+  overflow: hidden;
+}
+
+/* The lockup. The tagline is not decoration: "The Clinical Operating System"
+   is the one line that tells a doctor seeing this for the first time what
+   she is looking at. */
+.rail .rail-brand {
+  display: flex; align-items: center; gap: 11px;
+  padding: 2px 8px 26px; color: #fff; font-weight: 700;
+  font-family: var(--font); letter-spacing: .03em; font-size: 1.18rem;
+}
+.rail .rail-brand small {
+  display: block; font-family: var(--font); font-weight: 400;
+  font-size: .68rem; letter-spacing: .015em; color: #7F9FB3;
+  text-transform: none; margin-top: 3px; line-height: 1.35;
+}
+.tcos-logo {
+  display: block;
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+/* The product lockups are full-colour and each one ends in a deep navy
+   "COS" - on a #02254B rail that half of the logo simply disappears.
+   `filter: brightness(0) invert(1)` used to solve that by flattening the
+   whole thing to a white silhouette, which works for any artwork and throws
+   away the brand while doing it: AyurCOS green, HomeoCOS violet and AlloCOS
+   blue all come out identical.
+   So the logo sits on its own light panel instead. It keeps every colour,
+   reads as deliberate rather than as an image that failed to load, and does
+   not need a second set of light-on-dark artwork per product. */
+.rail .rail-brand {
+  padding: 0;
+  margin: 0 0 20px;
+  background: transparent;
+}
+.rail .rail-brand .tcos-logo {
+  max-width: 178px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 9px 11px;
+  box-sizing: border-box;
+}
+.auth-brand {
+  width: min(100%, 340px);
+  max-width: 340px;
+  padding: 0;
+  background: transparent;
+}
+.rail a, .rail button.nav {
+  display: flex; align-items: center; gap: 13px;
+  width: calc(100% + 28px); margin-left: -14px;
+  padding: 12px 14px 12px 25px; text-align: left;
+  border: none; border-left: 3px solid transparent; border-radius: 0;
+  font-size: .89rem; font-weight: 500; text-decoration: none; color: var(--rail-ink);
+  background: none; cursor: pointer;
+  transition: background .13s ease, color .13s ease;
+}
+
+/* Icons are drawn from a mask, so they take the link's own colour and change
+   with it on hover - no second set of assets for the active state. */
+.rail a[data-icon]::before, .rail button.nav[data-icon]::before {
+  content: ""; width: 19px; height: 19px; flex: none;
+  background: currentColor;
+  -webkit-mask: var(--i) center / contain no-repeat;
+          mask: var(--i) center / contain no-repeat;
+}
+[data-icon="today"]    { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>'); }
+[data-icon="patients"] { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/></svg>'); }
+[data-icon="pharmacy"] { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M12 11v6M9 14h6"/></svg>'); }
+[data-icon="web"]      { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18"/></svg>'); }
+[data-icon="practice"] { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M10 21v-5h4v5"/></svg>'); }
+[data-icon="team"]     { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>'); }
+
+[data-icon="rx"]      { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V5a2 2 0 0 1 2-2h6l6 6v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2z"/><path d="M13 3v6h6M9 13h4a2 2 0 0 1 0 4H9v-4zm0 4 4 4"/></svg>'); }
+[data-icon="billing"] { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12a1 1 0 0 1 1 1v18l-3-2-3 2-3-2-3 2V3a1 1 0 0 1 1-1z"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>'); }
+[data-icon="reports"] { --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15V9M12 15V5M17 15v-4"/></svg>'); }
+
+.rail a:hover, .rail button.nav:hover { background: rgba(255,255,255,.06); color: #fff; }
+
+/* How many doctors are waiting to be verified. On the rail rather than
+   inside the panel, because it is the one number that should pull somebody
+   into a screen they were not already looking at. */
+.nav-count {
+  margin-left: auto; min-width: 20px; padding: 1px 7px; border-radius: 999px;
+  background: var(--marker, #00CDDB); color: #02254B;
+  font-family: var(--mono); font-size: .68rem; font-weight: 600; text-align: center;
+}
+.rail a.active, .rail button.nav.active {
+  background: var(--navy-2); color: #fff; font-weight: 600;
+  border-left-color: var(--spark);
+}
+.rail .rail-foot {
+  margin-top: auto; padding: 14px 4px 0; font-size: .76rem; color: var(--rail-muted);
+  border-top: 1px solid rgba(18,54,75,.14);
+}
+
+.workspace { padding: 30px 34px 60px; overflow-x: hidden; background: var(--ground); }
+.workspace > header {
+  display: flex; align-items: flex-start; gap: 14px;
+  flex-wrap: wrap; margin-bottom: 20px;
+}
+.workspace > header .spacer { margin-left: auto; }
+
+/* ---------------- stats ---------------- */
+.stat-row {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(212px, 1fr));
+  gap: 16px; margin-bottom: 24px;
+}
+.stat {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow);
+  display: flex; align-items: flex-start; gap: 15px;
+}
+.stat .stat-text { min-width: 0; }
+.stat b {
+  display: block; font-size: 2rem; color: var(--ink);
+  line-height: 1.05; font-weight: 700; letter-spacing: -.02em; margin-top: 2px;
+}
+.stat span { font-size: .82rem; font-weight: 600; color: var(--ink-2); letter-spacing: 0; text-transform: none; }
+.stat small { display: block; font-size: .78rem; color: var(--muted); margin-top: 5px; }
+
+/* A plan is a small decision, not a row of unrelated statistics. Keeping
+   its name, price, explanation and action vertical prevents the explanation
+   collapsing to one word per line on ordinary clinic laptops. */
+.plan-card {
+  min-width: 220px; min-height: 176px;
+  flex-direction: column; gap: 4px; align-items: stretch;
+}
+.plan-card > strong {
+  display: block; margin-top: 3px; color: var(--ink);
+  font-size: 1.55rem; line-height: 1.15; letter-spacing: -.02em;
+}
+.plan-card > small { line-height: 1.45; }
+.plan-card > .btn { width: 100%; margin-top: auto; }
+
+/* The tinted square carrying the icon. Its colour is the only thing telling
+   one tile from the next at a glance, so each state keeps its own and never
+   borrows another's. */
+.stat .chip {
+  width: 44px; height: 44px; border-radius: 11px; flex: none;
+  display: grid; place-items: center;
+  background: var(--cyan-soft); color: var(--cyan);
+}
+.stat .chip svg { width: 21px; height: 21px; }
+.stat.is-warn .chip { background: var(--warn-soft); color: var(--warn); }
+.stat.is-info .chip { background: var(--info-soft); color: var(--info); }
+.stat.is-bad  .chip { background: var(--bad-soft);  color: var(--bad); }
+
+/* ---------------- panels and tables ---------------- */
+.panel {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); overflow: hidden; margin-bottom: 18px;
+}
+.panel { box-shadow: var(--shadow); }
+.panel > header {
+  padding: 16px 20px; border-bottom: 1px solid var(--line-soft);
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  background: var(--card);
+}
+.panel > header h2 { font-size: 1rem; font-weight: 700; letter-spacing: -.01em; }
+.panel > header .spacer { margin-left: auto; }
+.panel .body { padding: 20px; }
+
+/* ---------------- page heading ---------------- */
+.workspace > header h1 {
+  font-size: 1.85rem; font-weight: 700; letter-spacing: -.03em; color: var(--ink);
+}
+.workspace > header p { color: var(--muted); font-size: .9rem; margin-top: 3px; }
+
+/* ---------------- search card ---------------- */
+.search-card {
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow);
+  border-radius: var(--radius); padding: 20px; margin-bottom: 22px;
+}
+.search-card .field > span {
+  font-size: .74rem; font-weight: 700; letter-spacing: .07em;
+  text-transform: uppercase; color: var(--muted);
+}
+.search-card input {
+  width: 100%; padding: 13px 15px; font-size: .95rem;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--card);
+}
+.search-card input:focus { border-color: var(--cyan); outline: none;
+  box-shadow: 0 0 0 3px rgba(14,124,104,.13); }
+
+table.grid { width: 100%; border-collapse: collapse; font-size: .875rem; }
+table.grid th {
+  text-align: left; padding: 13px 20px;
+  font-size: .705rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--muted); font-weight: 700;
+  border-bottom: 1px solid var(--line); white-space: nowrap;
+  background: var(--surface-2);
+}
+table.grid td { padding: 15px 20px; border-bottom: 1px solid var(--line-soft); }
+/* Two buttons at the end of a row stay on one line rather than straddling
+   two. Was an inline style on every such cell; a class instead, so the
+   phone card layout can turn it off without fighting inline specificity. */
+table.grid td.actions { white-space: nowrap; }
+
+/* js/reports.js has been writing <small class="block"> since it was
+   written, and nothing anywhere defined .block - so the patient's number
+   ran straight on from their name, on every screen size, and always had.
+   Found because the card layout put the two side by side where it could
+   not be ignored. */
+.block { display: block; }
+table.grid td .btn { margin-left: 6px; }
+table.grid td .btn:first-child { margin-left: 0; }
+table.grid tr:last-child td { border-bottom: none; }
+table.grid tbody tr:hover td { background: var(--surface-2); }
+
+.clinic-cell { display: flex; align-items: center; gap: 10px; }
+.clinic-cell img, .clinic-cell .fallback {
+  width: 38px; height: 38px; border-radius: 50%;
+  object-fit: cover; background: var(--cyan-soft); flex-shrink: 0;
+}
+.clinic-cell .fallback {
+  display: grid; place-items: center; font-weight: 700;
+  color: var(--cyan-deep); font-size: .9rem;
+}
+.clinic-cell b { display: block; font-size: .89rem; font-weight: 600; }
+.clinic-cell small { color: var(--muted); font-size: .78rem; }
+
+/* ---------------- state chips ---------------- */
+.pill {
+  display: inline-block; padding: 5px 12px; border-radius: 999px;
+  font-size: .755rem; font-weight: 600; letter-spacing: .01em; white-space: nowrap;
+  background: var(--surface-2); color: var(--ink-2);
+}
+.pill.active    { background: var(--ok-soft);   color: var(--ok); }
+.pill.trial     { background: var(--warn-soft); color: var(--warn); }
+.pill.suspended { background: var(--bad-soft);  color: var(--bad); }
+.pill.info      { background: var(--info-soft); color: var(--info); }
+
+.pack-chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.pack-chips span {
+  font-size: .71rem; padding: 3px 8px; border-radius: 5px;
+  background: var(--surface-2); color: var(--ink-2); border: 1px solid var(--line-soft);
+}
+
+/* ---------------- toggles ---------------- */
+.toggle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.toggle {
+  display: flex; align-items: center; gap: 9px;
+  padding: 9px 11px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); cursor: pointer;
+  background: var(--card); font-size: .85rem;
+}
+.toggle:hover { border-color: var(--cyan); }
+.toggle input { width: 15px; height: 15px; accent-color: var(--cyan); cursor: pointer; }
+.toggle.on { background: var(--cyan-soft); border-color: #A9D5DF; }
+
+.logo-drop {
+  display: flex; align-items: center; gap: 13px;
+  padding: 12px; border: 1px dashed var(--line);
+  border-radius: var(--radius); background: var(--surface-2);
+}
+.logo-drop img, .logo-drop .fallback {
+  width: 52px; height: 52px; border-radius: var(--radius-sm);
+  object-fit: cover; background: var(--cyan-soft); flex-shrink: 0;
+}
+.logo-drop .fallback {
+  display: grid; place-items: center; font-weight: 600;
+  color: var(--navy-2); font-size: 1.15rem;
+}
+
+/* ---------------- activity ---------------- */
+.activity div {
+  display: flex; gap: 12px; align-items: baseline;
+  padding: 8px 0; border-bottom: 1px solid var(--line-soft); font-size: .84rem;
+}
+.activity div:last-child { border-bottom: none; }
+.activity time {
+  color: var(--muted); font-size: .75rem; font-family: var(--mono);
+  white-space: nowrap; min-width: 132px;
+}
+
+/* ---------------- dialogs ---------------- */
+dialog {
+  border: none; border-radius: var(--radius); padding: 0;
+  width: min(560px, 94vw); box-shadow: var(--shadow-lg); color: var(--ink);
+  background: var(--card);
+}
+dialog::backdrop { background: rgba(15,26,34,.5); }
+dialog header {
+  padding: 15px 19px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; background: var(--surface-2);
+}
+dialog header h3 { font-size: 1rem; font-weight: 600; }
+dialog header button {
+  margin-left: auto; background: none; border: none;
+  font-size: 1.3rem; cursor: pointer; color: var(--muted); line-height: 1;
+}
+dialog header button:hover { color: var(--ink); }
+dialog .body { padding: 19px; max-height: 66vh; overflow-y: auto; }
+dialog footer {
+  padding: 13px 19px; border-top: 1px solid var(--line);
+  display: flex; gap: 9px; justify-content: flex-end; background: var(--surface-2);
+}
+
+.empty { padding: 32px; text-align: center; color: var(--muted); font-size: .87rem; }
+
+/* ---------------- plans ---------------- */
+.line-head { margin: 4px 0 13px; }
+.line-head h2 { font-size: 1rem; margin-bottom: 2px; font-weight: 600; }
+.line-head p { font-size: .84rem; color: var(--muted); }
+.line-head.next { margin-top: 28px; }
+
+.plan-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(238px, 1fr)); gap: 13px; margin-bottom: 20px; }
+.plan-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 17px 18px; display: flex; flex-direction: column;
+}
+.plan-card.tier-pro { border-color: var(--cyan); }
+.plan-card.tier-pro_plus { border-color: var(--navy-2); box-shadow: var(--shadow); }
+.plan-card h3 { font-size: 1.08rem; margin-bottom: 2px; font-weight: 600; }
+.plan-card .tagline { font-size: .81rem; color: var(--muted); margin-bottom: 11px; }
+.plan-card .price { font-size: 1.45rem; font-weight: 600; color: var(--navy-2); }
+.plan-card .yearly { font-size: .74rem; color: var(--muted); margin-bottom: 10px; }
+.plan-card .seats { font-size: .77rem; color: var(--muted); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line-soft); }
+.plan-card .pitch { font-size: .81rem; color: var(--ink-2); margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--line-soft); }
+.plan-card ul { list-style: none; display: grid; gap: 5px; font-size: .81rem; }
+.plan-card li { display: flex; gap: 8px; }
+.plan-card li::before { content: '✓'; color: var(--ok); font-weight: 700; }
+.plan-card li.off { color: var(--muted); }
+.plan-card li.off::before { content: '·'; color: var(--line); }
+.plan-card .count { margin-top: auto; padding-top: 12px; font-size: .77rem; color: var(--muted); }
+
+.feature-matrix { display: grid; gap: 13px; }
+.feature-group > h5 {
+  font-size: .69rem; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--ink-2); margin-bottom: 6px; font-weight: 600;
+}
+.toggle.locked { opacity: .6; cursor: not-allowed; background: var(--surface-2); }
+.toggle.overridden { border-color: var(--warn); background: var(--warn-soft); }
+.toggle small.flag {
+  display: block; font-size: .65rem; color: var(--warn);
+  letter-spacing: .03em; text-transform: uppercase;
+}
+.pill.trial-pill { background: var(--cyan-soft); color: #075A6B; }
+.pill.line-pill { background: var(--surface-2); color: var(--ink-2); }
+.panel .body.soon p { font-size: .86rem; color: var(--muted); margin-top: 10px; max-width: 68ch; }
+.panel .body.soon p.trigger { color: var(--ink-2); }
+
+@media (max-width: 900px) {
+  /* The pitch stays on a phone rather than being hidden - a doctor sent a
+     link on WhatsApp opens it there first. */
+  .auth-wrap { grid-template-columns: 1fr; }
+  .auth-side { display: flex; min-height: auto; padding: 28px 22px; }
+  .auth-side h1 { font-size: 2rem; }
+  .auth-side .foot { margin-top: 22px; }
+  .auth-benefits { grid-template-columns: 1fr; }
+  .auth-main { padding: 32px 20px 48px; }
+  .console { grid-template-columns: 1fr; }
+  .rail { flex-direction: row; overflow-x: auto; gap: 4px; padding: 9px; align-items: center; }
+  .rail .rail-brand { display: none; }
+  .rail .rail-foot { margin: 0 0 0 auto; border: none; padding: 0; }
+  .rail a, .rail button.nav { width: auto; white-space: nowrap; }
+  .workspace { padding: 16px 13px 48px; }
+  .field-row { grid-template-columns: 1fr; }
+  table.grid { display: block; overflow-x: auto; white-space: nowrap; }
+}
+
+
+/* ---------------- sign in ---------------- */
+.auth-brand { display: flex; align-items: center; gap: 11px;
+  color: #fff; font-weight: 700; font-size: 1.18rem; letter-spacing: .03em; }
+.auth-brand small { display: block; font-weight: 400; font-size: .68rem;
+  letter-spacing: .015em; color: #7F9FB3; margin-top: 3px; }
+.auth-side .mark { color: #3FD2AC; }
+.auth-nosignup { color: var(--muted); font-size: .84rem; }
+.auth-nosignup a { color: var(--cyan); font-weight: 600; text-decoration: none; }
+.auth-nosignup a:hover { text-decoration: underline; }
+
+
+/* ---------------- settings: form column beside a progress card --------- */
+.settings-layout { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 22px; align-items: start; }
+.settings-side { position: sticky; top: 30px; display: grid; gap: 18px; }
+@media (max-width: 1080px) {
+  .settings-layout { grid-template-columns: 1fr; }
+  .settings-side { position: static; }
+}
+
+.setup-bar {
+  height: 7px; border-radius: 999px; background: var(--surface-2);
+  overflow: hidden; margin-bottom: 10px;
+}
+.setup-bar span {
+  display: block; height: 100%; width: 0; border-radius: 999px;
+  background: var(--cyan); transition: width .3s ease;
+}
+.setup-count { font-size: .82rem; color: var(--muted); margin: 0 0 14px; font-weight: 600; }
+.setup-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.setup-list li {
+  display: flex; align-items: center; gap: 10px;
+  font-size: .865rem; color: var(--muted);
+}
+.setup-list li.done { color: var(--ink); }
+.setup-list .tick {
+  width: 20px; height: 20px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-size: .68rem; font-weight: 700;
+  border: 1.5px solid var(--line); color: transparent;
+}
+.setup-list li.done .tick {
+  background: var(--cyan); border-color: var(--cyan); color: #fff;
+}
+
+
+/* ---------------- the patient header on a chart ---------------- */
+.patient-head {
+  display: flex; align-items: center; gap: 18px; flex-wrap: wrap;
+  background: var(--card); border: 1px solid var(--line); box-shadow: var(--shadow);
+  border-radius: var(--radius); padding: 20px 24px; margin-bottom: 22px;
+}
+.patient-head .spacer { margin-left: auto; }
+.patient-face {
+  width: 58px; height: 58px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  background: var(--cyan-soft); color: var(--cyan-deep);
+  font-size: 1.45rem; font-weight: 700;
+}
+.patient-id h1 { font-size: 1.5rem; font-weight: 700; letter-spacing: -.025em; }
+.patient-id p { color: var(--muted); font-size: .865rem; margin-top: 3px; }
+
+.patient-counts { display: flex; gap: 26px; padding-left: 26px; border-left: 1px solid var(--line); }
+.patient-counts b {
+  display: block; font-size: 1.3rem; font-weight: 700; color: var(--ink); line-height: 1.1;
+}
+.patient-counts span {
+  font-size: .715rem; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--muted); font-weight: 600;
+}
+@media (max-width: 860px) {
+  .patient-counts { padding-left: 0; border-left: 0; }
+}
+
+
+/* ---------------- the bar across the top of every screen ----------------
+
+   Thin on purpose. It carries three things a doctor glances at and none she
+   has to read: who she is, whether anything is waiting, and the way out. */
+.topbar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 0 20px; margin-bottom: 4px;
+  border-bottom: 1px solid var(--line); margin-top: -6px;
+}
+.topbar .spacer { margin-left: auto; }
+.topbar-hello b {
+  display: block; font-size: 1.02rem; font-weight: 700;
+  letter-spacing: -.01em; color: var(--ink);
+}
+.topbar-hello span { font-size: .8rem; color: var(--muted); }
+
+.topbar-bell {
+  position: relative; width: 38px; height: 38px; border-radius: 10px;
+  display: grid; place-items: center; color: var(--ink-2);
+  border: 1px solid var(--line); background: var(--card); text-decoration: none;
+}
+.topbar-bell:hover { background: var(--surface-2); color: var(--ink); }
+.topbar-bell svg { width: 18px; height: 18px; }
+.topbar-bell .dot {
+  position: absolute; top: -6px; right: -6px; min-width: 19px; height: 19px;
+  padding: 0 5px; border-radius: 999px; background: var(--bad); color: #fff;
+  font-size: .68rem; font-weight: 700; display: grid; place-items: center;
+  border: 2px solid var(--ground);
+}
+.topbar-avatar {
+  width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--cyan-soft); color: var(--cyan-deep);
+  font-size: .8rem; font-weight: 700; flex: none;
+}
+
+/* The page heading sits directly under the bar, so it loses its own margin. */
+.topbar + header { padding-top: 20px; }
+
+/* ---------------- team ---------------- */
+
+.field-label {
+  display: block; font-size: .735rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 8px;
+}
+.role-choices { display: grid; gap: 10px; }
+.role-choice {
+  display: flex; align-items: flex-start; gap: 12px; cursor: pointer;
+  padding: 14px 16px; border: 1px solid var(--line); border-radius: 11px;
+  background: var(--card); transition: border-color .13s ease, background .13s ease;
+}
+.role-choice:hover { border-color: var(--muted); }
+.role-choice input { margin-top: 3px; accent-color: var(--cyan); }
+.role-choice:has(input:checked) {
+  border-color: var(--cyan); background: var(--cyan-soft);
+  box-shadow: 0 0 0 1px var(--cyan);
+}
+.role-choice b { display: block; font-size: .9rem; }
+.role-choice small { color: var(--ink-2); font-size: .8rem; }
+
+/* The temporary password, shown once. Big, monospaced, and impossible to
+   mistake for anything else on the screen. */
+.pass-note { color: var(--muted); font-size: .86rem; margin: 0 0 12px; }
+.pass-box {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+  padding: 16px 18px; border-radius: 11px;
+  background: var(--navy); border: 1px solid var(--navy-2);
+}
+.pass-box code {
+  font-family: var(--mono); font-size: 1.28rem; font-weight: 600;
+  letter-spacing: .04em; color: #6FE0C0; flex: 1; word-break: break-all;
+}
+.pass-box .btn { background: rgba(255,255,255,.12); border-color: rgba(255,255,255,.3); color: #fff; }
+.pass-box .btn:hover { background: rgba(255,255,255,.22); }
+
+/* What each role can open. The one table a doctor reads before she trusts
+   any of this, so it is plain and wide rather than clever. */
+table.grid.matrix td.cell { text-align: center; }
+table.grid.matrix .yes { color: var(--ok); font-weight: 700; }
+table.grid.matrix .no  { color: var(--line); font-weight: 700; }
+table.grid.matrix th:first-child, table.grid.matrix td:first-child { text-align: left; }
+.matrix-note {
+  margin: 14px 0 0; font-size: .84rem; color: var(--muted); max-width: 70ch;
+}
+
+/* ---------------- the forced first password ---------------- */
+#mustChangeDialog .explain {
+  color: var(--ink-2); font-size: .88rem; margin-bottom: 16px; max-width: 52ch;
+}
+
+
+/* ---------------- Today: the day, and everything asking for a decision -- */
+.today-layout { display: grid; grid-template-columns: minmax(0,1fr) 340px; gap: 22px; align-items: start; }
+.today-side { display: grid; gap: 18px; position: sticky; top: 26px; }
+@media (max-width: 1180px) {
+  .today-layout { grid-template-columns: 1fr; }
+  .today-side { position: static; }
+}
+
+.attention-list { display: grid; }
+.attention-row {
+  display: flex; align-items: center; gap: 13px;
+  padding: 15px 20px; border-bottom: 1px solid var(--line-soft);
+  text-decoration: none; color: inherit;
+}
+.attention-row:last-child { border-bottom: none; }
+.attention-row:hover { background: var(--surface-2); }
+.attention-row b { display: block; font-size: .875rem; font-weight: 600; color: var(--ink); }
+.attention-row small { display: block; color: var(--muted); font-size: .78rem; margin-top: 2px; }
+.attention-row .chip {
+  width: 38px; height: 38px; border-radius: 10px; flex: none;
+  display: grid; place-items: center; background: var(--cyan-soft); color: var(--cyan);
+}
+.attention-row .chip svg { width: 18px; height: 18px; }
+.attention-row.is-warn .chip { background: var(--warn-soft); color: var(--warn); }
+.attention-row.is-info .chip { background: var(--info-soft); color: var(--info); }
+.attention-row.is-bad  .chip { background: var(--bad-soft);  color: var(--bad); }
+.attention-go {
+  margin-left: auto; font-size: .78rem; font-weight: 600;
+  color: var(--cyan); white-space: nowrap;
+}
+.calm-tick {
+  display: inline-grid; place-items: center; width: 46px; height: 46px;
+  border-radius: 50%; background: var(--ok-soft); color: var(--ok);
+}
+.calm-tick svg { width: 22px; height: 22px; }
+
+/* ---------------- quick actions ---------------- */
+.quick-grid { display: grid; gap: 10px; }
+.quick-tile {
+  display: flex; align-items: center; gap: 13px;
+  padding: 13px 15px; border: 1px solid var(--line); border-radius: 11px;
+  text-decoration: none; color: inherit; background: var(--card);
+  transition: border-color .13s ease, background .13s ease;
+}
+.quick-tile:hover { border-color: var(--cyan); background: var(--cyan-soft); }
+.quick-tile b { display: block; font-size: .865rem; font-weight: 600; color: var(--ink); }
+.quick-tile small { display: block; color: var(--muted); font-size: .77rem; margin-top: 1px; }
+.quick-icon {
+  width: 36px; height: 36px; border-radius: 10px; flex: none;
+  display: grid; place-items: center;
+  background: var(--cyan-soft);
+}
+/* Reuses the rail's icon masks, so a screen and its shortcut never show two
+   different pictures of the same thing. */
+.quick-icon::before {
+  content: ""; width: 18px; height: 18px; background: var(--cyan);
+  -webkit-mask: var(--i) center / contain no-repeat;
+          mask: var(--i) center / contain no-repeat;
+}
+
+/* ---------------- the week ---------------- */
+.week-chart { display: flex; align-items: flex-end; gap: 10px; height: 148px; }
+.week-col {
+  flex: 1; display: flex; flex-direction: column; align-items: center;
+  gap: 7px; height: 100%; min-width: 0;
+}
+.week-value {
+  font-size: .8rem; font-weight: 700; color: var(--ink-2);
+  font-variant-numeric: tabular-nums; height: 1.1em;
+}
+.week-bar {
+  flex: 1; width: 100%; max-width: 46px; border-radius: 8px;
+  background: var(--surface-2); display: flex; align-items: flex-end; overflow: hidden;
+}
+/* The fill has to be clearly darker than the empty track, or a day with
+   nothing booked reads as a day that was busy. */
+.week-bar i { display: block; width: 100%; background: #8ED8C2; border-radius: 8px; }
+.week-col.is-today .week-bar i { background: var(--cyan); }
+.week-col.is-today .week-value { color: var(--cyan-deep); }
+.week-day {
+  font-size: .73rem; color: var(--muted); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .05em;
+}
+.week-col.is-today .week-day { color: var(--ink); }
+
+
+/* ---------------- top bar ---------------- */
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  height: 64px; padding: 0 30px; margin: -30px -34px 26px;
+  background: var(--card); border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 40;
+}
+.topbar .spacer { margin-left: auto; }
+
+.topbar-clinic {
+  display: flex; align-items: center; gap: 9px; flex: none;
+  padding: 8px 13px; border: 1px solid var(--line); border-radius: 9px;
+  font-size: .855rem; font-weight: 600; color: var(--ink); max-width: 260px;
+}
+.topbar-clinic svg { width: 17px; height: 17px; color: var(--muted); flex: none; }
+.topbar-clinic span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+/* ---------------- global patient search ---------------- */
+.topbar-search { position: relative; flex: 1; max-width: 480px; }
+.topbar-search > svg {
+  position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+  width: 17px; height: 17px; color: var(--muted); pointer-events: none;
+}
+.topbar-search input {
+  width: 100%; padding: 10px 14px 10px 42px;
+  border: 1px solid var(--line); border-radius: 9px;
+  background: var(--card); font-size: .875rem;
+}
+.topbar-search input:focus {
+  outline: none; border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(0,135,150,.12);
+}
+.topbar-results {
+  position: absolute; top: calc(100% + 7px); left: 0; right: 0; z-index: 50;
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 11px; box-shadow: 0 12px 34px rgba(15,39,72,.13);
+  overflow: hidden; max-height: 340px; overflow-y: auto;
+}
+.topbar-results a, .topbar-results .none {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 14px; text-decoration: none; color: inherit;
+  border-bottom: 1px solid var(--line-soft);
+}
+.topbar-results a:last-child { border-bottom: none; }
+.topbar-results a:hover { background: var(--surface-2); }
+.topbar-results .none { color: var(--muted); font-size: .85rem; }
+.topbar-results .face {
+  width: 32px; height: 32px; border-radius: 50%; flex: none;
+  display: grid; place-items: center; font-weight: 700; font-size: .8rem;
+  background: var(--cyan-soft); color: var(--cyan-deep);
+}
+.topbar-results b { display: block; font-size: .875rem; font-weight: 600; }
+.topbar-results small { color: var(--muted); font-size: .775rem; }
+
+.topbar-hello { display: none; }   /* the greeting moves into the page itself */
+
+/* =========================================================================
+   Clinic timings, days closed, and the clinic's web address.
+
+   The schedule is the densest control in TCOS - seven days, each with one
+   or more sittings - so it is laid out as rows rather than a grid: a doctor
+   scans down the days, and the sittings for a day sit together on one line.
+   ========================================================================= */
+
+.schedule-tools {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.hours-preview {
+  font-size: .82rem; color: var(--muted); font-family: var(--mono);
+}
+
+.schedule-row {
+  display: grid; grid-template-columns: 92px 1fr auto;
+  align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--line-soft);
+}
+.schedule-row:last-child { border-bottom: none; }
+.schedule-row > b { font-size: .88rem; font-weight: 600; }
+.schedule-row.is-closed > b { color: var(--muted); font-weight: 500; }
+
+.sittings { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sitting {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--radius-sm); padding: 4px 6px 4px 8px;
+}
+.sitting input[type="time"] {
+  border: none; background: none; font-family: var(--mono);
+  font-size: .82rem; color: var(--ink); padding: 2px; width: 5.6em;
+}
+.sitting i { font-style: normal; color: var(--muted); font-size: .76rem; }
+.sit-x {
+  border: none; background: none; cursor: pointer; color: var(--muted);
+  font-size: 1.05rem; line-height: 1; padding: 0 3px;
+}
+.sit-x:hover { color: var(--bad); }
+.day-closed { color: var(--muted); font-size: .84rem; }
+.day-do { display: flex; align-items: center; gap: 12px; }
+
+/* ---- days closed ---- */
+.closure-add {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px; margin-bottom: 4px;
+}
+.closure-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+.closure-item {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 11px 13px; border: 1px solid var(--line);
+  border-left: 3px solid var(--warn); border-radius: var(--radius-sm);
+  background: var(--card);
+}
+.closure-item small { display: block; color: var(--muted); font-size: .78rem; margin-top: 2px; }
+
+/* ---- the clinic's web address ---- */
+.addr-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 14px; flex-wrap: wrap;
+  padding: 14px 16px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--cyan-soft);
+}
+.addr-label {
+  display: block; font-family: var(--mono); font-size: .66rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--cyan-deep);
+  margin-bottom: 3px;
+}
+.addr { font-family: var(--mono); font-size: .95rem; color: var(--ink); }
+.addr-do { display: flex; gap: 8px; align-items: center; }
+
+.dns-title {
+  font-family: var(--mono); font-size: .68rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted); margin: 18px 0 8px;
+}
+.dns-table { border: 1px solid var(--line); border-radius: var(--radius-sm); overflow-x: auto; }
+.dns-head, .dns-row {
+  display: grid; grid-template-columns: 84px 92px 1fr; gap: 10px;
+  padding: 9px 13px; align-items: center;
+}
+.dns-head {
+  background: var(--surface-2); border-bottom: 1px solid var(--line);
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--muted);
+}
+.dns-row { border-bottom: 1px solid var(--line-soft); font-size: .84rem; }
+.dns-row:last-child { border-bottom: none; }
+.dns-value, .dns-row span:first-child { font-family: var(--mono); }
+
+@media (max-width: 640px) {
+  .schedule-row { grid-template-columns: 1fr; gap: 8px; }
+  .day-do { justify-content: space-between; }
+  .dns-head, .dns-row { grid-template-columns: 64px 74px 1fr; font-size: .78rem; }
+}
+
+/* ---- Team: another doctor in the practice ----
+   A doctor is a different kind of row from a receptionist, so it reads
+   differently: no tick-list, because their access follows from being a
+   doctor rather than from boxes somebody ticked. */
+.role-divider {
+  margin: 14px 0 8px; padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-family: var(--mono); font-size: .66rem; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--muted);
+}
+.doctor-creds { margin-top: 4px; }
+.doctor-creds > small { display: block; color: var(--muted); font-size: .78rem; margin-bottom: 6px; }
+.cred-line { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.cred-line > span:first-child { font-family: var(--mono); font-size: .8rem; color: var(--ink-2); }
+.cred-line i { font-style: normal; font-size: .78rem; color: var(--muted); }
+
+/* ---- The fee list ----
+   The charges she raises again and again. Without it the picker beside
+   every bill is empty and she retypes "Consultation ₹600" several times a
+   day. */
+.fee-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 18px; }
+.fee-item {
+  display: grid; grid-template-columns: 1fr auto auto; gap: 12px; align-items: center;
+  padding: 10px 13px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--card);
+}
+.fee-item small {
+  display: block; color: var(--muted); font-size: .74rem;
+  text-transform: capitalize; margin-top: 1px;
+}
+.fee-item .money { font-family: var(--mono); font-size: .88rem; }
+.fee-add {
+  display: grid; grid-template-columns: 1fr 132px 118px auto; gap: 10px;
+  align-items: end; padding-top: 14px; border-top: 1px solid var(--line);
+}
+.fee-add .field { margin-bottom: 0; }
+@media (max-width: 620px) { .fee-add { grid-template-columns: 1fr 1fr; } }
+
+/* Saving the line you are typing straight into the list, which is the
+   moment you actually notice you have typed it before. */
+.line-row .l-keep {
+  border: 1px solid var(--line); background: var(--card); color: var(--cyan-deep);
+  border-radius: var(--radius-sm); cursor: pointer;
+  width: 26px; height: 26px; line-height: 1; font-size: .95rem; font-weight: 700;
+}
+.line-row .l-keep:hover:not(:disabled) { background: var(--cyan-soft); border-color: var(--cyan); }
+.line-row .l-keep:disabled { color: var(--ok); cursor: default; }
+
+/* ---- Money: cost against revenue ----
+   The category bars exist so the RATIO is visible. A column of numbers
+   hides that messaging dwarfs storage; two bars cannot. */
+.cost-bar {
+  display: grid; grid-template-columns: 120px 1fr 110px; gap: 12px;
+  align-items: center; padding: 7px 0;
+}
+.cost-name { font-size: .84rem; text-transform: capitalize; color: var(--ink-2); }
+.cost-track { height: 9px; background: var(--surface-2); border-radius: 999px; overflow: hidden; }
+.cost-fill { display: block; height: 100%; background: var(--cyan); border-radius: 999px; }
+.cost-value {
+  font-family: var(--mono); font-size: .82rem; text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.money-bad { color: var(--bad); font-weight: 600; }
+.rate-input {
+  width: 100px; padding: 6px 9px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); font-family: var(--mono); font-size: .84rem;
+  text-align: right;
+}
+@media (max-width: 640px) { .cost-bar { grid-template-columns: 90px 1fr 84px; } }
+
+/* ---- Plan usage ----
+   Shown so a doctor is asked to pay while everything still works. A bar she
+   can see filling converts; a wall she walks into does not. */
+.usage-list { display: flex; flex-direction: column; gap: 15px; }
+.usage-row { display: flex; flex-direction: column; gap: 5px; }
+.usage-top { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.usage-top span { font-size: .87rem; color: var(--ink-2); }
+.usage-top b { font-family: var(--mono); font-size: .82rem; font-variant-numeric: tabular-nums; }
+.usage-track { height: 7px; background: var(--surface-2); border-radius: 99px; overflow: hidden; }
+.usage-fill { display: block; height: 100%; border-radius: 99px; background: var(--cyan); }
+.usage-ok   { color: var(--ink); }
+.usage-fill.usage-ok { background: var(--cyan); }
+.usage-warn { color: var(--warn); }
+.usage-fill.usage-warn { background: var(--warn); }
+.usage-bad  { color: var(--bad); }
+.usage-fill.usage-bad { background: var(--bad); }
+.usage-note { color: var(--muted); font-size: .76rem; }
+
+/* ---- Documents on a chart ----
+   The values from a report are elsewhere; this is the paper they came
+   from. Listed rather than tiled: a doctor is looking for one named thing,
+   not browsing. */
+.doc-list { display: flex; flex-direction: column; gap: 8px; }
+.doc-item {
+  display: grid; grid-template-columns: 1fr auto auto; gap: 10px; align-items: center;
+  padding: 11px 14px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--card);
+}
+.doc-what b { display: block; font-size: .88rem; }
+.doc-what small { display: block; color: var(--muted); font-size: .76rem; margin-top: 2px; text-transform: capitalize; }
+@media (max-width: 560px) { .doc-item { grid-template-columns: 1fr auto; } }
+
+/* TCOS on the platform-console sign-in was white on a pale mint panel:
+   present, correctly sized, and invisible. .auth-brand is set to #fff for
+   the dark rail, and that rule wins everywhere. This scopes the colour back
+   to ink wherever the panel behind it is light. */
+.auth-side .auth-brand { color: var(--ink); }
+
+/* A wide table must scroll inside its own box rather than be clipped.
+
+   On a phone the patients table is 1016px wide inside a 347px panel, and
+   .panel sets overflow-x: hidden - so everything past MOBILE was simply
+   unreachable, including the Record and Open visit buttons. A receptionist
+   on a phone could not open a patient at all.
+
+   The wrapper the table sits in carries no class of its own, so it is
+   selected by what it contains. */
+.panel > div:has(> table) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ...and the table must refuse to be squashed into that box, or it just
+   compresses its columns to nothing and clips the contents instead of
+   scrolling. width:100% alone gave a 347px table whose columns needed
+   1016px. max-content keeps its natural width on a phone; on a desktop
+   panel wider than the content, width:100% still wins. */
+@media (max-width: 900px) {
+  .panel > div:has(> table) > table { min-width: max-content; }
+}
+
+/* ---------------- the rail, collapsed to icons ----------------
+   Vijay: "the side navigation panel should shrink to the icon view so they
+   have good space, and doctor still has option to navigate."
+
+   A width change on .console plus hiding the labels. The icons come from
+   the ::before each link already carries, so nothing new is drawn - and
+   every link keeps its label as a title attribute, so a collapsed rail is
+   still usable by somebody who has not learnt the icons yet. */
+.rail-toggle {
+  position: absolute; top: 14px; right: 10px;
+  border: 0; background: none; cursor: pointer; padding: 4px 7px;
+  color: var(--rail-muted, #94A6B0); font-size: 1rem; line-height: 1; border-radius: 4px;
+}
+.rail-toggle:hover { color: #fff; background: rgba(255,255,255,.08); }
+.rail { position: relative; }
+
+body.rail-collapsed .console { grid-template-columns: 62px 1fr; }
+body.rail-collapsed .rail a[data-icon] { text-indent: -9999px; padding-left: 0; text-align: center; }
+body.rail-collapsed .rail a[data-icon]::before { margin: 0 auto; text-indent: 0; }
+body.rail-collapsed .rail .rail-brand img,
+body.rail-collapsed .rail .rail-who div,
+body.rail-collapsed .rail #signOutBtn { display: none; }
+body.rail-collapsed .rail .rail-who { justify-content: center; }
+body.rail-collapsed .rail-toggle { right: 50%; transform: translateX(50%); }
+
+/* Below the breakpoint the rail is already a bar, so leave it alone. */
+@media (max-width: 900px) {
+  body.rail-collapsed .console { grid-template-columns: 1fr; }
+  body.rail-collapsed .rail a[data-icon] { text-indent: 0; }
+}
+
+
+/* =======================================================================
+   ON A PHONE
+
+   A doctor using TCOS on his phone, through Vijay: "he is using mobile, he
+   is saying it is difficulty to manage through mobile, so lets make screen
+   compatability based on the screen... easy access having buttons on below
+   switching tabs."
+
+   The screens already REFLOWED on a phone - one column, cards instead of
+   table rows. What they did not do is work like something you hold. The
+   navigation was a strip of small links scrolling sideways across the top,
+   the controls were sized for a mouse, and there was no way to install it.
+
+   760px, not 900. The existing 900px rules are for a narrow laptop or a
+   tablet in portrait, where a sideways rail is fine. This is the width
+   where a thumb becomes the only pointer.
+   ======================================================================= */
+
+/* The three taps that install it, for whichever browser he is in. Numbered
+   and spaced because he may well be reading this on the phone he is doing
+   it on, with one thumb. */
+.install-steps { margin: 0; padding-left: 22px; display: grid; gap: 10px; }
+.install-steps li { font-size: .92rem; line-height: 1.5; }
+
+/* The same button appears on the sign-in screen, before she has an account
+   at all - see js/app-install.js for why it is no longer rail-only. */
+.install-cta { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.install-cta::before { content: "\2b07"; font-size: 13px; line-height: 1; }
+
+/* ---- show and hide the password ----
+   The eye sits inside the field's right edge. 44px of padding keeps the
+   typed text from running underneath it, and the button itself is a full
+   touch target rather than the 18px the icon occupies. */
+/* ---- one customer, opened ----
+   A list of people, devices, payments or events: a name, what it is, and
+   when. It wraps on a phone rather than squeezing, because three columns
+   of 0.8rem is how a support screen becomes unreadable on the device the
+   support call is being taken on. */
+.row-line {
+  display: flex; flex-wrap: wrap; gap: 4px 14px; align-items: baseline;
+  padding: 11px 0; border-bottom: 1px solid var(--line-soft);
+}
+.row-line:last-child { border-bottom: 0; }
+.row-line > div { flex: 1 1 60%; min-width: 0; }
+.row-line b { display: block; font-size: .94rem; font-weight: 600; }
+.row-line small { display: block; color: var(--muted); font-size: .8rem; line-height: 1.45; }
+.row-line > small { flex: 0 0 auto; }
+
+/* Wide enough to read a table in, and still inside a phone. */
+dialog.wide { width: min(880px, calc(100vw - 24px)); }
+dialog.wide .body { max-height: 74vh; }
+
+/* A checkbox and its explanation on one line, with the box big enough to
+   hit with a thumb. */
+.checkline { display: flex; gap: 10px; align-items: flex-start; margin: 0 0 16px; cursor: pointer; }
+.checkline input { width: 18px; height: 18px; margin: 2px 0 0; flex: 0 0 auto; accent-color: var(--brand); }
+.checkline > span { font-size: .93rem; line-height: 1.35; }
+.checkline small { display: block; color: var(--muted); font-size: .8rem; margin-top: 2px; }
+
+/* "or" between the password form and the fingerprint button. A rule with a
+   word sitting in it, so the two are alternatives rather than a sequence. */
+.or-line {
+  display: flex; align-items: center; gap: 12px;
+  margin: 18px 0 14px; color: var(--muted); font-size: .8rem;
+}
+.or-line::before, .or-line::after {
+  content: ""; flex: 1; height: 1px; background: var(--line);
+}
+
+.pw-wrap { position: relative; display: block; }
+input.has-reveal { padding-right: 44px; }
+.pw-reveal {
+  position: absolute; right: 1px; top: 1px; bottom: 1px;
+  width: 42px;
+  display: grid; place-items: center;
+  border: 0; background: none; padding: 0;
+  color: var(--ink-2); cursor: pointer; border-radius: 0 9px 9px 0;
+}
+.pw-reveal:hover { color: var(--ink); }
+.pw-reveal:focus-visible { outline: 2px solid var(--brand); outline-offset: -2px; }
+
+/* The bar itself is desktop-hidden, so it costs a desktop nothing. */
+.tabbar { display: none; }
+.rail-scrim { display: none; }
+
+[data-icon="more"] {
+  --i: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="12" cy="19" r="1.6"/></svg>');
+}
+
+@media (max-width: 760px) {
+  /* ---- the bar across the bottom ---- */
+  .tabbar {
+    display: grid; grid-template-columns: repeat(5, 1fr);
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
+    background: var(--card); border-top: 1px solid var(--line);
+    /* The iPhone home indicator sits over the bottom of the screen. Without
+       this the last row of tabs is under it and the taps land nowhere. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    box-shadow: 0 -2px 14px rgba(16, 32, 40, .07);
+  }
+  .tabbar a, .tabbar button {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 3px; padding: 8px 2px 7px; border: 0; background: none; cursor: pointer;
+    /* 56px. Apple asks for 44 and Android for 48; a doctor tapping between
+       patients with one hand gets the larger of the two and then some. */
+    min-height: 56px;
+    color: var(--muted); font-size: .64rem; font-weight: 600;
+    text-decoration: none; letter-spacing: .01em;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .tabbar a[data-icon]::before, .tabbar button[data-icon]::before {
+    content: ""; width: 22px; height: 22px; flex: none;
+    background: currentColor;
+    -webkit-mask: var(--i) center / contain no-repeat;
+            mask: var(--i) center / contain no-repeat;
+  }
+  /* THE ACTIVE TAB, AND WHY IT WAS INVISIBLE.
+   *
+     This said `.tabbar a.active` alone. The doctor app's tabs are links;
+     the owner console's are BUTTONS, added later - so the console's active
+     tab matched nothing and was drawn exactly like the four it was meant
+     to stand out from. Vijay: "the buttons are bare visible."
+   *
+     Colour alone was never enough anyway. A bar above the icon says which
+     screen you are on without depending on anyone telling teal from grey
+     in daylight, or on the phone not having recoloured the page. */
+  .tabbar a.active, .tabbar button.active {
+    color: var(--cyan-deep);
+    box-shadow: inset 0 3px 0 0 var(--cyan);
+  }
+  .tabbar a.active[data-icon]::before, .tabbar button.active[data-icon]::before {
+    /* The icon is a mask filled with currentColor, so it follows. */
+    opacity: 1;
+  }
+  /* The four that are NOT current still have to be readable. --muted on
+     white is about 4.3:1, and this text is 0.64rem and bold - under the
+     4.5:1 that small text needs. */
+  .tabbar a, .tabbar button { color: var(--ink-2); }
+  .tabbar a span, .tabbar button span {
+    max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  /* A screen her plan does not include is still reachable - see js/nav.js -
+     but it should not look like the ones that are. */
+  .tabbar a[data-off-plan] { opacity: .5; }
+
+  /* Content must clear the bar, or the last row of every list is behind it
+     and she never knows it is there. */
+  .workspace, .console > main { padding-bottom: 78px; }
+
+  /* ---- the rail becomes a sheet ---- */
+  /* It still holds everything she may open, correctly filtered, so "More"
+     opens THAT rather than a second list that would drift from it. */
+  .rail {
+    position: fixed; inset: 0 auto 0 0; width: min(78vw, 300px); z-index: 70;
+    flex-direction: column; overflow-y: auto; gap: 2px;
+    /* Room at the foot for the home indicator AND for the fact that the
+       last thing in the rail is Sign out - which was landing under the
+       bottom edge of the screen, reachable only by scrolling a list that
+       looked like it had already ended. */
+    padding: 18px 14px calc(22px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-100%); transition: transform .18s ease-out;
+  }
+  /* Somebody who has asked for no animation should not be slid at. */
+  @media (prefers-reduced-motion: reduce) {
+    .rail { transition: none; }
+  }
+  body.rail-open .rail { transform: translateX(0); }
+  body.rail-open .rail-scrim {
+    display: block; position: fixed; inset: 0; z-index: 65;
+    background: rgba(12, 24, 30, .45);
+  }
+  .rail .rail-brand { display: block; }
+  .rail .rail-foot { margin-top: auto; }
+  /* The 900px rules above turn the rail into a horizontal strip, which sets
+     the links to `width: auto` and lets them centre themselves. In a
+     vertical sheet that reads as a ragged list with no left edge, so the
+     column shape is restored explicitly rather than relying on the earlier
+     block not applying. */
+  .rail a, .rail button.nav {
+    width: 100%; min-height: 46px; justify-content: flex-start; text-align: left;
+  }
+  /* The collapse toggle is a desktop idea; on a phone the sheet is either
+     open or it is not. */
+  .rail-toggle { display: none; }
+
+  /* ---- sized for a thumb ---- */
+  input, select, textarea, .btn, button {
+    min-height: 44px;
+  }
+  /* 16px EXACTLY, and not for looks. Safari zooms the whole page in when a
+     field smaller than 16px takes focus, and then leaves it zoomed - so a
+     doctor typing a patient's name ends up dragging the layout back into
+     place afterwards, every time. */
+  input, select, textarea { font-size: 16px; }
+
+  /* A table of six columns is not a phone layout. Those that have not been
+     given a card treatment scroll rather than crush. */
+  table.grid { display: block; overflow-x: auto; }
+
+  /* ---- and this is the card treatment ----
+
+     Vijay: "the doctors are saying it is not as per the mobile screen, they
+     want a usable way - it is not good presentation."
+
+     Her daily screens were the worst of it. Bills are eight columns,
+     patients and lab reports seven, pharmacy seven; on a 375px phone every
+     one of them became a sideways-scrolling strip where the patient's name
+     was visible and the amount was not, or the other way round, and never
+     both at once. Scrolling right to find out whether a bill was paid, then
+     left again to see whose it was, is not a screen - it is a spreadsheet
+     someone has hidden behind a letterbox.
+
+     So a row becomes a card. One cell is marked data-card-title and becomes
+     its heading - the bill number, the patient, the medicine - and every
+     other cell prints its own column heading beside its value, which is why
+     the markup carries data-label. A cell with no heading worth saying (the
+     Open button) is given data-label="" and prints nothing.
+
+     THE TITLE IS NAMED, NOT COUNTED. The obvious rule is "first cell is the
+     title", and it is wrong on the first table that needed it: the pharmacy
+     list opens with a ▸ toggle, so counting would have made the card's
+     heading a triangle and buried the medicine in the body.
+
+     WHY NOT DO THIS TO EVERY TABLE. Without a label a value is a mystery:
+     "2", "₹300", "Paid". A blanket rule would card-ify tables whose cells
+     have no labels and make them worse than the scroll. So it is opt-in by
+     class, and test/mobile-app.test.js checks that a doctor-app table which
+     opts in has labelled every cell it needs to. */
+  table.grid.cards,
+  table.grid.cards tbody,
+  table.grid.cards tr,
+  table.grid.cards td { display: block; width: 100%; }
+  table.grid.cards { overflow: visible; }
+  /* The headings move into the cells, so the header row has nothing left
+     to say. */
+  table.grid.cards thead { display: none; }
+  table.grid.cards tr {
+    border: 1px solid var(--line); border-radius: 14px;
+    background: var(--card); padding: 13px 15px; margin-bottom: 10px;
+  }
+  table.grid.cards tr:last-child { margin-bottom: 0; }
+  /* The hover tint is a pointer idea and reads as a stuck selection on a
+     touch screen. */
+  table.grid.cards tbody tr:hover td { background: none; }
+  /* THE LABEL FLOATS AND THE VALUE FILLS THE REST.
+   *
+     The obvious way to write this is flex with space-between, and it is
+     wrong the moment a cell holds more than one thing. The pharmacy's
+     quantity cell is "6", "bottles" and a "low" flag - three children, so
+     flex spread them across the full width as three separate items and the
+     number ended up nowhere near its own label. A float keeps the value,
+     whatever it is made of, as one run of content beside the heading. */
+  table.grid.cards td {
+    padding: 5px 0; border-bottom: 0;
+    display: flow-root;             /* contains the float without clipping */
+    text-align: right;
+  }
+  table.grid.cards td::before {
+    content: attr(data-label);
+    float: left; text-align: left; margin-right: 14px;
+    color: var(--ink-2);
+    font-size: .76rem; font-weight: 600; letter-spacing: .01em;
+  }
+  /* Nothing to announce: an action button, or a cell whose meaning is the
+     card itself. With no heading to sit beside, its content goes back to
+     reading left to right. */
+  table.grid.cards td[data-label=""]::before { display: none; }
+  table.grid.cards td[data-label=""] { text-align: left; }
+  /* An action cell is held on one line on a desktop so two buttons do not
+     straddle a row. In a card they are full width and stacked, and that
+     nowrap would push the second one off the side of the phone - which is
+     exactly what it did. */
+  table.grid.cards td.actions { white-space: normal; }
+  /* The named cell is the card's heading and owns the full width. */
+  table.grid.cards td[data-card-title] {
+    display: block; padding: 0 0 9px; margin-bottom: 5px;
+    border-bottom: 1px solid var(--line-soft);
+    font-size: .98rem; font-weight: 700;
+  }
+  /* The heading reads left to right like a heading, not right-aligned like
+     the values under it. */
+  table.grid.cards td[data-card-title] { text-align: left; }
+  table.grid.cards td[data-card-title]::before { display: none; }
+  /* A cell spanning the row - the pharmacy's expanded batch list - is its
+     own block rather than a label-and-value line. */
+  table.grid.cards td[colspan] { display: block; text-align: left; }
+  table.grid.cards td[colspan]::before { display: none; }
+  /* A right-aligned money column is right-aligned because it sits under
+     other numbers. In a card it sits beside its own label instead, and the
+     alignment would only push it away from it. */
+  table.grid.cards td.right { text-align: left; }
+  /* A button inside a card is a full-width tap target, not a chip floating
+     at the end of a line. */
+  table.grid.cards td:last-child .btn { width: 100%; margin: 4px 0 0; }
+  table.grid.cards td:last-child:not([data-card-title]):has(.btn) { display: block; }
+
+  /* ---- numbers two across ----
+
+     Vijay, on the owner console: "i am not even understanding what to do."
+
+     The tiles are laid out with minmax(212px, 1fr), and 212px does not fit
+     twice inside a 375px screen - so the Business screen opened as SEVEN
+     full-width cards, each holding one number, and reading them meant
+     scrolling past the fold three times. A dashboard you have to scroll to
+     compare is not a dashboard.
+
+     Two across, with the icon above the number rather than beside it,
+     because 155px of tile is not wide enough for both and a squeezed
+     number is worse than a stacked one. */
+  .stat-row { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+  .stat { flex-direction: column; align-items: flex-start; gap: 9px; padding: 14px; }
+  .stat b { font-size: 1.55rem; }
+  .stat span { font-size: .76rem; }
+  .stat small { font-size: .72rem; margin-top: 3px; }
+  .stat .chip { width: 34px; height: 34px; border-radius: 9px; }
+  .stat .chip svg { width: 17px; height: 17px; }
+
+  /* A screen title the size of a poster costs a third of the first
+     screenful before any content appears. */
+  .workspace header h1 { font-size: 1.45rem; }
+  .workspace header p { font-size: .84rem; }
+  .workspace > section > header { flex-wrap: wrap; gap: 10px; }
+}
+
+/* Installed on the home screen there is no browser chrome to scroll away,
+   so the bar can sit tighter to the edge. */
+@media (display-mode: standalone) {
+  .tabbar { box-shadow: none; }
+}

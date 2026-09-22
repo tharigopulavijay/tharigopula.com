@@ -1,0 +1,100 @@
+/* =========================================================================
+   The Web screen.
+
+   A doctor's own page is the thing she will show people, so it gets a
+   screen that looks like something she owns rather than a settings form.
+   The links come first because they are what she actually does here: copy
+   one and paste it into WhatsApp.
+   ========================================================================= */
+
+.web-note {
+  margin: 10px 0 0; max-width: 72ch;
+  font-size: .84rem; line-height: 1.55; color: var(--muted);
+}
+
+/* ---- the links she hands out ------------------------------------------- */
+.web-link {
+  display: grid;
+  grid-template-columns: minmax(150px, 190px) minmax(0, 1fr) auto auto;
+  gap: 14px; align-items: center;
+  padding: 13px 0; border-bottom: 1px solid var(--line-soft);
+}
+.web-link:last-child { border-bottom: 0; }
+.web-link-what b { display: block; font-size: .92rem; }
+.web-link-what small { color: var(--muted); font-size: .79rem; }
+
+/* The address itself, in the mono face, because it is a thing to be typed
+   and read back character by character. */
+.web-link-url {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: .82rem; color: var(--ink);
+  overflow-wrap: anywhere;
+}
+.web-link-url.muted { color: var(--muted); font-family: inherit; }
+.web-link-do { display: flex; gap: 7px; white-space: nowrap; }
+.web-link.is-empty .web-link-url { font-style: italic; }
+
+/* ---- her address ------------------------------------------------------- */
+/* The prefix and the field read as one address rather than a label and a
+   box, so what she is choosing is obvious before she types. */
+.slug-row {
+  display: flex; align-items: stretch; margin-top: 5px;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--card); overflow: hidden;
+}
+.slug-prefix {
+  display: flex; align-items: center; padding: 0 11px;
+  background: var(--surface-2); color: var(--muted);
+  font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: .82rem;
+  border-right: 1px solid var(--line); white-space: nowrap;
+  overflow-wrap: anywhere;
+}
+.slug-row input {
+  flex: 1 1 auto; min-width: 0; border: 0; outline: 0;
+  padding: 10px 11px; background: transparent; color: var(--ink);
+  font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: .86rem;
+}
+.slug-row:focus-within { border-color: var(--brand, var(--ink)); }
+
+/* ---- the DNS records --------------------------------------------------- */
+.dns-title { margin: 16px 0 8px; font-size: .85rem; color: var(--ink-2); }
+.dns-table { overflow-x: auto; }
+.dns-table table { width: 100%; border-collapse: collapse; min-width: 420px; }
+.dns-table th {
+  text-align: left; font-size: .72rem; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--muted); font-weight: 700;
+  padding: 0 12px 7px 0;
+}
+.dns-table td {
+  padding: 9px 12px 9px 0; border-top: 1px solid var(--line-soft);
+  vertical-align: top;
+}
+.dns-table code {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace; font-size: .82rem;
+}
+.dns-table td small { display: block; margin-top: 2px; color: var(--muted); font-size: .76rem; }
+/* A record we cannot give her the value for yet. Marked rather than hidden:
+   a doctor who is handed three records and told that is the setup, when one
+   of them is missing, finds out from a patient that her domain never
+   worked. */
+.dns-table tr.is-pending td { opacity: .7; }
+
+/* The two steps are separated on purpose, and it is not decoration. Step 1
+   proves the domain is hers and changes nothing about her existing website;
+   step 2 is the cutover. Run together as one list, a doctor switches her
+   live clinic site to a certificate that has not been issued yet and is
+   down for the afternoon. The boxes are what stop that reading. */
+.dns-step {
+  margin-top: 18px; padding: 14px 16px; border: 1px solid var(--line-soft);
+  border-radius: 10px; background: var(--surface-2, transparent);
+}
+.dns-step .dns-title { margin-top: 0; font-weight: 700; color: var(--ink); }
+.dns-lead { margin: 0 0 10px; font-size: .82rem; color: var(--muted); line-height: 1.5; }
+.dns-foot { margin: 14px 0 0; font-size: .82rem; color: var(--muted); line-height: 1.5; }
+
+@media (max-width: 760px) {
+  .web-link { grid-template-columns: 1fr; gap: 6px; }
+  .web-link-do { justify-content: flex-start; }
+  .slug-row { flex-wrap: wrap; }
+  .slug-prefix { width: 100%; border-right: 0; border-bottom: 1px solid var(--line); }
+}

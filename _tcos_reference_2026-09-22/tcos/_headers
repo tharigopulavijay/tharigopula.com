@@ -1,0 +1,76 @@
+/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  # NO Cache-Control in this block. _headers rules are ADDITIVE, so a value
+  # here is concatenated onto the ones below and every fingerprinted asset
+  # came back as
+  #   Cache-Control: no-cache, public, max-age=31536000, immutable
+  # where the no-cache wins and the immutable is decoration - the exact
+  # opposite of the pairing it was added for.
+  #
+  # Pages already serves HTML as max-age=0, must-revalidate, which is what
+  # the page needs; the assets carry a content hash and are pinned further
+  # down. The page stays fresh, the assets are never re-fetched, and
+  # neither rule fights the other.
+  Strict-Transport-Security: max-age=31536000
+  Permissions-Policy: camera=(), geolocation=(self), microphone=(self), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+
+/admin*
+  Cache-Control: no-store, max-age=0
+
+# On 8 September 2026, hours after the leaked files were removed from the
+# deployment and every old deployment was deleted, https://tcos.pages.dev/.dev.vars
+# was STILL returning the real 298-byte file with the OpenAI key and the
+# password pepper in it - served from Cloudflare's edge cache, CF-Cache-Status
+# HIT, roughly one request in two.
+#
+# Deleting a file does not evict what the edge already holds. These rules do
+# not evict it either - nothing we can write here does - but they stop the
+# same thing being cached again if any of these paths is ever served by
+# mistake. The eviction itself needs the cache to expire or the hostname to
+# be abandoned.
+#
+# Kept as explicit paths rather than a pattern because a pattern that quietly
+# stops matching is how this happened in the first place.
+/.dev.vars
+  Cache-Control: no-store, max-age=0
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet
+
+/.env
+  Cache-Control: no-store, max-age=0
+
+/schema.sql
+  Cache-Control: no-store, max-age=0
+
+/package.json
+  Cache-Control: no-store, max-age=0
+
+/wrangler.jsonc
+  Cache-Control: no-store, max-age=0
+
+/worker/*
+  Cache-Control: no-store, max-age=0
+
+/migrations/*
+  Cache-Control: no-store, max-age=0
+
+/test/*
+  Cache-Control: no-store, max-age=0
+
+/docs/*
+  Cache-Control: no-store, max-age=0
+
+/scripts/*
+  Cache-Control: no-store, max-age=0
+
+# Fingerprinted assets never change under a given name, so they may be kept
+# for ever. This is the other half of the pairing above: page always fresh,
+# assets never re-fetched.
+/js/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/css/*
+  Cache-Control: public, max-age=31536000, immutable

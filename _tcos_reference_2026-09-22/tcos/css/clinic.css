@@ -1,0 +1,124 @@
+/* The doctor's public page. Warm, calm and unmistakably a clinic - not the
+   cool instrument palette the doctor works in. Different audience, different
+   register: this one is read by a person deciding whether to come in. */
+
+:root {
+  --ink: #1b2420;
+  --ink-2: #55625c;
+  --paper: #FAF7F2;
+  --card: #FFFFFF;
+  --line: #E5DFD5;
+  --deep: #16452F;
+  --deep-2: #1E5C3F;
+  --warm: #B8863B;
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+body {
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  background: var(--paper); color: var(--ink);
+  line-height: 1.6; font-size: 17px; -webkit-font-smoothing: antialiased;
+}
+.loading, .notfound { padding: 90px 24px; text-align: center; color: var(--ink-2); }
+.notfound h1 { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.5rem; color: var(--deep); margin-bottom: 8px; }
+
+section, footer { max-width: 760px; margin: 0 auto; padding: 34px 22px; }
+h2 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.35rem; color: var(--deep); margin-bottom: 18px; text-wrap: balance;
+}
+
+/* ---- hero ---- */
+.hero {
+  background: linear-gradient(165deg, var(--deep) 0%, #0E2F20 100%);
+  color: #fff; padding: 54px 22px 48px; text-align: center;
+}
+.hero-inner { max-width: 640px; margin: 0 auto; }
+.hero .mark {
+  width: 62px; height: 62px; margin: 0 auto 18px; border-radius: 50%;
+  border: 2px solid var(--warm); display: grid; place-items: center;
+  font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.7rem;
+  font-weight: 700; color: var(--warm);
+}
+.hero h1 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: clamp(1.7rem, 5vw, 2.4rem); line-height: 1.14; text-wrap: balance;
+}
+.hero .tagline { color: #CFE0D6; font-style: italic; margin-top: 8px; }
+.hero .who { color: #A8C4B4; font-size: .95rem; margin-top: 14px; }
+.hero-do { display: flex; gap: 11px; justify-content: center; flex-wrap: wrap; margin-top: 26px; }
+.cta {
+  display: inline-block; text-decoration: none; font-weight: 600; font-size: .95rem;
+  padding: 13px 24px; border-radius: 999px;
+  background: var(--warm); color: #14231c; border: 1.5px solid var(--warm);
+}
+.cta.ghost { background: transparent; color: #fff; border-color: rgba(255,255,255,.4); }
+.cta:hover { filter: brightness(1.07); }
+
+.intro { padding-top: 30px; padding-bottom: 4px; }
+.intro p { font-size: 1.06rem; color: var(--ink-2); text-align: center; max-width: 60ch; margin: 0 auto; }
+
+/* ---- services ---- */
+.service-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 14px; }
+.service {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 18px 19px;
+  border-top: 3px solid var(--warm);
+}
+.service h3 { font-size: 1.02rem; color: var(--deep); margin-bottom: 5px; }
+.service p { font-size: .9rem; color: var(--ink-2); }
+
+/* ---- visiting ---- */
+.visit-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 13px; }
+.fact {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 16px 18px;
+}
+.fact span {
+  display: block; font-size: .7rem; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--ink-2); margin-bottom: 4px;
+}
+.fact b { display: block; font-size: .96rem; font-weight: 500; }
+.fact a { display: inline-block; margin-top: 7px; font-size: .87rem; color: var(--deep-2); }
+
+/* ---- the form: the reason the page exists ---- */
+.book { background: var(--card); border-top: 1px solid var(--line); max-width: none; }
+.book > * { max-width: 560px; margin-left: auto; margin-right: auto; }
+.book-note { color: var(--ink-2); font-size: .93rem; margin-bottom: 18px; }
+#bookForm { display: grid; gap: 13px; }
+#bookForm label { display: block; font-size: .84rem; font-weight: 600; color: var(--ink-2); }
+#bookForm input {
+  display: block; width: 100%; margin-top: 5px; padding: 12px 13px;
+  font: inherit; font-size: 1rem; font-weight: 400; color: var(--ink);
+  border: 1px solid var(--line); border-radius: 9px; background: var(--paper);
+}
+#bookForm input:focus {
+  outline: none; border-color: var(--deep-2); box-shadow: 0 0 0 3px rgba(30,92,63,.13);
+}
+#bookForm .two { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; }
+#bookForm button {
+  margin-top: 6px; padding: 14px; font: inherit; font-size: 1rem; font-weight: 600;
+  color: #fff; background: var(--deep); border: none; border-radius: 9px; cursor: pointer;
+}
+#bookForm button:hover:not(:disabled) { background: var(--deep-2); }
+#bookForm button:disabled { opacity: .6; cursor: not-allowed; }
+
+.msg { padding: 14px 16px; border-radius: 10px; font-size: .95rem; }
+.msg.ok { background: #E7F3EC; color: #14603F; border: 1px solid #C3E1D0; }
+.msg.error { background: #FBEAE8; color: #A23A30; border: 1px solid #EFCCC7; }
+
+footer { text-align: center; color: var(--ink-2); font-size: .87rem; padding-top: 26px; }
+footer .credit {
+  margin-top: 12px; font-size: .78rem; color: #93A099;
+  display: flex; align-items: center; justify-content: center; gap: 7px;
+}
+footer .credit .tc {
+  width: 18px; height: 18px; border-radius: 4px; background: var(--deep);
+  color: #fff; display: grid; place-items: center; font-size: .58rem; font-weight: 700;
+}
+
+@media (max-width: 520px) {
+  #bookForm .two { grid-template-columns: 1fr; }
+  section, footer { padding: 28px 18px; }
+}

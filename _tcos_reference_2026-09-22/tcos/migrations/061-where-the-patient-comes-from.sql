@@ -1,0 +1,28 @@
+-- =========================================================================
+-- Where the patient comes from.
+--
+-- A doctor using TCOS asked for it, through Vijay: "add customer address
+-- from where he is coming - like not complete address, maybe city or place
+-- or colony where he is coming is also fine."
+--
+-- DELIBERATELY COARSE, AND THAT IS THE FEATURE.
+-- He asked for the locality and not the address, and that is the right
+-- instinct twice over. Clinically it is what he actually uses - knowing a
+-- patient travels in from Kukatpally changes what follow-up interval is
+-- realistic, and a house number never does. And under the DPDP Act a full
+-- postal address is a meaningfully heavier piece of personal data to hold
+-- about someone than the name of their neighbourhood.
+--
+-- So one short free-text field. Not address line 1 and 2, not a pincode,
+-- not a district dropdown. If a doctor wants to write "Kukatpally" or
+-- "near Forum Mall" or "comes from Warangal", all three are useful and all
+-- three are the same field.
+--
+-- ON `patients`, NOT ON `doctor_patients`.
+-- Where a person lives is a fact about the person, like her name and her
+-- number, and those are already on this table precisely because she is one
+-- person who may see three doctors. Putting it on the join would mean three
+-- clinics each holding their own half-remembered version of it.
+-- =========================================================================
+
+ALTER TABLE patients ADD COLUMN locality TEXT;

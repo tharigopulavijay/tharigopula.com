@@ -1,0 +1,286 @@
+/* Config-driven prescription sheet. All clinic colour comes from CSS
+   variables set at runtime from the clinic profile, so no clinic ever
+   needs its own stylesheet. */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --ink: #1B4A34;
+  --accent: #C9973E;
+  --paper: #FDFBF6;
+  --muted: #6b6b6b;
+  --line: rgba(0, 0, 0, 0.12);
+  --shell: #eceae4;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--shell);
+  color: #222;
+  line-height: 1.45;
+}
+
+/* ---------- toolbar (screen only) ---------- */
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  padding: 10px 18px;
+  background: #14231c;
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+.toolbar .brandline { font-weight: 700; font-size: 0.92rem; letter-spacing: 0.01em; }
+.toolbar .brandline small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.72rem;
+  opacity: 0.65;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.toolbar label { font-size: 0.78rem; opacity: 0.8; display: flex; align-items: center; gap: 7px; }
+.toolbar select,
+.toolbar button {
+  font: inherit;
+  font-size: 0.82rem;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+}
+.toolbar select option { color: #222; }
+.toolbar button.primary { background: var(--accent); border-color: var(--accent); color: #14231c; font-weight: 600; }
+.toolbar .spacer { margin-left: auto; }
+.toolbar .packs { font-size: 0.72rem; opacity: 0.75; }
+
+.hint {
+  max-width: 820px;
+  margin: 16px auto 0;
+  padding: 0 20px;
+  font-size: 0.82rem;
+  color: #555;
+  text-align: center;
+}
+
+/* ---------- the sheet ---------- */
+main { padding: 26px 16px 60px; }
+
+.sheet {
+  width: 210mm;
+  min-height: 297mm;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 16mm 14mm 12mm;
+  background: var(--paper);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.16);
+  border-top: 5px solid var(--accent);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- clinic header: the customer's brand ---------- */
+.rx-header { display: flex; align-items: center; gap: 14px; }
+.rx-header .logo {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+  background: #fff;
+}
+.rx-header .logo-fallback {
+  width: 62px;
+  height: 62px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ink);
+  background: #fff;
+}
+.rx-header .identity { flex: 1; min-width: 0; }
+.rx-header h1 {
+  font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.32rem;
+  color: var(--ink);
+  line-height: 1.15;
+}
+.rx-header .tagline { font-size: 0.78rem; color: var(--muted); font-style: italic; }
+.rx-header .doctor { font-size: 0.82rem; color: var(--ink); font-weight: 600; margin-top: 3px; }
+.rx-header .reg { font-size: 0.72rem; color: var(--muted); }
+.rx-header .meta { text-align: right; font-size: 0.74rem; color: var(--muted); line-height: 1.7; flex-shrink: 0; }
+.rx-header .meta b { color: var(--ink); }
+
+.rule { height: 2px; background: var(--accent); opacity: 0.75; margin: 12px 0 14px; }
+
+/* ---------- patient strip ---------- */
+.patient-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+.patient-strip p { font-size: 0.82rem; }
+.patient-strip b { display: block; font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--muted); margin-bottom: 2px; }
+
+/* ---------- sections ---------- */
+.rx-body { flex: 1; }
+section { margin-bottom: 15px; break-inside: avoid; }
+section > h2 {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+section > h2 .tag {
+  font-size: 0.56rem;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--muted);
+  font-weight: 500;
+}
+section > h2 .tag.core { background: color-mix(in srgb, var(--ink) 12%, transparent); color: var(--ink); }
+section > h2 .tag.pack { background: color-mix(in srgb, var(--accent) 22%, transparent); color: #6a4a10; }
+
+.field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5px 22px; }
+.field-grid.single { grid-template-columns: 1fr; }
+.field-grid p { display: flex; gap: 8px; font-size: 0.82rem; padding: 3px 0; border-bottom: 1px dotted var(--line); }
+.field-grid b { min-width: 128px; color: var(--muted); font-weight: 500; font-size: 0.78rem; }
+.field-grid span { flex: 1; }
+[contenteditable="true"]:focus { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+/* ---------- medicines: the shared layer ---------- */
+table.med { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+table.med th {
+  text-align: left;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 600;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--line);
+}
+table.med td { padding: 6px; border-bottom: 1px dotted var(--line); vertical-align: top; }
+table.med td:first-child { font-weight: 600; color: var(--ink); }
+.sys {
+  display: inline-block;
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.sys-allopathy  { background: #e4eefb; color: #1c4f86; }
+.sys-ayurveda   { background: #e8f2e4; color: #2f6132; }
+.sys-homeopathy { background: #f3e9f8; color: #6a3d84; }
+.sys-supplement { background: #fdf0dd; color: #8a5b12; }
+
+/* ---------- signature + footer ---------- */
+.signature { display: flex; justify-content: flex-end; margin-top: 20px; padding-top: 8px; }
+.signature div { text-align: center; min-width: 190px; }
+.signature i { display: block; border-top: 1px solid var(--ink); margin-bottom: 5px; }
+.signature b { font-size: 0.76rem; color: var(--ink); }
+.signature small { display: block; font-size: 0.68rem; color: var(--muted); }
+
+.clinic-footer {
+  margin-top: 14px;
+  padding-top: 9px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+
+/* The platform credit - your brand, under theirs. A setting, not a
+   hardcode, so it can be removed on a paid tier. */
+.platform-credit {
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  font-size: 0.64rem;
+  letter-spacing: 0.05em;
+  color: #8a8a8a;
+}
+.platform-credit .mark {
+  width: 15px;
+  height: 15px;
+  border-radius: 4px;
+  background: #14231c;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: 0.56rem;
+  font-weight: 700;
+}
+
+@media print {
+  .toolbar, .hint { display: none !important; }
+  body { background: #fff; }
+  .sheet { box-shadow: none; margin: 0; width: auto; min-height: auto; padding: 0; }
+  [contenteditable="true"] { outline: none !important; }
+}
+
+@media (max-width: 760px) {
+  .patient-strip { grid-template-columns: 1fr 1fr; }
+  .field-grid { grid-template-columns: 1fr; }
+  .rx-header { flex-wrap: wrap; }
+  .rx-header .meta { text-align: left; width: 100%; }
+  main { padding: 14px 8px 40px; }
+  .sheet { padding: 14px 13px 18px; }
+}
+
+/* ---- signed-in prescription additions ---- */
+.toolbar .btn-link {
+  color: #fff; text-decoration: none; font-size: .82rem;
+  padding: 7px 12px; border-radius: 7px; border: 1px solid rgba(255,255,255,.25);
+}
+.toolbar .btn-link:hover { background: rgba(255,255,255,.08); }
+.loading { padding: 60px; text-align: center; color: var(--muted); }
+.page-notice {
+  max-width: 210mm; margin: 16px auto 0; padding: 11px 16px;
+  border-radius: 8px; font-size: .86rem;
+}
+.page-notice.error { background: #fdeeee; color: #a53232; border: 1px solid #f2d2d2; }
+.page-notice.info { background: #fdf5e6; color: #8a5b12; border: 1px solid #f0e0be; }
+table.med td[contenteditable="true"] { min-width: 70px; }
+select.sys-select {
+  font: inherit; font-size: .74rem; padding: 3px 5px;
+  border: 1px solid var(--line); border-radius: 5px; background: #fff; max-width: 108px;
+}
+.hint-line { font-size: .74rem; color: var(--muted); margin-top: 7px; }
+@media print {
+  .page-notice { display: none !important; }
+  select.sys-select { border: none; appearance: none; background: none; }
+}

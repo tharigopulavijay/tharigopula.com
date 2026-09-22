@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Patients | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <h1>Patients</h1>
+        <p>Everyone on your list. Only yours.</p>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-primary" id="addPatientBtn">+ Add patient</button>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <!-- The search IS the page. A patient walks in, she types whatever they
+         said - a number, a name, or their TCOS number - and the answer is
+         already on screen before she has stopped typing. -->
+    <div class="search-card">
+      <label class="field"><span>Mobile number, name, or patient number</span>
+        <div class="search-row">
+          <input id="search" autocomplete="off" autofocus
+                 placeholder="Search by name, patient number or mobile">
+        </div>
+      </label>
+    </div>
+
+    <div class="panel">
+      <header>
+        <h2 id="listTitle">Your patients</h2>
+        <div class="spacer"></div>
+        <span class="pill" id="listCount"></span>
+      </header>
+      <div id="patientTable"><div class="empty">Loading…</div></div>
+    </div>
+  </main>
+</div>
+
+<dialog id="patientDialog">
+  <form id="patientForm" method="dialog">
+    <header><h3>Add patient</h3><button type="button" id="patientClose">&times;</button></header>
+    <div class="body">
+      <div id="patientFormMsg"></div>
+      <label class="field"><span>Mobile number</span>
+        <input id="patientMobile" required inputmode="numeric">
+        <small>This is how the patient is identified. If they already have a TCOS record,
+          they are linked to it rather than duplicated.</small>
+      </label>
+      <label class="field"><span>Full name</span>
+        <input id="patientName" required></label>
+      <div class="field-row">
+        <label class="field"><span>Sex</span>
+          <select id="patientSex">
+            <option value="">Not stated</option>
+            <option>Female</option><option>Male</option><option>Other</option>
+          </select></label>
+        <label class="field"><span>Date of birth</span>
+          <input id="patientDob" type="date"></label>
+      </div>
+      <div class="field-row">
+        <label class="field"><span>Blood group</span>
+          <input id="patientBlood"></label>
+        <!-- Asked for by a doctor using TCOS: "add customer address from
+             where he is coming - like not complete address, maybe city or
+             place or colony." A locality, on purpose: it is what changes
+             how he plans a follow-up, and a house number never is. -->
+        <label class="field"><span>Where they come from</span>
+          <input id="patientLocality" maxlength="80" placeholder="Kukatpally, Warangal, near Forum Mall…">
+          <small>Area or town is enough — not a full address.</small></label>
+      </div>
+      <div class="field-row">
+        <label class="field"><span>Patient number</span>
+          <input id="patientRef" value="Assigned by TCOS" disabled>
+          <small>Given automatically when you save.</small></label>
+      </div>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="patientCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="patientSave">Add patient</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog id="shareDialog">
+  <header><h3>Patient read-only link</h3><button type="button" id="shareClose">&times;</button></header>
+  <div class="body">
+    <div id="shareMsg"></div>
+    <div id="shareBody"></div>
+  </div>
+  <footer>
+    <button type="button" class="btn btn-ghost" id="shareDone">Close</button>
+    <button type="button" class="btn btn-primary" id="shareCreate">Create patient link</button>
+  </footer>
+</dialog>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script>
+(async () => {
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const msg = (id, text, kind) => {
+    document.getElementById(id).innerHTML = text
+      ? '<div class="notice ' + kind + '" style="max-width:none">' + text + '</div>' : '';
+  };
+
+  if (!TCOSApi.isSignedIn()) { location.replace('tcos-login.html'); return; }
+
+  let me;
+  try { me = await TCOSApi.me(); }
+  catch (error) {
+    if (error.status === 401) { location.replace('tcos-login.html'); return; }
+    msg('pageMsg', esc(error.message), 'error');
+    return;
+  }
+  TCOSRail.paint(me);
+  const may = capability => !me.me || !me.me.can || me.me.can.includes(capability);
+
+  let all = [];
+
+  /* Six or more digits is a phone number, not a name. Below that it is
+     probably a patient number (1009) or the start of a name. */
+  const digitsOf = v => String(v || '').replace(/D/g, '');
+  const looksLikeMobile = v => digitsOf(v).length >= 6;
+
+  function render(filter) {
+    const term = (filter || '').trim().toLowerCase();
+    const digits = digitsOf(term);
+    const rows = all.filter(p => {
+      if (!term) return true;
+      if ((p.full_name || '').toLowerCase().includes(term)) return true;
+      if ((p.local_ref || '').toLowerCase().includes(term)) return true;
+      /* Match the number however she typed it: with +91, with spaces, or
+         just the last few digits she caught over the phone. */
+      return digits.length >= 3 && digitsOf(p.mobile).includes(digits);
+    });
+
+    document.getElementById('listTitle').textContent = term ? 'Search results' : 'Your patients';
+    document.getElementById('listCount').textContent =
+      term ? rows.length + ' of ' + all.length : all.length + ' patients';
+
+    if (!all.length) {
+      document.getElementById('patientTable').innerHTML =
+        '<div class="empty">No patients yet. Add your first one to get started.</div>';
+      return;
+    }
+    if (!rows.length) {
+      /* The important half of this feature. She has already asked for the
+         number once; making her ask again because the search came back empty
+         is exactly the rudeness this screen exists to remove. So the button
+         carries what she typed straight into the form. */
+      const isMobile = looksLikeMobile(term);
+      document.getElementById('patientTable').innerHTML =
+        '<div class="empty" style="padding:34px 20px">' +
+          '<p style="margin:0 0 6px"><b>' + esc(filter) + '</b> is not on your list.</p>' +
+          '<p style="margin:0 0 18px;color:var(--muted);font-size:.9rem">' +
+            (isMobile
+              ? 'Add them now - the number is already filled in, no need to ask again.'
+              : 'Add them now - the name is already filled in.') +
+          '</p>' +
+          '<button class="btn btn-primary" id="addFromSearch">+ Add ' + esc(filter) + '</button>' +
+          (isMobile
+            ? ' <a class="btn btn-ghost" href="lookup.html?mobile=' + encodeURIComponent(digits) +
+              '">Seen at another clinic?</a>'
+            : '') +
+        '</div>';
+      document.getElementById('addFromSearch').addEventListener('click', () => openAdd(filter));
+      return;
+    }
+
+    window.__clinicName = me.clinicName;
+    document.getElementById('patientTable').innerHTML =
+      /* `cards` plus the data-labels are the phone layout: six columns
+         across 375px scrolled sideways, so her patient's name and when she
+         last came were never on screen together. See css/tcos.css. */
+      '<table class="grid cards"><thead><tr><th>Patient</th><th>Mobile</th><th>Your ref</th>' +
+      '<th>First seen</th><th>Last seen</th><th></th></tr></thead><tbody>' +
+      rows.map(p =>
+        '<tr>' +
+          '<td data-card-title><div class="clinic-cell"><span class="fallback">' +
+            esc((p.full_name || '?').charAt(0)) + '</span>' +
+            '<div><b>' + esc(p.full_name) + '</b><small>' +
+            esc([p.sex, p.date_of_birth].filter(Boolean).join(' · ') || 'No details') +
+            '</small></div></div></td>' +
+          '<td data-label="Mobile">' + esc(p.mobile) + '</td>' +
+          '<td data-label="Your ref">' + esc(p.local_ref || '—') + '</td>' +
+          '<td data-label="First seen">' + esc(p.first_seen_on || '—') + '</td>' +
+          '<td data-label="Last seen">' + esc(p.last_seen_on || 'Not yet seen') + '</td>' +
+          '<td class="actions" data-label="">' +
+            (may('read_notes') ? '<button class="btn btn-ghost btn-sm" data-share="' + esc(p.id) + '">Patient link</button> ' +
+              '<a class="btn btn-ghost btn-sm" href="record.html?patient=' + encodeURIComponent(p.id) + '">Record</a> ' : '') +
+            (may('write_notes') ? '<a class="btn btn-primary btn-sm" href="consult.html?patient=' +
+              encodeURIComponent(p.id) + '">Open visit</a>' : '') + '</td>' +
+        '</tr>').join('') + '</tbody></table>';
+    document.querySelectorAll('[data-share]').forEach(button =>
+      button.addEventListener('click', async () => {
+        sharingPatient = all.find(p => p.id === button.dataset.share);
+        msg('shareMsg', '');
+        document.getElementById('shareBody').innerHTML = '<div class="empty">Loading…</div>';
+        document.getElementById('shareDialog').showModal();
+        await paintShare();
+      }));
+  }
+
+  async function load() {
+    try {
+      all = (await TCOSApi.listPatients()).patients || [];
+      render(document.getElementById('search').value);
+    } catch (error) {
+      msg('pageMsg', esc(error.message), 'error');
+    }
+  }
+
+  document.getElementById('search').addEventListener('input', event => render(event.target.value));
+
+  const dialog = document.getElementById('patientDialog');
+  let patientAttemptKey = null;
+
+  /* carry: whatever she typed into the search that found nothing. */
+  function openAdd(carry) {
+    patientAttemptKey = crypto.randomUUID();
+    msg('patientFormMsg', '');
+    document.getElementById('patientForm').reset();
+    document.getElementById('patientRef').value = 'Assigned by TCOS';
+
+    const term = (carry || '').trim();
+    if (term) {
+      if (looksLikeMobile(term)) {
+        document.getElementById('patientMobile').value = digitsOf(term);
+        dialog.showModal();
+        document.getElementById('patientName').focus();   // the only thing left to ask
+        return;
+      }
+      document.getElementById('patientName').value = term;
+      dialog.showModal();
+      document.getElementById('patientMobile').focus();
+      return;
+    }
+    dialog.showModal();
+  }
+
+  document.getElementById('addPatientBtn').addEventListener('click', () =>
+    openAdd(document.getElementById('search').value));
+  document.getElementById('patientCancel').addEventListener('click', () => dialog.close());
+  document.getElementById('patientClose').addEventListener('click', () => dialog.close());
+
+  document.getElementById('patientForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const button = document.getElementById('patientSave');
+    button.disabled = true;
+    try {
+      await TCOSApi.addPatient({
+        mobile: document.getElementById('patientMobile').value.trim(),
+        fullName: document.getElementById('patientName').value.trim(),
+        sex: document.getElementById('patientSex').value || null,
+        dateOfBirth: document.getElementById('patientDob').value || null,
+        bloodGroup: document.getElementById('patientBlood').value.trim() || null,
+        locality: document.getElementById('patientLocality').value.trim() || null,
+        idempotencyKey: patientAttemptKey
+      });
+      dialog.close();
+      document.getElementById('search').value = '';
+      await load();
+    } catch (error) {
+      msg('patientFormMsg', esc(error.message), 'error');
+    } finally {
+      button.disabled = false;
+    }
+  });
+
+  /* ---- sharing a record with the patient ----
+     The link is the credential, like the paper prescription it replaces. It
+     is shown once, expires, and can be revoked from here. */
+  const shareDialog = document.getElementById('shareDialog');
+  let sharingPatient = null;
+
+  async function paintShare() {
+    const links = (await TCOSApi.listShareLinks(sharingPatient.id)).links || [];
+    const live = links.filter(l => !l.revoked_at && l.expires_at > new Date().toISOString());
+    document.getElementById('shareBody').innerHTML =
+      '<p style="font-size:.88rem;color:var(--muted);margin-bottom:14px">' +
+        'Sends <b>' + esc(sharingPatient.full_name) + '</b> a link to their own medicines, ' +
+        'advice and next visit. Read only — a patient can never change anything.</p>' +
+      (live.length
+        ? '<table class="grid"><thead><tr><th>Created</th><th>Expires</th><th>Opened</th><th></th></tr></thead><tbody>' +
+          live.map(l => '<tr><td>' + esc(l.created_at.slice(0, 10)) + '</td>' +
+            '<td>' + esc(l.expires_at.slice(0, 10)) + '</td>' +
+            '<td>' + esc(l.opened_count) + (l.last_opened_at
+              ? ' · last ' + esc(l.last_opened_at.slice(0, 10)) : '') + '</td>' +
+            '<td><button class="btn btn-danger btn-sm" data-revoke="' + esc(l.id) + '">Revoke</button></td>' +
+            '</tr>').join('') + '</tbody></table>'
+        : '<div class="empty" style="padding:18px">No live link. Create one below.</div>');
+
+    document.querySelectorAll('[data-revoke]').forEach(button =>
+      button.addEventListener('click', async () => {
+        if (!confirm('Revoke this link?\n\nThe patient will not be able to open it again.')) return;
+        await TCOSApi.revokeShareLink(sharingPatient.id, button.dataset.revoke);
+        msg('shareMsg', 'Link revoked.', 'ok');
+        await paintShare();
+      }));
+  }
+
+  document.getElementById('shareCreate').addEventListener('click', async () => {
+    try {
+      const result = await TCOSApi.sharePatient(sharingPatient.id, 90);
+      const url = location.origin + '/p.html?t=' + result.token;
+      const text = 'Namaste ' + sharingPatient.full_name + ', here is your prescription from ' +
+        (window.__clinicName || 'your doctor') + ':\n' + url;
+      document.getElementById('shareBody').innerHTML =
+        '<div class="notice ok" style="max-width:none">Link created. It is shown ' +
+          '<b>once</b> — only a hash is stored, so it cannot be shown again.</div>' +
+        '<label class="field"><span>Link</span>' +
+          '<input readonly value="' + esc(url) + '" id="shareUrl" ' +
+          'style="font-family:ui-monospace,monospace;font-size:.8rem"></label>' +
+        '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+          '<button class="btn btn-ghost btn-sm" id="copyLink">Copy link</button>' +
+          '<a class="btn btn-primary btn-sm" target="_blank" rel="noopener" href="https://wa.me/' +
+            encodeURIComponent(sharingPatient.mobile.replace(/[^0-9]/g, '')) +
+            '?text=' + encodeURIComponent(text) + '">Send on WhatsApp</a>' +
+        '</div>' +
+        '<p style="font-size:.8rem;color:var(--muted);margin-top:12px">Expires in 90 days. ' +
+          'Anyone holding the link can read it — the same as the printed prescription.</p>';
+      document.getElementById('copyLink').addEventListener('click', () => {
+        navigator.clipboard.writeText(url).then(
+          () => { document.getElementById('copyLink').textContent = 'Copied'; },
+          () => { document.getElementById('copyLink').textContent = 'Copy failed'; });
+      });
+    } catch (error) {
+      msg('shareMsg', esc(error.message), 'error');
+    }
+  });
+
+  document.getElementById('shareDone').addEventListener('click', () => shareDialog.close());
+  document.getElementById('shareClose').addEventListener('click', () => shareDialog.close());
+
+  document.getElementById('signOutBtn').addEventListener('click', async () => {
+    await TCOSApi.signOut();
+    location.href = 'tcos-login.html';
+  });
+
+  await load();
+})();
+</script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

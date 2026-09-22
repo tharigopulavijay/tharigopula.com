@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Consultation desk | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/rx-document.css">
+<link rel="stylesheet" href="css/desk.css">
+</head>
+<body class="desk-body">
+
+<!-- =========================================================================
+     The consultation desk.
+
+     Vijay: "here doctor just uses this prescription page only and there only
+     he works, he should not go to other page which makes him worst."
+
+     So everything a consultation needs is on this one screen: who is waiting
+     on the left, the prescription in the middle, what was prescribed before
+     on the right. The doctor writes into the sheet that prints - there is no
+     separate form that gets turned into a document afterwards.
+     ========================================================================= -->
+
+<header class="desk-top">
+  <a class="desk-back" href="patients.html">&larr; Patients</a>
+  <div class="desk-who">
+    <b id="deskPatient">No patient selected</b>
+    <span id="deskPatientMeta"></span>
+  </div>
+  <span class="desk-status" id="deskStatus" hidden></span>
+  <div class="desk-actions">
+    <span class="desk-saved" id="deskSaved"></span>
+    <button type="button" class="btn btn-ghost" id="deskUpload" disabled title="Show a code the patient can scan, or attach a file yourself">Upload report</button>
+    <button type="button" class="btn btn-ghost" id="deskSave" disabled>Save draft</button>
+    <button type="button" class="btn btn-ghost" id="deskIssue" disabled>Issue</button>
+    <button type="button" class="btn btn-primary" id="deskPrint" disabled>Print / Save PDF</button>
+  </div>
+</header>
+
+<div id="deskMsg"></div>
+
+<main class="desk">
+
+  <!-- ---------------------------------------------------------- queue --- -->
+  <aside class="desk-rail desk-queue">
+    <button type="button" class="btn btn-ghost btn-full" id="deskAddNew">+ Add new / walk-in patient</button>
+
+    <!-- The standing code the front desk displays. Vijay: "a qr code at the
+         attender where patient opens that link and there the customer form
+         gets, and till he waits he can fill up his details." Print it once,
+         stand it on the counter. -->
+    <button type="button" class="btn btn-ghost btn-full desk-qr-btn" id="deskShowCode">Registration code</button>
+
+    <form class="desk-new" id="deskNewForm" hidden>
+      <label class="field"><span>Name</span><input id="newName" required autocomplete="off"></label>
+      <label class="field"><span>Mobile</span><input id="newMobile" inputmode="tel" required autocomplete="off"></label>
+      <div class="desk-new-row">
+        <label class="field"><span>Sex</span>
+          <select id="newSex"><option value="">—</option><option>Female</option><option>Male</option><option>Other</option></select>
+        </label>
+        <label class="field"><span>Born</span><input id="newDob" type="date"></label>
+      </div>
+      <div class="desk-new-actions">
+        <button type="button" class="btn btn-ghost" id="newCancel">Cancel</button>
+        <button type="submit" class="btn btn-primary">Add</button>
+      </div>
+    </form>
+
+    <label class="field desk-search"><span class="visually-hidden">Search patients</span>
+      <input id="deskSearch" placeholder="Search name, mobile or number" autocomplete="off">
+    </label>
+
+    <h2 class="desk-rail-head">Patients</h2>
+    <div id="deskQueue"><div class="empty">Loading…</div></div>
+  </aside>
+
+  <!-- ------------------------------------------------------- document --- -->
+  <section class="desk-sheet" id="deskSheet">
+    <div class="desk-blank">
+      <p><b>Pick a patient to begin.</b></p>
+      <p>Everything for the consultation happens here — notes, medicines,
+        advice and printing. You should not need another screen.</p>
+    </div>
+  </section>
+
+  <!-- ------------------------------------------- history, then alerts --- -->
+  <!-- Split in half. Vijay: "following alerts and allergies, let's keep it
+       below the earlier prescriptions, so half will be prescription and half
+       will be this alerts and allergies, so we can make that prescriptions
+       scrollable."
+
+       It was wedged between the prescription sheet and the plan sheet, which
+       made the most important field on the screen the easiest one to miss.
+       Here it has a fixed half of the rail, always visible, never scrolled
+       past - which is right for the thing a doctor must read before she
+       prescribes. -->
+  <aside class="desk-rail desk-history">
+    <div class="desk-rail-half desk-rail-past">
+      <h2 class="desk-rail-head">Earlier prescriptions</h2>
+      <div id="deskHistory"><div class="empty">—</div></div>
+    </div>
+
+    <div class="desk-rail-half desk-rail-alerts">
+      <h2 class="desk-rail-head">Alerts &amp; allergies</h2>
+      <p class="desk-rail-note">Follows the patient to every clinic. Not printed.</p>
+      <!-- Disabled until a patient is picked: typing an allergy with
+           nobody selected would have nowhere to save it, and losing that
+           particular sentence is not acceptable. -->
+      <textarea id="deskAlerts" disabled
+        placeholder="Penicillin allergy. Asthmatic. Anything the next doctor must know before prescribing."></textarea>
+    </div>
+  </aside>
+
+
+</main>
+<!-- The upload dialog. Two ways in, because the doctor usually does not
+     hold the report: show the patient a code to scan, or attach a file
+     from this computer if she does have it. -->
+<!-- The standing registration code, shown at the counter. -->
+<dialog id="codeDialog" class="desk-dialog">
+  <header><h2>Registration code</h2>
+    <button type="button" class="desk-x" id="codeClose" aria-label="Close">&times;</button>
+  </header>
+  <div id="codeBody"><div class="empty">Preparing…</div></div>
+  <footer><button type="button" class="btn btn-primary" id="codeDone">Done</button></footer>
+</dialog>
+
+<dialog id="uploadDialog" class="desk-dialog">
+  <header><h2>Send a report to this record</h2>
+    <button type="button" class="desk-x" id="uploadClose" aria-label="Close">&times;</button>
+  </header>
+  <div id="uploadBody"><div class="empty">Preparing a code…</div></div>
+  <footer>
+    <label class="btn btn-ghost desk-upload-btn">
+      <input type="file" id="deskLabFile" accept="image/*,application/pdf" hidden>
+      Choose a file on this computer</label>
+    <button type="button" class="btn btn-primary" id="uploadDone">Done</button>
+  </footer>
+</dialog>
+
+
+<script src="js/app-install.js"></script>
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/qr.js?v=1"></script>
+<script src="js/rx-document.js?v=1"></script>
+<script src="js/desk.js?v=1"></script>
+</body>
+</html>

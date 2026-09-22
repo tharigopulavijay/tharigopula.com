@@ -1,0 +1,52 @@
+main{max-width:1340px}
+.context{max-width:1030px;margin-left:auto;margin-right:auto}
+.prescription-stage{display:grid;grid-template-columns:180px 900px 180px;justify-content:center;gap:20px;align-items:start}
+.visit-rail-left{grid-column:1;grid-row:1}.prescription-stage>.sheet{grid-column:2;grid-row:1}.visit-rail-right{grid-column:3;grid-row:1}
+.prescription-stage .sheet-inner{padding-top:16px}
+.prescription-stage .rx-header{padding-top:4px;padding-bottom:10px}
+.prescription-stage .divider{margin-bottom:6px}
+.prescription-stage .patient-strip{margin-bottom:14px}
+.prescription-stage .sheet section{margin-bottom:14px}
+.visit-rail{position:sticky;top:92px;display:grid;gap:10px}
+.visit-rail header{padding:5px 4px 2px}
+.visit-rail small{color:#92704e;font-size:8px;font-weight:700;letter-spacing:.1em}
+.visit-rail h2{display:block;margin:3px 0 0;font:700 16px "Libre Baskerville",serif;color:#123f32}
+.visit-rail a{display:grid;gap:4px;padding:13px 12px;border:1px solid #d5ddd7;border-radius:10px;background:#fff;color:#1e342c;text-decoration:none;box-shadow:0 5px 18px #153e3009;transition:.2s ease}
+.visit-rail a:hover{border-color:#a8b9ae;transform:translateY(-1px)}
+.visit-rail a.active{border-color:#2f7156;background:#123f32;color:#fff}
+.visit-rail time{color:#986b36;font-size:9px;font-weight:700}
+.visit-rail a.active time{color:#edc984}
+.visit-rail b{font-size:11px}
+.visit-rail span{color:#748078;font-size:9px}
+.no-rx-history{padding:12px;border:1px dashed #cfd8d2;border-radius:9px;background:#fbfcfa;color:#748078;font-size:9px}.full-investigations.patient-specific>div{grid-template-columns:1.5fr 1fr 1fr}.no-investigations{margin:0;padding:22px;color:#6d7972;font-size:10px;text-align:center}.workspace-bar #saveRxDraft{background:#fff;color:#123f32;border:1px solid #cfd8d2}
+.visit-rail a.active span{color:#c7d8d1}
+.investigation-page{margin-left:auto;margin-right:auto}
+.investigation-page .sheet-inner{padding-top:30px}
+.zoom-control{display:flex;align-items:center;border:1px solid #cfd6d1;border-radius:7px;overflow:hidden;background:#fff}
+.workspace-bar .zoom-control button{width:34px;margin:0;padding:8px 0;border:0;border-radius:0;background:#fff;color:#123f32;font-size:17px;line-height:1;cursor:pointer}
+.workspace-bar .zoom-control button:hover{background:#edf3ef}.workspace-bar .zoom-control button:disabled{opacity:.35;cursor:default}
+.zoom-control output{min-width:46px;padding:0 5px;text-align:center;color:#55635c;font-size:10px;font-weight:700}
+@media(max-width:1320px){
+  .prescription-stage{grid-template-columns:440px 440px;width:900px;margin:auto}
+  .visit-rail{position:static;grid-template-columns:1fr 1fr;margin-bottom:4px}
+  .visit-rail header{grid-column:1/-1}
+  .visit-rail-left{grid-column:1;grid-row:1}
+  .visit-rail-right{grid-column:2;grid-row:1}
+  .prescription-stage>.sheet{grid-column:1/-1;grid-row:2}
+}
+@media(max-width:960px){
+  main{overflow-x:auto!important}
+  .prescription-stage{display:block;width:auto;overflow:visible}
+  .visit-rail{display:flex;overflow-x:auto;margin:0 12px 12px}
+  .visit-rail header{min-width:130px}
+  .visit-rail a{min-width:180px}
+  .visit-rail-right{margin-bottom:14px}
+  .prescription-stage>.sheet,.investigation-page{margin-left:12px}
+}
+@media print{
+  .visit-rail,.zoom-control{display:none!important}
+  .prescription-stage{display:block;width:auto}
+  .prescription-stage .sheet-inner{padding-top:7mm}
+  .prescription-stage .rx-header{padding:10px 0 18px}
+  .prescription-stage .divider{margin-bottom:10px}
+}

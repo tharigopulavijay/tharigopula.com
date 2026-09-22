@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Team | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <h1>Team</h1>
+        <p>Who else may use your clinic, and what they can open.</p>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-primary" id="addBtn">+ Add someone</button>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <div class="stat-row" id="roleTiles"></div>
+
+    <div class="panel">
+      <header>
+        <h2>People with access</h2>
+        <div class="spacer"></div>
+        <span class="pill" id="staffCount"></span>
+      </header>
+      <div id="staffTable"><div class="empty">Loading…</div></div>
+    </div>
+
+    <!-- The promise, written where she can read it before she trusts it. -->
+    <div class="panel">
+      <header><h2>Default access when adding a role</h2></header>
+      <div class="body"><div id="matrix"></div></div>
+    </div>
+  </main>
+</div>
+
+<dialog id="addDialog">
+  <form id="addForm" method="dialog">
+    <header><h3>Add someone to your clinic</h3><button type="button" id="addClose">&times;</button></header>
+    <div class="body">
+      <div id="addMsg"></div>
+      <label class="field"><span>Their name</span>
+        <input id="sName" required></label>
+      <label class="field"><span>Their mobile number</span>
+        <input id="sMobile" required inputmode="numeric">
+        <small>This is how they sign in. It cannot already be a TCOS account.</small></label>
+      <div class="field"><span class="field-label">What they do</span>
+        <div id="roleChoices" class="role-choices"></div>
+      </div>
+
+      <!-- Only for another doctor. Their own number prints on the
+           prescriptions they issue, so it is taken now rather than left as
+           a field to fill in later - the first prescription would go out
+           without it. -->
+      <div id="doctorFields" hidden>
+        <div class="notice info" style="max-width:none;margin-bottom:14px">
+          This person writes their own prescriptions, so these are
+          <b>their</b> credentials, not yours. We verify the registration
+          number before it prints on anything.
+        </div>
+        <div class="field-row">
+          <label class="field"><span>Their qualification</span>
+            <input id="sQual" list="qualList">
+            <datalist id="qualList">
+              <option value="BAMS"></option><option value="MD (Ayurveda)"></option>
+              <option value="BHMS"></option><option value="MD (Homoeopathy)"></option>
+              <option value="MBBS"></option><option value="MD"></option>
+              <option value="MS"></option><option value="BUMS"></option>
+              <option value="BNYS"></option><option value="BPT"></option>
+            </datalist>
+          </label>
+          <label class="field"><span>Their council</span>
+            <input id="sCouncil" list="councilList">
+            <datalist id="councilList">
+              <option value="AYUSH"></option>
+              <option value="Central Council of Indian Medicine"></option>
+              <option value="Central Council of Homoeopathy"></option>
+              <option value="National Medical Commission"></option>
+              <option value="State Medical Council"></option>
+            </datalist>
+          </label>
+        </div>
+        <label class="field"><span>Their registration number</span>
+          <input id="sReg">
+          <small>Required. It is what identifies them on a prescription.</small>
+        </label>
+      </div>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="addCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="addSave">Create account</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog id="accessDialog">
+  <form id="accessForm" method="dialog">
+    <header><h3 id="accessTitle">Responsibilities</h3><button type="button" id="accessClose">&times;</button></header>
+    <div class="body">
+      <p style="color:var(--muted);margin-top:0">Choose the work this person actually handles. Their menu updates automatically—each section appears only once.</p>
+      <div id="accessChoices" class="toggle-grid"></div>
+      <div class="notice info" style="max-width:none;margin-top:16px">Clinical notes, diagnosis and prescribing stay doctor-only. Operational access can be combined safely.</div>
+    </div>
+    <footer><button type="button" class="btn btn-ghost" id="accessCancel">Cancel</button><button class="btn btn-primary" type="submit">Save responsibilities</button></footer>
+  </form>
+</dialog>
+
+<!-- Shown once. There is no second chance because there is nothing to show
+     a second time - only a hash was kept. -->
+<dialog id="passDialog">
+  <header><h3 id="passTitle">Their temporary password</h3></header>
+  <div class="body">
+    <p class="pass-note" id="passWho"></p>
+    <div class="pass-box"><code id="passValue">…</code>
+      <button type="button" class="btn btn-ghost btn-sm" id="passCopy">Copy</button></div>
+    <div class="notice warn" style="max-width:none" id="passWarn">
+      Give this to them now. It is not stored anywhere and cannot be shown
+      again. They will have to choose their own password the first time they
+      sign in.
+    </div>
+  </div>
+  <footer>
+    <button type="button" class="btn btn-primary" id="passDone">I have given it to them</button>
+  </footer>
+</dialog>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/team.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

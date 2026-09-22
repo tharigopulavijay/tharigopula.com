@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Prescription | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Libre+Baskerville:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/rx.css">
+</head>
+<body>
+
+<!-- The clinic on this prescription is whoever is signed in. There is no
+     control here to change it - that is deliberate. A doctor has exactly one
+     clinic, and identity comes from the session, never from the page. -->
+<div class="toolbar">
+  <span class="brandline" id="brandline">TCOS<small>Prescription</small></span>
+  <span class="packs" id="patientLine"></span>
+  <span class="spacer"></span>
+  <a class="btn-link" href="patients.html" id="backLink">← Patients</a>
+  <button id="printBtn" class="primary">Print / Save PDF</button>
+</div>
+
+<main>
+  <div id="pageMsg"></div>
+  <article class="sheet" id="sheet"><div class="loading">Loading…</div></article>
+</main>
+
+<script src="js/products.js"></script>
+<script src="js/clinic-registry.js"></script>
+<script src="js/tcos-api.js"></script>
+<script>
+(async () => {
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const note = (text, kind) => {
+    document.getElementById('pageMsg').innerHTML = text
+      ? '<div class="page-notice ' + kind + '">' + text + '</div>' : '';
+  };
+
+  if (!TCOSApi.isSignedIn()) { location.replace('tcos-login.html'); return; }
+
+  /* ---- who is signed in ---- */
+  let me;
+  try { me = await TCOSApi.me(); }
+  catch (error) {
+    if (error.status === 401) { location.replace('tcos-login.html'); return; }
+    note(esc(error.message), 'error');
+    return;
+  }
+
+  const product = window.TCOSProducts.remember(me.product);
+  const actor = me.me || {};
+  const signer = {
+    name: actor.name || me.fullName,
+    qualification: actor.qualification || me.qualification,
+    registrationNo: actor.registrationNo || me.registrationNo,
+    verified: typeof actor.verified === 'boolean'
+      ? actor.verified : !!(me.verification && me.verification.verified)
+  };
+  document.title = 'Prescription | ' + product.name;
+
+  document.getElementById('brandline').innerHTML =
+    esc(me.clinicName) + '<small>Prescription</small>';
+
+  /* ---- which patient ---- */
+  const patientId = new URLSearchParams(location.search).get('patient');
+  let record = null;
+  if (patientId) {
+    try { record = await TCOSApi.getPatient(patientId); }
+    catch (error) {
+      note('Could not open that patient: ' + esc(error.message), 'error');
+    }
+  }
+
+  if (!patientId) {
+    note('Open a patient from your list to write a prescription.', 'info');
+  }
+
+  document.getElementById('patientLine').textContent = record
+    ? record.patient.full_name + ' · ' + record.patient.mobile
+    : 'No patient selected';
+
+  /* ---- the layout this doctor actually practises ---- */
+  const registry = window.ClinicRegistry;
+  const sections = registry.resolveLayout(me.practicePacks || []).sections;
+  const core = registry.CORE_SECTIONS;
+
+  const coreIds = new Set(core.map(s => s.id));
+  const orderedSystems = registry.medicineSystemsFor(product);
+  const systems = Object.fromEntries(orderedSystems.map(s => [s.id, s.label]));
+
+  const blankRow = label =>
+    '<p><b>' + esc(label) + '</b><span contenteditable="true"></span></p>';
+
+  function renderMedicines() {
+    /* Previous medicines from this doctor's own prescriptions, newest first. */
+    const previous = (record && record.prescriptions || []).slice(0, 1);
+    return '<table class="med"><thead><tr>' +
+      '<th>Medicine</th><th>System</th><th>Dose</th><th>Frequency</th><th>Duration</th>' +
+      '</tr></thead><tbody>' +
+      Array.from({ length: 5 }, () =>
+        '<tr>' +
+          '<td contenteditable="true"></td>' +
+          '<td><select class="sys-select">' +
+            orderedSystems.map(s =>
+              '<option value="' + esc(s.id) + '">' + esc(s.label) + '</option>').join('') +
+          '</select></td>' +
+          '<td contenteditable="true"></td>' +
+          '<td contenteditable="true"></td>' +
+          '<td contenteditable="true"></td>' +
+        '</tr>').join('') +
+      '</tbody></table>' +
+      (previous.length
+        ? '<p class="hint-line">Last prescription on ' + esc(previous[0].issued_on) + '.</p>' : '');
+  }
+
+  function renderLabs() {
+    const reports = (record && record.labReports) || [];
+    if (!reports.length) {
+      return '<div class="field-grid">' +
+        ['Investigation 1', 'Investigation 2', 'Investigation 3']
+          .map(blankRow).join('') + '</div>';
+    }
+    return '<div class="field-grid">' +
+      reports.slice(0, 6).map(r =>
+        '<p><b>' + esc(r.report_name) + '</b><span>' + esc(r.reported_on) +
+        ' · ' + esc(r.status === 'verified' ? 'Verified' : 'Awaiting review') + '</span></p>'
+      ).join('') + '</div>';
+  }
+
+  function renderSection(section) {
+    const tag = coreIds.has(section.id)
+      ? '<span class="tag core">Core</span>'
+      : '<span class="tag pack">Practice</span>';
+    let inner;
+    if (section.kind === 'medicines') inner = renderMedicines();
+    else if (section.kind === 'labs') inner = renderLabs();
+    else inner = '<div class="field-grid' + (section.fields.length <= 3 ? ' single' : '') + '">' +
+      section.fields.map(blankRow).join('') + '</div>';
+    return '<section><h2>' + esc(section.title) + tag + '</h2>' + inner + '</section>';
+  }
+
+  const today = new Intl.DateTimeFormat('en-GB',
+    { day: '2-digit', month: 'short', year: 'numeric' }).format(new Date());
+  const patient = record && record.patient;
+
+  document.getElementById('sheet').innerHTML =
+    '<header class="rx-header">' +
+      '<div class="logo-fallback">' + esc((me.clinicName || '?').charAt(0)) + '</div>' +
+      '<div class="identity">' +
+        '<h1>' + esc(me.clinicName) + '</h1>' +
+        (me.tagline ? '<p class="tagline">' + esc(me.tagline) + '</p>' : '') +
+        '<p class="doctor">' + esc(signer.name) +
+          (signer.qualification ? ' - ' + esc(signer.qualification) : '') + '</p>' +
+        /* Printed only once somebody has checked it against the council
+           register. A pharmacist acts on this number, so TCOS does not put
+           one on a document it has never seen evidence for. */
+        ((signer.verified && signer.registrationNo)
+          ? '<p class="reg">' + esc(signer.registrationNo) + '</p>' : '') +
+      '</div>' +
+      '<div class="meta">' +
+        '<div><b>Date:</b> ' + esc(today) + '</div>' +
+        (patient ? '<div><b>Patient:</b> ' + esc(patient.mobile) + '</div>' : '') +
+      '</div>' +
+    '</header>' +
+    '<div class="rule"></div>' +
+    '<div class="patient-strip">' +
+      '<p><b>Patient</b><span contenteditable="true">' +
+        esc(patient ? patient.full_name : '') + '</span></p>' +
+      '<p><b>Age / Sex</b><span contenteditable="true">' +
+        esc(patient && patient.sex ? patient.sex : '') + '</span></p>' +
+      '<p><b>Weight</b><span contenteditable="true"></span></p>' +
+      '<p><b>Visit</b><span contenteditable="true">Consultation</span></p>' +
+    '</div>' +
+    '<div class="rx-body">' + sections.map(renderSection).join('') + '</div>' +
+    '<div class="signature"><div><i></i><b>' + esc(signer.name) + '</b>' +
+      '<small>' + esc(signer.qualification || '') + '</small></div></div>' +
+    '<footer class="clinic-footer">' +
+      (me.address ? '<span>' + esc(me.address) + '</span>' : '') +
+    '</footer>' +
+    '<div class="platform-credit"><span class="mark">T</span>' + esc(product.name) +
+      ' · A Tharigopula Technologies product</div>';
+
+  document.getElementById('printBtn').addEventListener('click', () => print());
+})();
+</script>
+</body>
+</html>

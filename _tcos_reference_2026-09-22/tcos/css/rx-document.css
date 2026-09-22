@@ -1,0 +1,334 @@
+/* =========================================================================
+   The prescription sheet.
+
+   One stylesheet for one document, used by the doctor composing it and the
+   patient receiving it. If these ever become two files, the two views have
+   started drifting again and something has gone wrong.
+
+   Built to the compact layout Vijay approved on 10 Sep. His words: "this
+   actually is good space saving" - so every choice here is about fitting a
+   real consultation on one sheet without it feeling cramped:
+
+     - medicines are a table, six narrow columns
+     - panels pair up across the sheet rather than stacking
+     - the patient strip is one line
+     - blank ruled rows finish the medicine table like a printed pad
+
+   THE FOOTER IS PINNED. His other specific complaint: "when data is less
+   the doctor sign goes up - that is not a good habit." The sheet is a flex
+   column with a page-height minimum and the footer takes margin-top:auto,
+   so a two-medicine prescription is as finished-looking as a twenty.
+   ========================================================================= */
+
+.rx-sheet{
+  /* Tokens local to the sheet, so it can be dropped into any screen without
+     inheriting that screen's palette. */
+  --rx-paper:#FFFFFF;
+  --rx-ground:#F4F6F4;
+  --rx-ink:#16211C;
+  --rx-ink-2:#3F4E47;
+  --rx-muted:#77857D;
+  --rx-rule:#DDE4DF;
+  --rx-rule-2:#C2CDC6;
+  /* The accent, and the ONLY token any product overrides. Everything else
+     below is shared, which is the point: three products, one sheet. */
+  --rx-deep:#1F5C42;
+  --rx-deep-soft:#E8F1EB;
+  --rx-flag:#9C3327;
+  --rx-warn:#8A5A0B;
+
+  background:var(--rx-paper);
+  color:var(--rx-ink);
+  border:1px solid var(--rx-rule-2);
+  padding:26px 28px 18px;
+  margin:0 auto 22px;
+  max-width:860px;
+  /* A4 is 1:1.414. A minimum keeps a short prescription looking like a page
+     rather than a receipt. */
+  min-height:min(1040px, 132vw);
+  display:flex; flex-direction:column;
+  font-size:14px; line-height:1.5;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+/* ------------------------------------------- the product's own colour ---
+
+   TWO LINES EACH, AND THAT IS DELIBERATELY ALL.
+
+   Vijay: "just the colouring changes, else that also same across all - it
+   is better keep consistent, the presentation all consistent."
+
+   Every product gets the same sheet: the same layout, the same sections,
+   the same six examination fields she chose, the same rule about where the
+   letterhead goes. What changes is one accent, sampled from that product's
+   own logo so a doctor's prescription matches the mark on her screen.
+
+   If a rule ever appears in one of these blocks that is not a colour, the
+   three sheets have started to diverge - and divergence here is how "the
+   Ayurveda one does X but the homeopathy one does not" begins.
+   ------------------------------------------------------------------------ */
+.rx-sheet[data-product="ayurcos"]  { --rx-deep:#027256; --rx-deep-soft:#E6F3F0; }
+.rx-sheet[data-product="homeocos"] { --rx-deep:#5035B7; --rx-deep-soft:#EFECFB; }
+.rx-sheet[data-product="allocos"]  { --rx-deep:#005FBB; --rx-deep-soft:#E6F1FB; }
+
+/* ---------------------------------------------------------- masthead --- */
+/* The rule under the masthead is what closes off the header now that the
+   "Prescription" title is gone - without it the clinic name and the patient
+   strip run into each other. */
+.rx-head{
+  display:flex; align-items:flex-start; justify-content:space-between;
+  gap:20px; padding-bottom:11px; margin-bottom:13px;
+  border-bottom:2px solid var(--rx-deep);
+}
+/* Page two onwards: one line of small type instead of the masthead. It
+   exists so a sheet that comes apart from the others can still be tied to a
+   clinic, a patient and a date - not to repeat the letterhead. */
+.rx-continued{
+  display:flex; flex-wrap:wrap; align-items:center; gap:7px;
+  font-size:.7rem; color:var(--rx-muted);
+  padding-bottom:7px; margin-bottom:12px;
+  border-bottom:1px solid var(--rx-rule);
+}
+.rx-continued i{font-style:normal; color:var(--rx-rule-2)}
+/* No masthead to push the content down, so the sheet starts where the
+   paper starts. */
+.rx-sheet-continued{padding-top:18px}
+
+.rx-head-clinic{flex:1; min-width:0}
+.rx-head h1{
+  font-weight:800; color:var(--rx-deep); letter-spacing:.01em;
+  font-size:clamp(1.15rem,3vw,1.6rem); line-height:1.15; margin:0 0 2px;
+  text-transform:uppercase;
+}
+.rx-tagline{margin:0 0 3px; color:var(--rx-ink-2); font-size:.83rem}
+.rx-credentials{margin:0; color:var(--rx-ink-2); font-size:.8rem}
+.rx-head-meta{
+  flex:0 0 auto; text-align:right; font-size:.8rem; color:var(--rx-ink-2);
+  line-height:1.75; font-variant-numeric:tabular-nums; white-space:nowrap;
+}
+.rx-head-meta b{color:var(--rx-ink); font-weight:700}
+
+/* Printing onto the clinic's own letterhead: leave the paper's own header
+   room and start the document below it. */
+.rx-letterhead-gap{height:112px; border-bottom:1px dashed var(--rx-rule)}
+
+/* ------------------------------------------------------ document title --- */
+.rx-title{display:flex; align-items:baseline; gap:14px; margin:2px 0 12px}
+.rx-title h2{
+  margin:0; font-size:clamp(1.5rem,4vw,2.1rem); font-weight:800;
+  letter-spacing:-.02em; color:var(--rx-ink);
+}
+.rx-title-rule{flex:1; height:1px; background:var(--rx-rule-2)}
+
+/* ------------------------------------------------------- patient strip --- */
+.rx-strip{
+  display:flex; flex-wrap:wrap; align-items:center; gap:3px 10px;
+  background:var(--rx-deep-soft); padding:9px 13px; margin-bottom:14px;
+  font-size:.9rem; border-radius:3px;
+}
+.rx-strip b{font-weight:700}
+.rx-strip i{color:var(--rx-rule-2); font-style:normal}
+.rx-unknown{color:var(--rx-warn); font-style:italic}
+
+/* -------------------------------------------------------------- panels --- */
+.rx-pair{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px}
+.rx-pair .rx-panel{margin-bottom:0}
+
+.rx-panel{border:1px solid var(--rx-rule); margin-bottom:12px; border-radius:3px; overflow:hidden}
+.rx-panel h2{
+  margin:0; background:var(--rx-deep); color:#fff;
+  font-size:.92rem; font-weight:700; padding:8px 13px; letter-spacing:.005em;
+}
+.rx-panel-body{padding:11px 13px}
+.rx-panel-flush .rx-panel-body{padding:0}
+
+.rx-p{margin:0 0 7px; font-size:.88rem}
+.rx-p:last-child{margin-bottom:0}
+.rx-next{font-weight:700; font-size:.95rem}
+
+.rx-findings{list-style:none; margin:6px 0 0; padding:0; font-size:.85rem}
+.rx-findings li{padding:2px 0; color:var(--rx-ink-2)}
+.rx-findings li b{color:var(--rx-ink); margin-right:5px}
+
+.rx-assessment{margin:0; padding-left:19px; font-size:.88rem}
+.rx-assessment li{padding:2px 0}
+
+/* ----------------------------------------------------------- medicines --- */
+table.rx-meds{width:100%; border-collapse:collapse; font-size:.86rem}
+table.rx-meds thead th{
+  background:var(--rx-deep-soft); color:var(--rx-ink); text-align:left;
+  padding:7px 10px; font-size:.75rem; font-weight:700;
+  border-bottom:1px solid var(--rx-rule);
+  border-right:1px solid var(--rx-rule); white-space:nowrap;
+}
+table.rx-meds thead th:last-child{border-right:0}
+table.rx-meds td{
+  padding:8px 10px; border-bottom:1px solid var(--rx-rule);
+  border-right:1px solid var(--rx-rule); vertical-align:top;
+}
+table.rx-meds td:last-child{border-right:0}
+table.rx-meds tbody tr:last-child td{border-bottom:0}
+td.rx-n,th.rx-n{width:34px; text-align:center; color:var(--rx-muted); font-variant-numeric:tabular-nums}
+td.rx-days,th.rx-days{width:58px; text-align:center; font-variant-numeric:tabular-nums}
+td.rx-name b{font-weight:700}
+/* The ruled empty lines that finish a prescription pad. */
+tr.rx-blank td{height:30px; background:#FCFDFC}
+
+.rx-sys{
+  font-size:.6rem; letter-spacing:.06em; text-transform:uppercase; font-weight:700;
+  padding:1px 5px; border:1px solid; border-radius:2px; white-space:nowrap;
+}
+.rx-sys-allopathy{color:#1F4E79; border-color:#B9CFE2; background:#EDF4FA}
+.rx-sys-ayurveda{color:#3D6B2E; border-color:#BFD6B4; background:#EFF6EB}
+.rx-sys-homeopathy{color:#6B4A86; border-color:#CFC0DC; background:#F4EFF8}
+.rx-sys-supplement{color:#7A5A16; border-color:#DCC994; background:#FAF3E2}
+
+.rx-nothing{
+  padding:40px 12px; text-align:center; color:var(--rx-muted);
+  border:1px dashed var(--rx-rule-2); font-size:.9rem; border-radius:3px;
+}
+
+/* ------------------------------------------------ small section head --- */
+/* Enough to say what a block is, without a banner. */
+.rx-small-head{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:14px; flex-wrap:wrap; margin:18px 0 8px; padding-bottom:5px;
+  border-bottom:1px solid var(--rx-rule-2);
+  font-size:.95rem; font-weight:700; color:var(--rx-deep);
+}
+.rx-small-head span{
+  font-size:.64rem; letter-spacing:.09em; text-transform:uppercase;
+  color:var(--rx-warn); font-weight:700;
+}
+
+/* --------------------------------------------------- investigations --- */
+table.rx-investigations{width:100%; border-collapse:collapse; font-size:.8rem}
+table.rx-investigations thead th{
+  background:var(--rx-deep); color:#fff; padding:7px 9px;
+  font-size:.66rem; letter-spacing:.07em; text-transform:uppercase; font-weight:700;
+  white-space:nowrap; text-align:left;
+}
+table.rx-investigations tbody th{
+  text-align:left; padding:6px 9px; font-weight:600;
+  border-bottom:1px solid var(--rx-rule);
+}
+table.rx-investigations td{
+  padding:6px 9px; border-bottom:1px solid var(--rx-rule);
+  white-space:nowrap; font-variant-numeric:tabular-nums; text-align:left;
+}
+/* THE ALIGNMENT FIX. The header cells were all left-aligned while the value
+   cells were right-aligned, so every date column's heading sat over empty
+   space instead of over its numbers. One class now sets both, so a heading
+   and its column cannot disagree again. */
+.rx-num-col{text-align:right !important}
+table.rx-investigations tbody tr:nth-child(even){background:#F8FAF9}
+td.rx-ref{color:var(--rx-muted)}
+td.rx-flag{color:var(--rx-flag); font-weight:700}
+
+/* ------------------------------------------------ diet and lifestyle --- */
+.rx-pair-top{align-items:start}
+.rx-pair-top > div{min-width:0}
+
+table.rx-meals{width:100%; border-collapse:collapse; font-size:.85rem}
+table.rx-meals thead th{
+  background:var(--rx-deep-soft); text-align:left; padding:6px 10px;
+  font-size:.72rem; font-weight:700; border-bottom:1px solid var(--rx-rule);
+  border-right:1px solid var(--rx-rule);
+}
+table.rx-meals thead th:last-child{border-right:0}
+table.rx-meals tbody th{
+  text-align:left; padding:7px 10px; font-weight:700; width:34%;
+  border-bottom:1px solid var(--rx-rule); border-right:1px solid var(--rx-rule);
+  vertical-align:top;
+}
+table.rx-meals td{
+  padding:7px 10px; border-bottom:1px solid var(--rx-rule);
+  border-right:1px solid var(--rx-rule); vertical-align:top;
+}
+table.rx-meals td:last-child{border-right:0}
+table.rx-meals tbody tr:last-child th,
+table.rx-meals tbody tr:last-child td{border-bottom:0}
+
+/* Prefer / avoid / precautions. Colour carries the meaning at a glance,
+   which is the whole job of these three lists on a patient's fridge. */
+.rx-list{
+  border:1px solid var(--rx-rule); border-radius:3px;
+  padding:10px 13px 11px; margin-bottom:12px;
+}
+.rx-list h4{
+  margin:0 0 6px; font-size:.86rem; font-weight:700; color:var(--rx-deep);
+}
+.rx-list ul{margin:0; padding-left:17px; font-size:.85rem}
+.rx-list li{padding:1px 0}
+.rx-list-good{background:#F1F8F3; border-color:#C8DFCE}
+.rx-list-good h4{color:#2C6B45}
+.rx-list-avoid{background:#FDF4EA; border-color:#E8D2B4}
+.rx-list-avoid h4{color:var(--rx-warn)}
+.rx-list-warn{background:#FDF0EE; border-color:#E6C3BC}
+.rx-list-warn h4{color:var(--rx-flag)}
+
+/* -------------------------------------------------------- the footer --- */
+/* margin-top:auto is the whole fix for "the doctor sign goes up". */
+.rx-body{flex:1}
+.rx-foot{margin-top:auto; padding-top:22px}
+.rx-sign-row{display:flex; align-items:flex-end; justify-content:space-between; gap:24px}
+.rx-credit{flex:1; min-width:0}
+.rx-contact{
+  display:flex; flex-wrap:wrap; gap:2px 16px;
+  font-size:.74rem; color:var(--rx-muted);
+}
+.rx-powered{margin-top:5px; font-size:.66rem; color:var(--rx-muted); letter-spacing:.04em}
+.rx-sign{flex:0 0 auto; text-align:center; min-width:190px}
+.rx-sign-line{border-top:1px solid var(--rx-rule-2); margin-bottom:5px; height:38px}
+.rx-sign b{display:block; font-size:.84rem; font-weight:700}
+.rx-sign span{display:block; font-size:.7rem; color:var(--rx-muted)}
+
+/* ------------------------------------------------------------- phone --- */
+@media (max-width:680px){
+  .rx-sheet{
+    padding:16px 13px 14px; min-height:0; border-left:0; border-right:0;
+    margin-bottom:12px; font-size:14.5px;
+  }
+  .rx-head{flex-direction:column; gap:7px}
+  .rx-head-meta{text-align:left}
+  .rx-pair{grid-template-columns:1fr; gap:10px}
+  .rx-title h2{font-size:1.5rem}
+
+  /* A table of six columns is unreadable on a phone, so each medicine
+     becomes a block with its column names beside the values. The patient
+     is the one on a phone, and she is reading this to know what to take. */
+  table.rx-meds thead{display:none}
+  table.rx-meds,table.rx-meds tbody,table.rx-meds tr,table.rx-meds td{display:block; width:auto}
+  table.rx-meds tr{border-bottom:1px solid var(--rx-rule); padding:9px 11px}
+  table.rx-meds tr:last-child{border-bottom:0}
+  table.rx-meds td{border:0; padding:1px 0}
+  table.rx-meds td:empty{display:none}
+  td.rx-n{display:none}
+  td.rx-name b{font-size:1.02rem}
+  table.rx-meds td:not(.rx-name):not(.rx-n)::before{
+    content:attr(data-label); color:var(--rx-muted); margin-right:6px;
+  }
+  td.rx-days,th.rx-days{width:auto; text-align:left}
+  /* Blank pad rows are for paper. On a phone they are rows of nothing. */
+  tr.rx-blank{display:none}
+
+  .rx-sign-row{flex-direction:column; align-items:stretch; gap:14px}
+  .rx-sign{text-align:left; min-width:0}
+  .rx-sign-line{height:30px}
+  .rx-contact{flex-direction:column; gap:2px}
+}
+
+/* ------------------------------------------------------------- print --- */
+/* What comes out of the printer is the point of the whole file. */
+@media print{
+  .rx-sheet{
+    border:0; margin:0; padding:0; max-width:none; min-height:auto;
+    background:#fff; break-after:page; page-break-after:always;
+  }
+  .rx-sheet:last-child{break-after:auto; page-break-after:auto}
+  .rx-panel,.rx-pair,tr{break-inside:avoid; page-break-inside:avoid}
+  .rx-foot{margin-top:26px}
+  /* On the clinic's own paper the gap is real space, not a dashed hint. */
+  .rx-letterhead-gap{border-bottom:0}
+  .rx-panel h2{-webkit-print-color-adjust:exact; print-color-adjust:exact}
+}

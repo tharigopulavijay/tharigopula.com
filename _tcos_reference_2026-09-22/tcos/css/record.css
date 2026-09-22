@@ -1,0 +1,116 @@
+/* Patient record: what needs attention, then how numbers have moved. */
+
+.attention {
+  border: 1px solid color-mix(in srgb, var(--bad) 32%, transparent);
+  background: var(--bad-soft); border-radius: var(--radius);
+  padding: 15px 17px; margin-bottom: 18px;
+}
+.attention h3 {
+  font-size: .84rem; font-weight: 600; color: var(--bad);
+  margin-bottom: 10px; letter-spacing: .01em;
+}
+.attention.calm {
+  border-color: color-mix(in srgb, var(--ok) 26%, transparent);
+  background: var(--ok-soft);
+}
+.attention.calm h3 { color: var(--ok); margin-bottom: 0; }
+.attention .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.attention .chip {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 6px; padding: 5px 10px; font-size: .82rem;
+}
+.attention .chip b { font-variant-numeric: tabular-nums; margin-left: 3px; }
+.attention .chip em { font-style: normal; font-size: .74rem; color: var(--muted); }
+.attention .chip.high { border-color: color-mix(in srgb, var(--bad) 40%, transparent); }
+.attention .chip.high b { color: var(--bad); }
+.attention .chip.low { border-color: color-mix(in srgb, var(--warn) 45%, transparent); }
+.attention .chip.low b { color: var(--warn); }
+
+/* ---- trend table ---- */
+.trend-table td.analyte { font-weight: 500; }
+.trend-table td.analyte small {
+  display: block; font-size: .72rem; color: var(--muted);
+  font-family: var(--mono);
+}
+.trend-table th.reading, .trend-table td.reading {
+  text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.trend-table td.reading.high { color: var(--bad); font-weight: 600; }
+.trend-table td.reading.low  { color: var(--warn); font-weight: 600; }
+.trend-table td.empty-cell { color: var(--line); }
+.trend-table th.ref, .trend-table td.ref {
+  text-align: right; font-size: .8rem; color: var(--muted); white-space: nowrap;
+}
+.trend-table th.move, .trend-table td.move { text-align: right; white-space: nowrap; }
+.trend-table td.move span { font-size: .8rem; font-variant-numeric: tabular-nums; }
+/* Direction only. Whether up is good depends on the analyte, so this does
+   not colour it green or red and pretend to know. */
+.trend-table td.move .up, .trend-table td.move .down { color: var(--ink-2); }
+.trend-table td.move .flat { color: var(--line); }
+.trend-table tr.row-flagged td { background: color-mix(in srgb, var(--bad-soft) 55%, transparent); }
+.older { padding: 11px 15px; font-size: .8rem; color: var(--muted); margin: 0; }
+.investigation-switch { padding:10px 15px; border-bottom:1px solid var(--line-soft); }
+.report-card-list { display:grid; gap:10px; padding:14px; }.report-summary-card { border:1px solid var(--line); border-radius:10px; overflow:hidden; }.report-summary-card>header { display:flex; justify-content:space-between; gap:15px; padding:12px 14px; background:var(--paper); }.report-summary-card header b,.report-summary-card header span { display:block; }.report-summary-card header span { color:var(--muted); font-size:.76rem; margin-top:2px; }.report-summary-card header em { font-style:normal; color:var(--green-dark); font-size:.74rem; }
+.report-value-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); }.report-value-grid>div { padding:11px 13px; border-right:1px solid var(--line-soft); border-top:1px solid var(--line-soft); }.report-value-grid span,.report-value-grid b,.report-value-grid small { display:block; }.report-value-grid span { font-size:.74rem; color:var(--muted); }.report-value-grid b { margin-top:3px; }.report-value-grid b small { display:inline; }.report-value-grid>div>small { font-size:.7rem; color:var(--muted); }.report-value-grid .flagged { background:var(--bad-soft); }.report-value-grid .flagged b { color:var(--bad); }
+
+/* ---- two columns ---- */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; }
+.care-grid { display:grid; grid-template-columns:1.35fr .65fr; gap:16px; margin-bottom:16px; align-items:start; }
+.medicine-list { padding:4px 0; max-height:430px; overflow:auto; }
+.medicine-line { display:grid; grid-template-columns:28px 1fr; gap:10px; padding:10px 15px; border-bottom:1px solid var(--line-soft); }
+.medicine-no { display:grid; place-items:center; width:24px; height:24px; border-radius:50%; background:var(--green-pale); color:var(--green-dark); font-size:.72rem; font-weight:700; }
+.medicine-line b,.medicine-line span,.medicine-line small { display:block; }
+.medicine-line b { font-size:.88rem; }.medicine-line span { font-size:.79rem; color:var(--ink-2); margin-top:2px; }.medicine-line small { color:var(--muted); margin-top:3px; }
+.rx-summary { padding:13px 15px; background:var(--green-pale); }.rx-summary b,.rx-summary span { display:block; }.rx-summary span { font-size:.78rem; color:var(--muted); margin-top:2px; }
+.care-plan { padding:5px 15px; }.care-plan div { padding:11px 0; border-bottom:1px solid var(--line-soft); }.care-plan div:last-child { border:0; }.care-plan span,.care-plan b { display:block; }.care-plan span { color:var(--muted); font-size:.72rem; text-transform:uppercase; letter-spacing:.04em; }.care-plan b { font-size:.86rem; margin-top:4px; }
+.rx-history-card { border-bottom:1px solid var(--line-soft); }.rx-history-card summary { display:flex; justify-content:space-between; gap:15px; padding:12px 15px; cursor:pointer; }.rx-history-card summary b,.rx-history-card summary small { display:block; }.rx-history-card summary small { color:var(--muted); margin-top:2px; }
+
+.timeline { padding: 4px 0; }
+.event {
+  display: grid; grid-template-columns: 82px minmax(0, 1fr); gap: 13px;
+  padding: 11px 16px; border-bottom: 1px solid var(--line-soft);
+}
+.event:last-child { border-bottom: none; }
+.event time {
+  font-family: var(--mono); font-size: .76rem; color: var(--muted); white-space: nowrap;
+}
+.event b { display: block; font-size: .89rem; font-weight: 500; }
+.event span { display: block; font-size: .82rem; color: var(--ink-2); margin-top: 2px; }
+.event .follow { color: var(--cyan); font-size: .78rem; }
+.event .superseded { color: var(--warn); font-size: .78rem; }
+
+/* ---- report dialog ---- */
+.values-head, .value-row {
+  display: grid; grid-template-columns: 1.5fr .8fr .7fr 1fr 26px;
+  gap: 6px; align-items: center;
+}
+.values-head {
+  margin-top: 6px; padding: 0 2px 6px;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--muted); font-weight: 600;
+}
+.value-row { margin-bottom: 5px; }
+.value-row input {
+  width: 100%; padding: 7px 9px; font-size: .84rem;
+  border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--card);
+}
+.value-row input:focus {
+  outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px var(--cyan-soft);
+}
+.value-row .v-val { font-variant-numeric: tabular-nums; }
+.value-row.is-high .v-val { border-color: var(--bad); background: var(--bad-soft); color: var(--bad); font-weight: 600; }
+.value-row.is-low  .v-val { border-color: var(--warn); background: var(--warn-soft); color: var(--warn); font-weight: 600; }
+.value-row .v-del {
+  border: none; background: none; color: var(--muted);
+  font-size: 1.1rem; cursor: pointer; line-height: 1;
+}
+.value-row .v-del:hover { color: var(--bad); }
+
+@media (max-width: 900px) {
+  .two-col,.care-grid { grid-template-columns: minmax(0, 1fr); }
+  .values-head { display: none; }
+  .value-row {
+    grid-template-columns: 1fr 1fr; padding: 9px;
+    border: 1px solid var(--line); border-radius: var(--radius-sm); margin-bottom: 8px;
+  }
+}

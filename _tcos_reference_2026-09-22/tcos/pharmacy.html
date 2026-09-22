@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Pharmacy | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/pharmacy.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div><h1>Pharmacy</h1><p>What you hold, what runs out, what expires.</p></div>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost" id="addItemBtn">+ New medicine</button>
+      <button class="btn btn-primary" id="receiveBtn">Receive stock</button>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <!-- What needs attention comes first. A doctor opens this page either to
+         hand something over or to find out what to order. -->
+    <div class="stat-row" id="alerts"></div>
+
+    <div class="panel">
+      <header>
+        <h2>Your medicines</h2>
+        <div class="spacer"></div>
+        <input id="search" class="panel-search" placeholder="Search medicine, batch or supplier">
+      </header>
+      <div id="stockTable"><div class="empty">Loading…</div></div>
+    </div>
+  </main>
+</div>
+
+<!-- ---------- new medicine ---------- -->
+<dialog id="itemDialog">
+  <form id="itemForm" method="dialog">
+    <header><h3>New medicine</h3><button type="button" class="x" data-close="itemDialog">&times;</button></header>
+    <div class="body">
+      <div id="itemMsg"></div>
+      <label class="field"><span>Medicine name</span>
+        <input id="itName" required ></label>
+      <div class="field-row">
+        <label class="field"><span>System</span>
+          <select id="itSystem">
+            <option value="ayurveda">Ayurvedic</option>
+            <option value="allopathy">Allopathic</option>
+            <option value="homeopathy">Homeopathic</option>
+            <option value="supplement">Supplement</option>
+          </select></label>
+        <label class="field"><span>Form</span>
+          <input id="itForm" placeholder="Churna, tablet, oil"></label>
+      </div>
+      <div class="field-row">
+        <label class="field"><span>Counted in</span>
+          <input id="itUnit" placeholder="g, tablet, ml">
+          <small>The unit you hand over in, not the unit you buy in.</small></label>
+        <label class="field"><span>Reorder when below</span>
+          <input id="itReorder" type="number" min="0" step="any" placeholder="50"></label>
+      </div>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" data-close="itemDialog">Cancel</button>
+      <button type="submit" class="btn btn-primary">Add medicine</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ---------- receive stock ---------- -->
+<dialog id="batchDialog">
+  <form id="batchForm" method="dialog">
+    <header><h3>Receive stock</h3><button type="button" class="x" data-close="batchDialog">&times;</button></header>
+    <div class="body">
+      <div id="batchMsg"></div>
+      <label class="field"><span>Medicine</span>
+        <select id="bItem" required></select></label>
+      <div class="field-row">
+        <label class="field"><span>Batch number</span>
+          <input id="bBatch" placeholder="Optional">
+          <small>Leave blank for something made in-house.</small></label>
+        <label class="field"><span>Expires on</span>
+          <input id="bExpiry" type="date" required>
+          <small>Required. Stock without an expiry date cannot be dispensed safely.</small></label>
+      </div>
+      <label class="field"><span>Quantity received</span>
+        <input id="bQty" type="number" min="0.01" step="any" required placeholder="200">
+        <small id="bUnitHint"></small></label>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" data-close="batchDialog">Cancel</button>
+      <button type="submit" class="btn btn-primary">Add to shelf</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- ---------- dispense ---------- -->
+<dialog id="dispenseDialog">
+  <form id="dispenseForm" method="dialog">
+    <header><h3 id="dispenseTitle">Dispense</h3><button type="button" class="x" data-close="dispenseDialog">&times;</button></header>
+    <div class="body">
+      <div id="dispenseMsg"></div>
+      <p class="on-hand" id="dispenseOnHand"></p>
+      <label class="field"><span>Quantity</span>
+        <input id="dQty" type="number" min="0.01" step="any" required></label>
+      <label class="field"><span>Patient</span>
+        <select id="dPatient"><option value="">Not for a patient</option></select>
+        <small>Optional. Leave blank for a sample or staff use.</small></label>
+      <p class="fefo-note">Taken from the batch expiring soonest first. Expired
+        and quarantined batches are never used.</p>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" data-close="dispenseDialog">Cancel</button>
+      <button type="submit" class="btn btn-primary">Dispense</button>
+    </footer>
+  </form>
+</dialog>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/plan-gate.js"></script>
+<script src="js/pharmacy.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+@import url("clinical-v8.css");
+.chart-tools{display:flex;align-items:center;gap:8px;margin:-7px 0 16px;padding:9px 10px;border:1px solid #dce3de;border-radius:10px;background:#fbfcfa}
+.chart-tools>span{display:grid;margin-right:auto}
+.chart-tools small{color:#9a6c33;font-size:7px;font-weight:700;letter-spacing:.1em}
+.chart-tools b{font-size:9px}
+.chart-tools button{padding:8px 10px;border:1px solid #d4ddd7;border-radius:7px;background:#fff;color:var(--green);font-size:8px;font-weight:700;cursor:pointer}
+.chart-tools button:last-child{border-color:var(--green);background:var(--green);color:#fff}
+.medicine-list [contenteditable="true"],.concern-list [contenteditable="true"],.safety-card [contenteditable="true"],.critical-table [contenteditable="true"],.note-grid [contenteditable="true"]{transition:background .15s,box-shadow .15s}
+.medicine-list [contenteditable="true"]:focus,.concern-list [contenteditable="true"]:focus,.safety-card [contenteditable="true"]:focus,.critical-table [contenteditable="true"]:focus,.note-grid [contenteditable="true"]:focus{outline:0;background:#fff9eb;box-shadow:0 0 0 2px #dec79d}
+@media(max-width:700px){.chart-tools{display:grid;grid-template-columns:1fr 1fr}.chart-tools>span{grid-column:1/-1}.chart-tools button{width:100%}}

@@ -1,0 +1,214 @@
+/* =========================================================================
+   Billing.
+
+   Money is set in tabular figures everywhere, so a column of amounts lines
+   up on the decimal point and a wrong one is visible without reading it.
+   ========================================================================= */
+
+.money { font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+.mono { font-family: var(--mono); font-size: .82rem; }
+td.right, th.right { text-align: right; }
+
+.bill-layout { display: grid; grid-template-columns: minmax(0,1fr) 320px; gap: 22px; align-items: start; }
+.bill-side { display: grid; gap: 18px; position: sticky; top: 26px; }
+@media (max-width: 1180px) {
+  .bill-layout { grid-template-columns: 1fr; }
+  .bill-side { position: static; }
+}
+
+/* Rows open a bill, so the whole row has to look pressable. */
+table.grid tbody tr[data-open] { cursor: pointer; }
+
+.tabs { display: flex; gap: 4px; }
+.tabs button {
+  border: 0; background: none; cursor: pointer; padding: 7px 13px;
+  border-radius: 8px; font: inherit; font-size: .83rem; font-weight: 600;
+  color: var(--muted);
+}
+.tabs button:hover { background: var(--surface-2); color: var(--ink); }
+.tabs button.active { background: var(--cyan-soft); color: var(--cyan-deep); }
+
+/* ---------------- how they paid ---------------- */
+.method-row { margin-bottom: 15px; }
+.method-row:last-child { margin-bottom: 0; }
+.method-top { display: flex; align-items: baseline; gap: 10px; font-size: .87rem; }
+.method-top span { margin-left: auto; font-weight: 700; }
+.method-bar {
+  display: block; height: 7px; border-radius: 999px;
+  background: var(--surface-2); margin: 6px 0 4px; overflow: hidden;
+}
+.method-bar i { display: block; height: 100%; background: var(--cyan); border-radius: 999px; }
+.method-row small { color: var(--muted); font-size: .76rem; }
+
+/* ---------------- writing a bill ---------------- */
+dialog.wide { max-width: 860px; width: calc(100vw - 48px); }
+
+.pick-list { display: grid; gap: 8px; margin-top: 10px; }
+.pick-row {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  padding: 11px 14px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--card); cursor: pointer; font: inherit;
+}
+.pick-row:hover { border-color: var(--cyan); background: var(--cyan-soft); }
+.pick-row .fallback,
+.bill-for .fallback {
+  width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--cyan-soft); color: var(--cyan-deep); font-weight: 700; flex: none;
+}
+.pick-row b, .bill-for b { display: block; font-size: .89rem; }
+.pick-row small, .bill-for small { color: var(--muted); font-size: .78rem; }
+
+.bill-for {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
+  padding: 12px 15px; border-radius: 10px; background: var(--surface-2);
+}
+
+.line-head, .line-row {
+  display: grid; grid-template-columns: 1fr 130px 74px 108px 108px 34px;
+  gap: 8px; align-items: center;
+}
+.line-head {
+  font-size: .705rem; text-transform: uppercase; letter-spacing: .07em;
+  font-weight: 700; color: var(--muted);
+  padding-bottom: 8px; border-bottom: 1px solid var(--line); margin-bottom: 10px;
+}
+.line-row { margin-bottom: 8px; }
+.line-row input, .line-row select {
+  width: 100%; padding: 9px 11px; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--card);
+}
+.line-row input:focus, .line-row select:focus {
+  outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(14,124,104,.13);
+}
+.line-row .l-qty, .line-row .l-rate { text-align: right; }
+.line-row .l-amount { text-align: right; font-weight: 600; font-size: .88rem; }
+.line-row .l-del {
+  border: 0; background: none; cursor: pointer; color: var(--muted);
+  font-size: 1.25rem; line-height: 1; border-radius: 6px;
+}
+.line-row .l-del:hover { color: var(--bad); }
+
+.line-add { display: flex; align-items: center; gap: 10px; margin: 12px 0 20px; }
+.line-add .spacer { margin-left: auto; }
+.fee-picker {
+  padding: 8px 11px; border: 1px solid var(--line); border-radius: 8px;
+  background: var(--card); font-size: .84rem; max-width: 260px;
+}
+
+.bill-foot {
+  display: grid; grid-template-columns: 1fr 280px; gap: 24px;
+  padding-top: 18px; border-top: 1px solid var(--line);
+}
+@media (max-width: 720px) { .bill-foot { grid-template-columns: 1fr; } }
+.bill-totals .row {
+  display: flex; align-items: center; gap: 12px; padding: 7px 0; font-size: .88rem;
+}
+.bill-totals .row span { color: var(--muted); }
+.bill-totals .row b { margin-left: auto; font-weight: 600; font-variant-numeric: tabular-nums; }
+.bill-totals .row input {
+  margin-left: auto; width: 108px; text-align: right;
+  padding: 7px 10px; border: 1px solid var(--line); border-radius: 8px;
+}
+.bill-totals .row.total {
+  border-top: 1px solid var(--line); margin-top: 6px; padding-top: 12px;
+}
+.bill-totals .row.total span, .bill-totals .row.total b {
+  font-size: 1.05rem; font-weight: 700; color: var(--ink);
+}
+.bill-totals small {
+  display: inline-grid; place-items: center; width: 15px; height: 15px;
+  border-radius: 50%; background: var(--surface-2); color: var(--muted);
+  font-size: .66rem; font-weight: 700; cursor: help; margin-left: 4px;
+}
+
+/* ---------------- the bill itself ---------------- */
+.doc {
+  border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 24px; background: var(--card);
+}
+.doc-head { display: flex; align-items: flex-start; gap: 20px; margin-bottom: 20px; }
+.doc-head b { font-size: 1.1rem; font-weight: 700; display: block; }
+.doc-head small { color: var(--muted); font-size: .8rem; display: block; margin-top: 2px; }
+.doc-no { margin-left: auto; text-align: right; }
+.doc-no b { font-family: var(--mono); font-size: .92rem; }
+
+.doc-for {
+  padding: 12px 15px; background: var(--surface-2);
+  border-radius: 9px; margin-bottom: 18px;
+}
+.doc-for b { display: block; font-size: .92rem; }
+.doc-for small { color: var(--muted); font-size: .79rem; }
+
+.doc-lines th, .doc-lines td { padding: 10px 12px; }
+.doc-totals { margin-top: 18px; margin-left: auto; max-width: 320px; }
+.doc-totals .row {
+  display: flex; gap: 14px; padding: 6px 0; font-size: .88rem;
+}
+.doc-totals .row span { color: var(--muted); }
+.doc-totals .row b { margin-left: auto; font-weight: 600; }
+.doc-totals .row.total {
+  border-top: 1px solid var(--line); margin-top: 6px; padding-top: 11px;
+}
+.doc-totals .row.total span, .doc-totals .row.total b { font-size: 1.02rem; font-weight: 700; color: var(--ink); }
+.doc-totals .row.balance b { color: var(--bad); font-weight: 700; }
+.doc-note { margin-top: 16px; font-size: .85rem; color: var(--ink-2); }
+.doc-foot {
+  margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--line-soft);
+  text-align: center; font-size: .74rem; color: var(--muted);
+}
+
+.pay-head { margin: 22px 0 10px; font-size: .95rem; font-weight: 700; }
+
+.pay-methods { display: flex; flex-wrap: wrap; gap: 8px; }
+.demo-qr { display:flex; gap:14px; align-items:center; padding:12px; margin:-4px 0 13px; border:1px solid var(--line); border-radius:10px; background:var(--paper); }
+.demo-qr[hidden] { display:none; }.demo-qr b,.demo-qr span,.demo-qr small { display:block; }.demo-qr span { font-size:.8rem; color:var(--ink-2); margin:2px 0; }.demo-qr small { color:var(--warn); }
+.qr-pattern { width:68px; height:68px; flex:0 0 68px; border:7px solid #fff; box-shadow:0 0 0 1px var(--line); background:repeating-conic-gradient(#123c2f 0 25%,#fff 0 50%) 0/14px 14px; }
+.pay-method {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer;
+  padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px;
+  font-size: .85rem; background: var(--card);
+}
+.pay-method input { accent-color: var(--cyan); }
+.pay-method:has(input:checked) {
+  border-color: var(--cyan); background: var(--cyan-soft); font-weight: 600;
+}
+
+/* Printing gives the patient the bill and nothing else on the screen. */
+@media print {
+  .rail, .topbar, .workspace > header, dialog footer, dialog header,
+  .pay-head, .notice { display: none !important; }
+  dialog { position: static; border: 0; box-shadow: none; max-width: none; width: auto; }
+  .doc { border: 0; padding: 0; }
+}
+
+/* ---------------- reports ---------------- */
+.week-chart.tall { height: 190px; gap: 5px; }
+.week-chart.tall .week-bar { max-width: none; }
+.week-chart.tall .week-bar i { background: var(--cyan); }
+.week-chart.tall .week-day { font-size: .66rem; letter-spacing: .02em; text-transform: none; }
+
+.attend-row { margin-bottom: 15px; }
+.attend-top { display: flex; align-items: baseline; font-size: .87rem; }
+.attend-top span { margin-left: auto; color: var(--muted); font-weight: 600; }
+.method-bar i.ok   { background: var(--ok); }
+.method-bar i.bad  { background: var(--bad); }
+.method-bar i.warn { background: var(--warn); }
+.attend-note { margin: 14px 0 0; font-size: .84rem; color: var(--muted); max-width: 64ch; }
+
+.rank-list { padding: 6px 20px 18px; }
+.rank-row { margin-bottom: 14px; }
+.rank-row:last-child { margin-bottom: 0; }
+.rank-top { display: flex; align-items: baseline; gap: 10px; font-size: .875rem; }
+.rank-top span { margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rank-row small { color: var(--muted); font-size: .74rem; text-transform: capitalize; }
+
+.fact-list { display: grid; gap: 1px; background: var(--line-soft); border-radius: 9px; overflow: hidden; }
+.fact {
+  display: flex; align-items: baseline; gap: 12px;
+  padding: 11px 14px; background: var(--card); font-size: .865rem;
+}
+.fact span { color: var(--muted); }
+.fact b { margin-left: auto; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+td.meds { color: var(--ink-2); font-size: .84rem; max-width: 320px; }
+td.meds .more { color: var(--muted); font-size: .8rem; }

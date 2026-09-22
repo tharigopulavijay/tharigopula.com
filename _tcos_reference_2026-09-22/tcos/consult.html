@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Consultation | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/consult.css">
+</head>
+<body>
+
+<div class="consult-bar">
+  <a class="back" href="patients.html" title="Back to patients">←</a>
+  <span class="mark" aria-hidden="true"><svg viewBox="0 0 32 32" fill="none"><rect x="4.5" y="4.5" width="23" height="23" rx="6" transform="rotate(45 16 16)" fill="currentColor"/><path d="M16 11.2v9.6M11.2 16h9.6" stroke="#0A2A42" stroke-width="2.6" stroke-linecap="round"/></svg></span>
+  <span class="bar-title">Ayurveda consultation</span>
+  <span class="bar-sep"></span>
+  <div class="who">
+    <span class="who-avatar" id="patientInitial">·</span>
+    <div><b id="patientName">…</b><span id="patientMeta"></span></div>
+  </div>
+  <span id="rxState" class="state draft">Draft</span>
+  <div class="spacer"></div>
+  <span class="saved" id="savedAt" hidden></span>
+  <button class="btn btn-ghost btn-sm" id="saveBtn">Save draft</button>
+  <button class="btn btn-ghost btn-sm" id="amendBtn" hidden>Amend</button>
+  <button class="btn btn-ghost btn-sm" id="printBtn" hidden>Print again</button>
+  <button class="btn btn-primary btn-sm" id="issueBtn">Issue &amp; print</button>
+</div>
+
+<div id="pageMsg"></div>
+
+<main class="consult">
+  <!-- ---------- clinical form ---------- -->
+  <section class="form-col" id="formCol">
+    <div class="card" id="visitCard">
+      <h3><span class="step">1</span><span class="head-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></span><span class="head-text">This visit<small>Date, vitals and what brought them in</small></span></h3>
+      <div class="grid-3">
+        <label class="field"><span>Date</span><input type="date" id="visitedOn"></label>
+        <label class="field"><span>Type</span>
+          <select id="visitType">
+            <option value="follow_up">Follow-up</option>
+            <option value="first">First visit</option>
+            <option value="online">Online</option>
+          </select></label>
+        <label class="field"><span>Next review</span><input type="date" id="followUpOn"></label>
+      </div>
+      <div class="grid-4">
+        <label class="field"><span>BP</span><input id="vBp" placeholder="120/80"></label>
+        <label class="field"><span>Pulse</span><input id="vPulse" placeholder="76"></label>
+        <label class="field"><span>Weight</span><input id="vWeight" placeholder="72 kg"></label>
+        <label class="field"><span>Temp</span><input id="vTemp" placeholder="98.4 F"></label>
+      </div>
+      <label class="field"><span>Complaints</span><textarea id="complaints" rows="2"></textarea></label>
+      <label class="field"><span>Diagnosis</span><textarea id="diagnosis" rows="2"></textarea></label>
+
+      <!-- The scribe.
+
+           The consent line is not decoration and is not a checkbox buried in
+           settings: it is the sentence the doctor reads to the patient, on
+           screen, in the room, before the microphone can open. The button
+           stays disabled until it is ticked, because the patient's voice is
+           the patient's data and this is the moment they get to say no.
+
+           Nothing here reaches the record. It fills the boxes above, which
+           the doctor corrects and saves herself. -->
+      <div class="scribe" id="scribeBox" hidden>
+        <div class="scribe-head">
+          <b>Write the note for me</b>
+          <span class="muted" id="scribeState">Off</span>
+        </div>
+        <label class="check" id="scribeConsentRow">
+          <input type="checkbox" id="scribeConsent">
+          <span>I have told this patient we will record the consultation to
+            write the notes, and they agreed. The recording is deleted as soon
+            as the notes are drafted.</span>
+        </label>
+        <div class="row-actions">
+          <button type="button" class="btn btn-ghost btn-sm" id="scribeStart" disabled>Start recording</button>
+          <button type="button" class="btn btn-primary btn-sm" id="scribeStop" hidden>Stop and write the note</button>
+          <span class="muted" id="scribeTimer"></span>
+        </div>
+        <div id="scribeMsg"></div>
+        <div id="scribeDraft" hidden>
+          <p class="muted">Drafted from what was said. Nothing is saved until
+            you press Save draft &mdash; correct anything that is wrong.</p>
+          <div id="scribeSections"></div>
+          <div class="row-actions">
+            <button type="button" class="btn btn-primary btn-sm" id="scribeApply">Put this in the boxes above</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="scribeDiscard">Discard</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="packCard" hidden>
+      <h3><span class="step">2</span><span class="head-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4M16 2v4"/><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M9 14h6M12 11v6"/></svg></span><span class="head-text"><span id="packTitle">Examination</span><small id="packHint">From your practice packs</small></span></h3>
+      <div class="grid-2" id="packFields"></div>
+      <!-- Adding a field is a mid-consultation act: she is looking at a
+           patient and has nowhere to put what she just observed. Sending her
+           to a settings screen for it is how an observation ends up written
+           on the back of a file. -->
+      <div class="field-add">
+        <button type="button" class="btn btn-quiet btn-sm" id="addFieldBtn">+ Add an examination field</button>
+        <span class="field-add-form" id="addFieldForm" hidden>
+          <input id="addFieldLabel" maxlength="60" placeholder="Naabhi, ANG, Netra…" autocomplete="off">
+          <button type="button" class="btn btn-primary btn-sm" id="addFieldSave">Add</button>
+          <button type="button" class="btn btn-quiet btn-sm" id="addFieldCancel">Cancel</button>
+        </span>
+        <span class="field-add-note" id="addFieldNote"></span>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="step">3</span><span class="head-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2M12 11v6M9 14h6"/></svg></span><span class="head-text">Medicines<small>Start typing - your pharmacy first, then the catalogue</small></span></h3>
+      <div class="med-head">
+        <!-- No "System" column. A doctor typing a medicine she prescribes
+             fifty times a day should not also be asked which discipline it
+             belongs to - she already knows, and the catalogue already knows.
+             It is inferred and kept in the record; it is just not her job to
+             tell us. -->
+        <span>Medicine</span><span>Dose</span>
+        <span>Frequency</span><span>Duration</span><span>Qty</span><span></span>
+      </div>
+      <div id="medRows"></div>
+      <button type="button" class="btn btn-ghost btn-sm" id="addMed">+ Add medicine</button>
+      <datalist id="stockList"></datalist>
+    </div>
+
+    <div class="card">
+      <h3><span class="step">4</span><span class="head-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M7 16l3-4 3 2 4-6"/></svg></span><span class="head-text">Investigations & referrals<small>Tests for the next review and specialist advice</small></span></h3>
+      <div class="grid-2">
+        <label class="field"><span>Investigations advised</span><textarea id="investigations" rows="3" placeholder="CBC, HbA1c, LFT, lipid profile..."></textarea></label>
+        <label class="field"><span>Referral / co-management</span><textarea id="referrals" rows="3" placeholder="Refer to cardiologist / ENT / physiotherapist..."></textarea></label>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><span class="step">5</span><span class="head-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a7 7 0 0 0-4 12.7V17a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-2.3A7 7 0 0 0 12 2zM9 22h6"/></svg></span><span class="head-text">Pathya, Apathya & care plan<small>Food, routine, yoga and precautions</small></span></h3>
+      <label class="field"><span>Diet, lifestyle, yoga and general advice</span>
+        <textarea id="advice" rows="3"></textarea></label>
+    </div>
+  </section>
+
+  <!-- ---------- live prescription preview ---------- -->
+  <section class="sheet-col">
+    <div class="sheet-scale">
+      <article class="sheet" id="sheet"></article>
+    </div>
+  </section>
+</main>
+
+<dialog id="amendDialog">
+  <form id="amendForm" method="dialog">
+    <header><h3>Amend this prescription</h3><button type="button" id="amendClose">&times;</button></header>
+    <div class="body">
+      <div class="notice info" style="max-width:none">
+        The issued prescription stays exactly as it was. This writes a new
+        version that points back at it, so both remain readable and in order.
+      </div>
+      <label class="field"><span>Reason for the amendment</span>
+        <input id="amendReason" required placeholder="e.g. Dose corrected after reviewing reports">
+        <small>This becomes part of the permanent record.</small></label>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="amendCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary">Create amended version</button>
+    </footer>
+  </form>
+</dialog>
+
+<script src="js/products.js"></script>
+<script src="js/clinic-registry.js"></script>
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/consult.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

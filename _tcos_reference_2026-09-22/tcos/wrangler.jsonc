@@ -1,0 +1,394 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tcos-api",
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // The public Pages application still calls this Worker's workers.dev API.
+  // Declaring a custom domain otherwise disables workers.dev implicitly.
+  "workers_dev": true,
+  "preview_urls": false,
+
+  // The secure staging release serves its allow-listed browser build and API
+  // from one Worker origin. This is what permits host-only HttpOnly cookies
+  // and lets Cloudflare Access protect both /admin pages and /admin APIs.
+  // run_worker_first keeps API routes authoritative; unmatched GET/HEAD
+  // requests are handed to this binding explicitly by worker/index.js.
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
+
+  // The owner console and every /admin API share one host. This is required
+  // for host-only HttpOnly cookies and prevents Cloudflare Access redirects
+  // from becoming opaque cross-origin "Failed to fetch" errors.
+  "routes": [
+    { "pattern": "admin.tcos.tharigopula.com", "custom_domain": true },
+
+    // THE CONSOLE'S NEW HOME, AND WHY IT MOVED.
+    //
+    // Vijay, on the fourth report of not being able to sign in, from his
+    // phone: "no passkeys available - there arent any passkeys for
+    // tharigopula.cloudflareaccess.com on this device ... i can login with
+    // my tab or laptop or pc or mobile, my wish. i have my user id and
+    // password with me, it should be able to login to any device, not
+    // fixed with one device. what happens if the pc is lost or not
+    // working, i do nothing right?"
+    //
+    // He is right on every count. Cloudflare Access sits in front of
+    // admin.tcos.tharigopula.com AT THE EDGE - a Worker variable cannot
+    // remove it, and its login was demanding a passkey his phone does not
+    // have. So the console gets an address Access was never put in front
+    // of, and the old one keeps working for anyone who can still pass it.
+    //
+    // custom_domain makes Cloudflare create the DNS record and the
+    // certificate itself, the same way vijay.tharigopula.com already
+    // works, so this needs no dashboard step from somebody who cannot
+    // currently reach the dashboard.
+    { "pattern": "console.tharigopula.com", "custom_domain": true },
+
+    // Every clinic, at ONE level: vijay.tharigopula.com.
+    //
+    // One level is what Cloudflare's free certificate covers. That is the
+    // whole reason doctors sit here rather than under
+    // clinical.tharigopula.com, which would have been two levels and needed
+    // a paid add-on before a padlock appeared - on the address a doctor
+    // prints on her pad.
+    //
+    // This cannot capture anything it should not. isPlatformHost() protects
+    // the apex, the app and the admin console; bySiteHost() refuses any name
+    // containing a dot, so admin.tcos.tharigopula.com can never be read as a
+    // clinic called "admin.tcos". Reserved names (www, api, admin, tcos,
+    // book, clinic...) are refused when a slug is claimed.
+    //
+    // Inert until a proxied wildcard DNS record exists: a route only fires
+    // for a hostname that resolves through Cloudflare.
+    // zone_name is required for a pattern route: a custom_domain entry
+    // implies its zone, a wildcard pattern does not.
+    { "pattern": "*.tharigopula.com/*", "zone_name": "tharigopula.com" },
+
+    // ONE named clinic address, so the whole path is provable today.
+    //
+    // A custom_domain entry makes Cloudflare create the DNS record AND the
+    // certificate by itself - no dashboard step - which the wildcard pattern
+    // above cannot do for itself. The wildcard remains the answer at scale,
+    // because this cannot be one entry and one deploy per doctor. This
+    // exists so the serving path is demonstrably working while that single
+    // record is still pending.
+    { "pattern": "vijay.tharigopula.com", "custom_domain": true }
+  ],
+
+  // The doctor-facing app is served from Cloudflare Pages (project "tcos").
+  // This Worker is the API behind it: it is the only thing that touches D1,
+  // and it is where tenant isolation is enforced.
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "tcos-db",
+      "database_id": "b82f29d5-0d4a-431e-8bf7-28f819023b98"
+    }
+  ],
+
+  // Lab reports, scans, registration certificates and clinic logos. Never
+  // stored in the database - D1 rows hold the key, R2 holds the bytes.
+  //
+  // Enabled on the account and created 30 Aug 2026. Egress is free, which is
+  // the reason this is R2 rather than S3: a patient opening her lab report
+  // on her phone half a dozen times costs nothing.
+  "r2_buckets": [
+    { "binding": "FILES", "bucket_name": "tcos-files" }
+  ],
+
+  // Coarse edge abuse brakes. Keys are hashes of the submitted identifier;
+  // readable mobile numbers and emails are never used as limiter keys.
+  // These are deliberately separate because owner-console access deserves a
+  // tighter independent budget than public clinic traffic.
+  "ratelimits": [
+    { "name": "AUTH_RATE_LIMITER", "namespace_id": "41001",
+      "simple": { "limit": 10, "period": 60 } },
+    { "name": "ADMIN_AUTH_RATE_LIMITER", "namespace_id": "41002",
+      "simple": { "limit": 6, "period": 60 } },
+    { "name": "PUBLIC_RATE_LIMITER", "namespace_id": "41003",
+      "simple": { "limit": 5, "period": 60 } }
+  ],
+
+  // Short-lived things: rate limit counters, OTP throttles.
+  "kv_namespaces": [],
+
+  // The Tharigopula control plane. TCOS binds to the TcosPlatform entrypoint
+  // specifically and NEVER sends a product key - the entrypoint fixes it, so
+  // a mistake here cannot ask for an EduCOS or INDOS workspace.
+  //
+  // Commented out until thari-control is deployed. worker/thari-platform.js
+  // already handles the binding being absent: with no THARI_PLATFORM, it
+  // returns "unconfigured" and TCOS carries on exactly as it does today.
+  // Shadow mode is non-blocking by design; TCOS remains the authority on
+  // every clinical decision either way.
+  // "services": [
+  //   { "binding": "THARI_PLATFORM", "service": "thari-control",
+  //     "entrypoint": "TcosPlatform" }
+  // ],
+
+  "observability": {
+    "enabled": true
+  },
+
+  "vars": {
+    "SESSION_TTL_HOURS": "12",
+    "ADMIN_REAUTH_MINUTES": "5",
+    "PLATFORM_OWNER_EMAIL": "hello.tharigopula@gmail.com",
+    "OTP_TTL_MINUTES": "5",
+    "CONSENT_TTL_HOURS": "24",
+    "AI_USD_INR": "95",
+    // TEMPORARILY OFF - 12 Sep 2026. Turn back on once the widget is proven.
+    //
+    // Turnstile locked the owner out of his own production system. Every
+    // door calls verifyTurnstile before it does anything else - doctor
+    // sign-in, owner console sign-in, and password reset - so a widget that
+    // will not issue a token locks out sign-in AND the way to recover from
+    // being locked out. That is a single point of failure in front of every
+    // account, including the only accounts that could fix it.
+    //
+    // The client error was 600010, "generic challenge failure / bot
+    // behaviour detected", on a real browser on a normal connection. Site
+    // key, hostnames (tcos.pages.dev and admin.tcos.tharigopula.com), CSP
+    // and the action strings were all checked and are correct. Switching
+    // the widget from Managed to Non-interactive did not clear it.
+    //
+    // The dashboard also reported only ~64% "likely human", meaning roughly
+    // a third of genuine visitors were being refused - so this was quietly
+    // costing doctor sign-ins and applications before anyone noticed.
+    //
+    // What is still protecting these routes with this off:
+    //   - AUTH_RATE_LIMITER, 10/min per identifier AND per source IP
+    //   - PUBLIC_RATE_LIMITER, 5/min on the application form
+    //   - peppered password hashing, unchanged
+    // What is lost: bot and credential-stuffing resistance, and spam
+    // applications. Acceptable for a short window, not as a resting state.
+    "TURNSTILE_ENFORCE": "false",
+    "TURNSTILE_SITE_KEY": "0x4AAAAAAEtshKrWV-Zbm6Wo",
+    // The doctor app is still cross-origin on Pages, so its compatibility
+    // bearer remains temporarily enabled. The owner console is same-origin
+    // and may enforce its HttpOnly cookie independently.
+    "COOKIE_AUTH_ENFORCE": "false",
+    "ADMIN_COOKIE_AUTH_ENFORCE": "true",
+    // OFF - 20 Sep 2026, and this is a deliberate trade, not a slip.
+    //
+    // Cloudflare Access identified the owner by whichever Cloudflare
+    // ACCOUNT a browser was signed into, and its login then began
+    // demanding a passkey. Between them they locked Vijay out of his own
+    // console across four separate reports, from three different devices,
+    // and the last one left him unable to reach even the page that would
+    // have let him enrol a passkey. An authentication factor that cannot
+    // be satisfied on the device in your hand is not a factor, it is an
+    // outage.
+    //
+    // WHAT STILL GUARDS THE CONSOLE with this off:
+    //   - email and password, peppered PBKDF2, never a bearer of identity
+    //     from any header;
+    //   - ADMIN_AUTH_RATE_LIMITER, 6/min per identifier AND per source;
+    //   - the D1 credential throttle: 5 failures, then 15 minutes;
+    //   - a passkey, for anyone who has set one up - OPTIONAL and
+    //     ADDITIVE, because "what happens if the pc is lost" is the right
+    //     question and device-bound-only is the wrong answer;
+    //   - admin_sessions are host-only HttpOnly cookies with CSRF.
+    // WHAT IS LOST: a network-level gate in front of /admin*, and the
+    // break-glass owner recovery that was gated on an Access identity -
+    // replaced by a code emailed to the console account's own address,
+    // which works from any device and needs nobody's dashboard.
+    //
+    // Turn this back on only alongside a login method that works on a
+    // phone, a tablet and a borrowed laptop without preparation.
+    "ACCESS_ENFORCE": "false",
+    "ACCESS_TEAM_DOMAIN": "tharigopula.cloudflareaccess.com",
+    "ACCESS_AUD": "782655fada0df224ad6ab3f56b0c7be6c6e2291ae1d0e875f7167f2a4fadbbf4",
+    // THE ADDRESS THAT ACTUALLY ANSWERS.
+    //
+    // console.tharigopula.com was the intent and it is still declared as a
+    // custom domain above - but Cloudflare accepted the route and never
+    // published the DNS record. Twenty minutes, a second triggers deploy,
+    // and 1.1.1.1 still says NXDOMAIN, while vijay.tharigopula.com and
+    // admin.tcos.tharigopula.com both resolve. The likeliest reason is the
+    // wildcard *.tharigopula.com/* route already claiming that hostname.
+    //
+    // Whatever the cause, it is Cloudflare's to resolve and Vijay has
+    // already lost days to a sign-in he cannot reach. The workers.dev
+    // hostname resolves today, serves the console page AND its API from
+    // ONE origin, and has no Access application in front of it - so the
+    // host-only cookie and the CSRF origin check work exactly as they
+    // always have. Nothing about the security of this changed; only which
+    // name it answers to.
+    //
+    // When console.tharigopula.com starts resolving, this is one line and
+    // one deploy back.
+    "ADMIN_ORIGIN": "https://tcos-api.hello-tharigopula.workers.dev",
+    // Every hostname the console is allowed to be reached on. The previous
+    // address stays so a saved link is not dead, and the intended one is
+    // already here for the day its DNS appears.
+    "CONSOLE_HOSTS": "admin.tcos.tharigopula.com,console.tharigopula.com,tcos-api.hello-tharigopula.workers.dev",
+
+    // Where the doctor-facing app is served from. ONE place, because this
+    // used to be written out three times in worker/index.js - the CORS
+    // allow-list, the platform-host check and the patient link base - and
+    // moving the app therefore meant finding all three.
+    //
+    // Change this and redeploy the Worker to move the app to a new
+    // hostname. Patient links minted BEFORE the change still carry the old
+    // one, so keep the old hostname reachable until they expire, or accept
+    // that outstanding links break.
+    "APP_ORIGIN": "https://tcos.pages.dev",
+
+    // Where a clinic's free web address lives: a doctor with the slug
+    // "drdevi" is served at drdevi.tharigopula.com.
+    //
+    // ONE LEVEL, DELIBERATELY. This was clinical.tharigopula.com, which put
+    // every doctor two levels deep - and Cloudflare's free certificate
+    // covers one. Two levels means no padlock without a paid add-on, on the
+    // address a doctor prints on her pad and reads out over the phone. No
+    // new domain was bought for this; it is the one already owned.
+    //
+    // FOR THIS TO RESOLVE it needs a WILDCARD DNS record - name "*", any
+    // placeholder address, ORANGE cloud - on tharigopula.com. The Worker
+    // route above is inert until that exists, and the app is unaffected
+    // either way because every clinic also has its platform URL.
+    "CLINIC_DOMAIN": "tharigopula.com",
+
+    // ------------------------------------------------------------------
+    // A doctor's OWN domain: drclinic.com, not drdevi.tharigopula.com.
+    //
+    // Serving HTTPS on a name we do not own is Cloudflare for SaaS, and it
+    // needs exactly three things. Until all three are set, the Web screen
+    // says "not available yet" and the free address carries on - it never
+    // shows DNS instructions that cannot succeed.
+    //
+    // CLINIC_APEX_IP used to live here, and was wrong in principle: there is
+    // no IP to give. Cloudflare for SaaS routes by HOSTNAME. An A record
+    // pointing anywhere gets a 409 from the edge, which is exactly what
+    // a test domain did on 12 Sep 2026.
+    // ------------------------------------------------------------------
+
+    // The zone Cloudflare for SaaS is enabled on. Not a secret - it is an
+    // identifier, and the token beside it is what grants anything.
+    // Dashboard -> tharigopula.com -> Overview -> Zone ID.
+    "CF_ZONE_ID": "149025b7856d9ffceaa1e04210995982",
+
+    // The proxied hostname inside our zone that every doctor's domain is
+    // CNAME'd to. This is what tells the edge which account a stranger's
+    // hostname belongs to.
+    //
+    // Set up 12 Sep 2026 and confirmed "Fallback Origin status: Active":
+    //   DNS      clinics.tharigopula.com  AAAA  100::  PROXIED
+    //   SSL/TLS  Custom Hostnames -> Fallback Origin -> clinics.tharigopula.com
+    //
+    // The AAAA 100:: is deliberate and is NOT a mistake to be tidied up.
+    // 100::/64 is the IPv6 discard prefix - traffic never goes there. The
+    // record exists only so the hostname is proxied and the edge will accept
+    // it as an origin; the Worker answers the request before origin
+    // resolution happens. A CNAME to tcos.pages.dev here would look more
+    // sensible and would be wrong.
+    "CLINIC_FALLBACK_ORIGIN": "clinics.tharigopula.com",
+
+    // Becomes true only after the provider-zone custom-hostname route has
+    // been manually proved with a harmless test domain. Until then TCOS
+    // refuses to register a doctor's domain, rather than billing her for an
+    // address that has a certificate but does not reach this Worker.
+    "CUSTOM_HOSTNAME_EDGE_ROUTING_READY": "false"
+
+    // The third thing is CF_API_TOKEN, which IS a secret and is set with
+    // `wrangler secret put` - see the list at the bottom of this file.
+  },
+
+  // The public staging site is a disposable, fully synthetic demonstration.
+  // Its known passwords are safe only because neither its D1 database nor its
+  // R2 bucket contains a byte copied from a real clinic. Release rehearsal on
+  // production-shaped data belongs in a separate private environment.
+  "env": {
+    "staging": {
+      "name": "tcos-api-staging",
+      "routes": [
+        { "pattern": "staging.tcos.tharigopula.com", "custom_domain": true }
+      ],
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "tcos-staging-demo-db",
+          "database_id": "666a4108-2319-4098-aa01-15ecedfb8a51"
+        }
+      ],
+      "r2_buckets": [
+        { "binding": "FILES", "bucket_name": "tcos-staging-demo-files" }
+      ],
+      "ratelimits": [
+        { "name": "AUTH_RATE_LIMITER", "namespace_id": "42001",
+          "simple": { "limit": 10, "period": 60 } },
+        { "name": "ADMIN_AUTH_RATE_LIMITER", "namespace_id": "42002",
+          "simple": { "limit": 6, "period": 60 } },
+        { "name": "PUBLIC_RATE_LIMITER", "namespace_id": "42003",
+          "simple": { "limit": 5, "period": 60 } }
+      ],
+      "kv_namespaces": [],
+      "vars": {
+        "SESSION_TTL_HOURS": "12",
+        "ADMIN_REAUTH_MINUTES": "5",
+        "PLATFORM_OWNER_EMAIL": "hello.tharigopula@gmail.com",
+        "OTP_TTL_MINUTES": "5",
+        "CONSENT_TTL_HOURS": "24",
+        "AI_USD_INR": "95",
+        "TURNSTILE_ENFORCE": "true",
+        "TURNSTILE_SITE_KEY": "0x4AAAAAAEtFcpVPBZXJ9XmQ",
+        "COOKIE_AUTH_ENFORCE": "true",
+        "ADMIN_COOKIE_AUTH_ENFORCE": "true",
+        "ACCESS_ENFORCE": "true",
+        "ACCESS_TEAM_DOMAIN": "tharigopula.cloudflareaccess.com",
+        "ACCESS_AUD": "3ed44aa47ff41b9abc45b79594e031379d7d7331c37f290c0252a4e82b329a96",
+        "ADMIN_ORIGIN": "https://staging.tcos.tharigopula.com",
+        "APP_ORIGIN": "https://staging.tcos.tharigopula.com",
+        "ALLOWED_ORIGINS": "https://staging.tcos.tharigopula.com,http://localhost:8899",
+        "CLINIC_DOMAIN": "staging-clinical.tharigopula.com",
+        // Staging deliberately has no Cloudflare for SaaS setup: custom
+        // hostnames are billed per hostname and a demo does not need them.
+        // The Web screen there says so rather than pretending.
+        "CF_ZONE_ID": "",
+        "CLINIC_FALLBACK_ORIGIN": "",
+        "CUSTOM_HOSTNAME_EDGE_ROUTING_READY": "false"
+      }
+    }
+  }
+
+  ,
+
+  // Tomorrow's appointment reminders, once a night.
+  //
+  // 13:30 UTC is 19:00 IST: late enough that the day's appointments are
+  // settled, early enough that a patient told about tomorrow can still
+  // rearrange their evening. Deliberately not the morning of - a reminder
+  // that arrives on the day is too late to act on.
+  "triggers": {
+    "crons": ["30 13 * * *"]
+  }
+
+  // Secrets are set with `wrangler secret put`, never written here:
+  //   SMS_API_KEY  - MSG91 auth key. OTP always goes by SMS: every Indian
+  //                  mobile receives one, and a person who cannot get the
+  //                  code is exactly the person already locked out.
+  //   PEPPER       - previous password pepper during the current rotation
+  //   PEPPER_V2    - active password pepper; old hashes upgrade on sign-in
+  //   OPENAI_API_KEY - diagnostic-document preflight and extraction
+  //   RAZORPAY_KEY_ID         - server API key id
+  //   RAZORPAY_KEY_SECRET     - server API key secret
+  //   RAZORPAY_WEBHOOK_SECRET - signs the exact webhook bytes
+  //   WHATSAPP_TOKEN         - Meta Cloud API permanent access token
+  //   WHATSAPP_PHONE_ID      - the sending number's id in WhatsApp Manager
+  //   WHATSAPP_VERIFY_TOKEN  - any string of our choosing; it must match
+  //                            what is typed into Meta's webhook screen
+  //   TURNSTILE_SECRET_KEY   - server-side Turnstile Siteverify secret;
+  //                            set before TURNSTILE_ENFORCE becomes true
+  //   CF_API_TOKEN           - Cloudflare API token used ONLY to create,
+  //                            poll and delete custom hostnames for doctors'
+  //                            own domains. Scope it to exactly:
+  //                              Zone -> SSL and Certificates -> Edit
+  //                            on the tharigopula.com zone and nothing else.
+  //                            A broader token here would let a bug in this
+  //                            Worker reach DNS, Workers and Access.
+}

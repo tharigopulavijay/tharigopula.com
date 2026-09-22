@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Readings to check | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<style>
+/* The document beside the numbers. Checking a transcription without the
+   original in view is not checking, it is re-typing on trust - so the page
+   is built around the two being visible at once. */
+.check-layout { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.1fr); gap: 18px; align-items: start; }
+@media (max-width: 980px) { .check-layout { grid-template-columns: 1fr; } }
+
+.doc-pane { position: sticky; top: 22px; }
+.doc-frame {
+  background: #10202C; border-radius: 8px; overflow: hidden;
+  min-height: 260px; display: flex; align-items: center; justify-content: center;
+}
+.doc-frame img, .doc-frame iframe { width: 100%; display: block; border: 0; }
+.doc-frame iframe { height: 600px; background: #fff; }
+.doc-frame .placeholder { color: #7F9FB3; font-size: .86rem; padding: 40px 20px; text-align: center; }
+.doc-tools { display: flex; gap: 8px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+
+/* Confidence is the whole point of the screen: it decides reading order. */
+.val-row { display: grid; grid-template-columns: minmax(0,1.4fr) 92px 88px minmax(0,1fr) 34px; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line, #E4EAEF); }
+.val-row.head { border-bottom: 1px solid #C9D6E0; padding-bottom: 6px; }
+.val-row.head span { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: #6B8296; }
+.val-row input { width: 100%; min-width: 0; }
+.val-row.low { background: #FFF7E8; margin: 0 -10px; padding: 8px 10px; border-radius: 4px; }
+.val-row.low input[data-field="value"] { border-color: #D9A441; background: #fff; }
+.val-drop { background: none; border: 1px solid #D8E1E8; color: #8798A6; border-radius: 4px; cursor: pointer; width: 30px; height: 30px; font-size: 15px; line-height: 1; }
+.val-drop:hover { border-color: #C0392B; color: #C0392B; }
+
+.flag { font-family: 'IBM Plex Mono', monospace; font-size: 10px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; padding: 3px 7px; border-radius: 3px; white-space: nowrap; }
+.flag.low { background: #F6E3BC; color: #7A5410; }
+.flag.medium { background: #E3ECF4; color: #38566E; }
+.flag.high { background: #DFF0E6; color: #1B6B44; }
+
+.unreadable { background: #FDECE8; border-left: 4px solid #C0392B; padding: 18px 22px; border-radius: 0 6px 6px 0; }
+.unreadable h3 { margin: 0 0 6px; font-size: 1.02rem; color: #8E2B1D; }
+.unreadable p { margin: 0; color: #6D3A31; font-size: .9rem; }
+
+.queue-item { display: flex; gap: 12px; align-items: center; padding: 13px 16px; border-bottom: 1px solid var(--line, #E4EAEF); cursor: pointer; }
+.queue-item:hover { background: #F4F8FB; }
+.queue-item.active { background: #E8F4F6; box-shadow: inset 3px 0 0 #0E7A85; }
+.queue-item b { display: block; font-size: .93rem; }
+.queue-item small { color: #7B8C9B; font-size: .78rem; }
+
+.spend-note { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #8195A5; }
+
+/* What the page carried besides its numbers - age, sample timing, who signed
+   it. Dropping these was the difference between a reader that looks complete
+   and one that is. */
+.page-facts { display: grid; grid-template-columns: repeat(auto-fit,minmax(190px,1fr)); gap: 8px 18px; padding: 12px 0 4px; margin-bottom: 6px; border-bottom: 1px solid #E4EAEF; }
+.page-facts div { font-size: .86rem; color: #33495F; }
+.page-facts span { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: .09em; text-transform: uppercase; color: #7B8C9B; margin-bottom: 2px; }
+
+.other-item { border-left: 3px solid #C9D6E0; padding: 8px 0 8px 12px; margin-bottom: 10px; }
+.other-item b { display: block; font-size: .82rem; color: #4A6076; margin-bottom: 3px; }
+.other-item div { font-size: .88rem; color: #33495F; white-space: pre-wrap; }
+.warn-strip { background: #FFF4E0; border: 1px solid #EBCE95; color: #6B4E11; padding: 11px 15px; border-radius: 6px; font-size: .87rem; margin-bottom: 14px; }
+.ai-dialog { width: min(600px,calc(100vw - 28px)); border: 0; border-radius: 10px; padding: 0; box-shadow: 0 24px 70px #11283C55; }
+.ai-dialog::backdrop { background: #10253899; backdrop-filter: blur(2px); }
+.ai-dialog header { padding: 20px 22px 12px; border-bottom: 1px solid #E4EAEF; }
+.ai-dialog .dialog-body { padding: 20px 22px 22px; }
+.ai-dialog .field { margin-bottom: 15px; }
+.ai-dialog input[type="file"], .ai-dialog select { width: 100%; }
+.identity-card { border: 1px solid #E0B360; background: #FFF8E9; padding: 16px; border-radius: 7px; margin: 14px 0; }
+.identity-card.danger { border-color: #D89A8C; background: #FCEAE6; }
+.identity-card b { display: block; margin-bottom: 5px; }
+.page-plan { font-size: .84rem; color: #536A7E; margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <h1>Readings to check</h1>
+        <p>Values read from a diagnostic document or photo. <strong>Nothing here is in the patient's record yet</strong> — it is saved only when you confirm it.</p>
+      </div>
+      <div class="spacer"></div>
+      <button class="btn btn-primary" id="uploadBtn">+ Read a report</button>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <dialog class="ai-dialog" id="uploadDialog">
+      <header><h2>Read a diagnostic report</h2></header>
+      <div class="dialog-body">
+        <p class="muted" style="margin-top:0">Choose the patient first. TCOS checks the name on the document before it spends the full reading credit.</p>
+        <label class="field"><span>Patient</span>
+          <select id="uploadPatient"><option value="">Loading patients…</option></select>
+        </label>
+        <label class="field"><span>PDF, Word document, RTF, text file or photo</span>
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp,application/pdf,.doc,.docx,.rtf,.odt,.txt">
+        </label>
+        <div id="preflightResult"></div>
+        <div class="form-actions">
+          <button class="btn btn-primary" id="startReadBtn">Check patient and pages</button>
+          <button class="btn btn-ghost" id="cancelUploadBtn">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div class="check-layout">
+
+      <!-- the queue -->
+      <div>
+        <div class="panel">
+          <header>
+            <h2>Waiting for you</h2>
+            <div class="spacer"></div>
+            <span class="spend-note" id="spendNote"></span>
+          </header>
+          <div id="queue"><div class="empty">Loading…</div></div>
+        </div>
+
+        <div class="panel" style="margin-top:16px">
+          <header><h2>Already checked</h2></header>
+          <div id="doneList"><div class="empty">Nothing yet.</div></div>
+        </div>
+      </div>
+
+      <!-- the one being checked -->
+      <div id="detail"><div class="panel"><div class="empty">Choose a reading on the left, or read a new report.</div></div></div>
+
+    </div>
+  </main>
+</div>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/plan-gate.js"></script>
+<script src="js/readings.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

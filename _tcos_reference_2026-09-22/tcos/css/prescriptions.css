@@ -1,0 +1,50 @@
+.rx-card-list { display:grid; gap:10px; padding:12px; }
+.rx-card { display:grid; grid-template-columns:1.1fr .8fr 1.5fr auto; gap:18px; align-items:center; padding:15px; border:1px solid var(--line); border-radius:12px; background:var(--card); }
+.rx-card-patient { display:flex; align-items:center; gap:10px; }.rx-card-patient b,.rx-card-patient small,.rx-card-meta b,.rx-card-meta span { display:block; }.rx-card-patient small,.rx-card-meta span { color:var(--muted); font-size:.76rem; margin-top:2px; }
+.rx-card-meta .pill { margin-top:7px; }.rx-card-meds { display:flex; flex-wrap:wrap; gap:5px; }.rx-card-meds span { padding:5px 8px; border-radius:7px; background:var(--paper); font-size:.77rem; }.rx-card-meds b { font-size:.75rem; color:var(--green-dark); align-self:center; }
+.rx-card-actions { display:flex; gap:7px; white-space:nowrap; }
+.rx-document-dialog { width:min(920px,94vw); max-width:920px; }.rx-document-dialog>.body { padding:18px; background:#e9ece9; max-height:76vh; overflow:auto; }
+.clinical-rx { max-width:760px; margin:auto; background:#fff; color:#17211c; padding:42px 46px; box-shadow:0 8px 35px rgba(20,40,30,.12); font-family:'IBM Plex Sans',sans-serif; }
+.clinical-rx-head { display:grid; grid-template-columns:54px 1fr auto; gap:14px; align-items:start; padding-bottom:18px; border-bottom:3px solid #174b36; }.rx-mark { display:grid; place-items:center; width:48px; height:48px; border-radius:12px; background:#174b36; color:#fff; font-family:Georgia,serif; font-size:1.45rem; }.clinical-rx-head h1 { font-family:Georgia,serif; color:#174b36; font-size:1.45rem; margin:0 0 3px; }.clinical-rx-head p,.clinical-rx-head small { margin:0; color:#53645c; }.rx-id { text-align:right; }.rx-id b,.rx-id span { display:block; }.rx-id b { font-family:var(--mono); font-size:.8rem; }.rx-id span { margin-top:5px; color:#68776f; font-size:.8rem; }
+.clinical-patient { display:grid; grid-template-columns:1.4fr 1fr; gap:20px; padding:15px 0; border-bottom:1px solid #d9e0dc; }.clinical-patient span,.clinical-patient b,.clinical-patient small { display:block; }.clinical-patient span,.rx-assessment span { text-transform:uppercase; letter-spacing:.06em; color:#75847c; font-size:.65rem; }.clinical-patient b { margin-top:3px; }.clinical-patient small { color:#68776f; margin-top:2px; }
+.rx-section { padding:20px 0 5px; }.rx-section h2 { display:flex; align-items:center; gap:9px; color:#174b36; font-size:.95rem; margin:0 0 13px; text-transform:uppercase; letter-spacing:.05em; }.rx-section h2 i { display:grid; place-items:center; width:24px; height:24px; border-radius:50%; background:#174b36; color:#fff; font-style:normal; font-size:.72rem; }.rx-assessment { display:grid; grid-template-columns:1fr 1fr; gap:12px; }.rx-assessment p { padding:10px 12px; background:#f5f7f5; border-radius:8px; margin:0; }.rx-assessment b { display:block; margin-top:4px; font-size:.86rem; }
+.rx-medicine-lines { border-top:1px solid #dce3df; }.rx-medicine { display:grid; grid-template-columns:30px 1fr; gap:10px; padding:11px 4px; border-bottom:1px solid #dce3df; }.rx-medicine>strong { display:grid; place-items:center; width:24px; height:24px; border-radius:50%; background:#e6f0eb; color:#174b36; font-size:.7rem; }.rx-medicine b,.rx-medicine span,.rx-medicine small { display:block; }.rx-medicine span { color:#3f5148; font-size:.82rem; margin-top:2px; }.rx-medicine small { color:#748078; margin-top:2px; }
+.rx-plan>div { padding:13px 15px; background:#f5f7f5; border-left:3px solid #b9812f; }.rx-plan p { margin:0 0 8px; }.clinical-rx>footer { display:flex; justify-content:space-between; align-items:end; gap:20px; margin-top:34px; padding-top:15px; border-top:1px solid #dce3df; color:#68776f; font-size:.76rem; }.rx-sign { text-align:center; min-width:170px; border-top:1px solid #7d8882; padding-top:6px; }.rx-sign span,.rx-sign b { display:block; }.rx-sign b { color:#1b2b23; margin-top:3px; }
+@media(max-width:900px){.rx-card{grid-template-columns:1fr}.rx-card-actions{white-space:normal}.clinical-rx{padding:28px 22px}.clinical-patient,.rx-assessment{grid-template-columns:1fr}}
+@media print { body>*:not(.rx-document-dialog){display:none!important}.rx-document-dialog{display:block!important;position:static;border:0;width:100%;max-width:none}.rx-document-dialog>header,.rx-document-dialog>footer{display:none}.rx-document-dialog>.body{padding:0;background:#fff;max-height:none}.clinical-rx{box-shadow:none;max-width:none} }
+
+/* A4 clinical density: 8–15 medicines must remain readable on page one. */
+.clinical-rx { width:min(794px,100%); min-height:1123px; max-width:none; padding:24px 30px; font-size:12px; line-height:1.35; }
+.clinical-rx-head { grid-template-columns:44px 1fr auto; gap:10px; padding-bottom:10px; }
+.rx-mark { width:38px; height:38px; border-radius:5px; font-size:18px; }
+.clinical-rx-head h1 { font-size:20px; line-height:1.15; margin-bottom:2px; }
+.clinical-rx-head p,.clinical-rx-head small { font-size:11px; line-height:1.3; }
+.rx-id b,.rx-id span { font-size:10px; }.rx-id span { margin-top:3px; }
+.clinical-patient { padding:8px 0; gap:12px; }.clinical-patient span,.rx-assessment span { font-size:8px; }.clinical-patient b { margin-top:1px; font-size:11px; }.clinical-patient small { font-size:9px; margin-top:1px; }
+.rx-section { padding:11px 0 1px; }.rx-section h2 { gap:6px; font-size:10px; margin-bottom:5px; padding-bottom:3px; border-bottom:1px solid #9fb5aa; }
+.rx-section h2 i { width:16px; height:16px; border-radius:2px; font-size:8px; }
+.rx-assessment { gap:7px; }.rx-assessment p { padding:5px 7px; border-radius:2px; }.rx-assessment b { margin-top:2px; font-size:10px; }
+.rx-medicine-table { width:100%; border-collapse:collapse; table-layout:fixed; font-size:10px; }
+.rx-medicine-table th { padding:3px 4px; text-align:left; color:#4f6258; background:#edf2ef; border:1px solid #cfdad4; text-transform:uppercase; letter-spacing:.04em; font-size:8px; }
+.rx-medicine-table td { padding:4px; border:1px solid #d8e0dc; vertical-align:top; line-height:1.2; overflow-wrap:anywhere; }
+.rx-medicine-table th:nth-child(1),.rx-medicine-table td:nth-child(1){width:4%;text-align:center}.rx-medicine-table th:nth-child(2){width:25%}.rx-medicine-table th:nth-child(3){width:12%}.rx-medicine-table th:nth-child(4){width:16%}.rx-medicine-table th:nth-child(5){width:12%}.rx-medicine-table th:nth-child(6){width:31%}.rx-medicine-table td:nth-child(2){color:#174b36}.rx-medicine-table tr{break-inside:avoid}
+.rx-plan>div { padding:6px 8px; border-left-width:2px; }.rx-plan p { margin-bottom:3px; }
+.clinical-rx>footer { margin-top:14px; padding-top:7px; font-size:9px; }.rx-sign { min-width:145px; padding-top:3px; }.rx-sign b { margin-top:1px; }
+
+/* ---- the examination that did not fit on the paper ----
+   Beside the document, never inside it. Styled to read as part of the
+   SCREEN - no paper background, no border that could pass for a sheet edge -
+   because a doctor must never be in doubt about which of these the patient
+   is holding. The print rule is the guarantee, not the styling. */
+.rx-off-sheet { max-width:860px; margin:0 auto 22px; padding:14px 16px;
+  background:var(--surface-2, #f2f5f4); border:1px dashed #c2cdc6; border-radius:10px; }
+.rx-off-sheet h4 { display:flex; align-items:baseline; gap:9px; flex-wrap:wrap;
+  font-size:.74rem; text-transform:uppercase; letter-spacing:.05em;
+  color:#4f6258; margin:0 0 9px; }
+.rx-off-sheet h4 span { text-transform:none; letter-spacing:0; font-weight:400;
+  font-size:.72rem; color:#77857d; }
+.rx-off-sheet dl { display:grid; grid-template-columns:repeat(auto-fill, minmax(190px, 1fr));
+  gap:7px 16px; margin:0; }
+.rx-off-sheet dt { font-size:.68rem; color:#77857d; }
+.rx-off-sheet dd { margin:0; font-size:.86rem; color:#16211c; }
+@media print { .rx-off-sheet { display:none !important; } }

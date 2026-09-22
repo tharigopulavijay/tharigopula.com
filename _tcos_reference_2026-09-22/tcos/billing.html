@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Billing | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/billing.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <h1>Billing</h1>
+        <p>What you charged, what came in, and what is still owed.</p>
+      </div>
+      <div class="spacer"></div>
+      <input type="date" id="fromDate" title="From">
+      <input type="date" id="toDate" title="To">
+      <button class="btn btn-primary" id="newBillBtn">+ New bill</button>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <div class="stat-row" id="moneyTiles"></div>
+
+    <div class="bill-layout">
+      <div class="bill-main">
+        <div class="panel">
+          <header>
+            <h2>Bills</h2>
+            <div class="spacer"></div>
+            <div class="tabs" id="statusTabs">
+              <button data-status="all" class="active">All</button>
+              <button data-status="issued">Issued</button>
+              <button data-status="draft">Drafts</button>
+              <button data-status="cancelled">Cancelled</button>
+            </div>
+          </header>
+          <div id="invoiceTable"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+
+      <aside class="bill-side">
+        <div class="panel">
+          <header><h2>Money in</h2><div class="spacer"></div>
+            <span class="muted" id="dailyNote"></span></header>
+          <div class="body"><div class="week-chart" id="dailyChart"></div></div>
+        </div>
+        <div class="panel">
+          <header><h2>How they paid</h2></header>
+          <div class="body"><div id="methodSplit"><div class="empty">—</div></div></div>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<!-- Raising a bill: pick the patient, add the lines, issue. -->
+<dialog id="billDialog" class="wide">
+  <header><h3 id="billTitle">New bill</h3><button type="button" id="billClose">&times;</button></header>
+  <div class="body">
+    <div id="billMsg"></div>
+
+    <div id="pickPatient">
+      <label class="field"><span>Who is this for?</span>
+        <input id="billPatientSearch" placeholder="Mobile number, name or patient number" autocomplete="off">
+      </label>
+      <div id="billPatientResults" class="pick-list"></div>
+    </div>
+
+    <div id="billBody" hidden>
+      <div class="bill-for" id="billFor"></div>
+
+      <div class="line-head">
+        <span>What for</span><span>Type</span><span>Qty</span><span>Rate</span><span>Amount</span><span></span>
+      </div>
+      <div id="billLines"></div>
+      <div class="line-add">
+        <button type="button" class="btn btn-ghost btn-sm" id="addLine">+ Add a line</button>
+        <span class="spacer"></span>
+        <select id="feePicker" class="fee-picker"><option value="">Add from your fee list…</option></select>
+        <button type="button" class="btn btn-ghost btn-sm" id="manageFees" hidden>Edit list</button>
+      </div>
+
+      <div class="bill-foot">
+        <div class="bill-notes">
+          <label class="field"><span>Note on the bill</span>
+            <input id="billNote" placeholder="Optional"></label>
+        </div>
+        <div class="bill-totals">
+          <div class="row"><span>Subtotal</span><b id="tSubtotal">₹0.00</b></div>
+          <div class="row"><span>Discount</span>
+            <input id="tDiscount" type="number" min="0" step="0.01" value="0"></div>
+          <div class="row"><span>Tax %
+            <small title="Healthcare services by a clinic are usually exempt in India. Medicines sold are not. Leave at 0 unless your accountant says otherwise.">?</small></span>
+            <input id="tTaxRate" type="number" min="0" step="0.5" value="0"></div>
+          <div class="row total"><span>Total</span><b id="tTotal">₹0.00</b></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer>
+    <button type="button" class="btn btn-ghost" id="billCancel">Close</button>
+    <button type="button" class="btn btn-ghost" id="saveDraft" hidden>Save draft</button>
+    <button type="button" class="btn btn-primary" id="issueBill" hidden>Issue bill</button>
+  </footer>
+</dialog>
+
+<!-- An issued bill: the document, and the money against it. -->
+<dialog id="viewDialog" class="wide">
+  <header><h3 id="viewTitle">Bill</h3><button type="button" id="viewClose">&times;</button></header>
+  <div class="body">
+    <div id="viewMsg"></div>
+    <div id="viewBody"></div>
+  </div>
+  <footer>
+    <button type="button" class="btn btn-ghost" id="viewCancelBill">Cancel bill</button>
+    <span class="spacer"></span>
+    <button type="button" class="btn btn-ghost" id="viewPrint">Print</button>
+    <button type="button" class="btn btn-primary" id="viewPay">Record payment</button>
+  </footer>
+</dialog>
+
+<!-- The charges she raises again and again. Without this the dropdown beside
+     every bill is permanently empty and she retypes "Consultation ₹600"
+     several times a day. -->
+<dialog id="feeDialog">
+  <header><h3>Your fee list</h3><button type="button" id="feeClose">&times;</button></header>
+  <div class="body">
+    <p style="color:var(--muted);font-size:.88rem;margin-top:0">
+      The charges you raise often. They appear in the dropdown on every bill,
+      so you pick them instead of typing them.
+    </p>
+    <div id="feeMsg"></div>
+    <div id="feeList" class="fee-list"><div class="empty">Loading…</div></div>
+
+    <form id="feeForm" class="fee-add">
+      <label class="field"><span>What for</span>
+        <input id="feeDesc" required maxlength="120"></label>
+      <label class="field"><span>Type</span>
+        <select id="feeKind"></select></label>
+      <label class="field"><span>Amount (₹)</span>
+        <input id="feeAmount" type="number" min="0" step="0.01" required></label>
+      <button class="btn btn-primary btn-sm" type="submit" id="feeAdd">Add</button>
+    </form>
+  </div>
+  <footer>
+    <button type="button" class="btn btn-primary" id="feeDone">Done</button>
+  </footer>
+</dialog>
+
+<dialog id="payDialog">
+  <form id="payForm" method="dialog">
+    <header><h3>Record a payment</h3><button type="button" id="payClose">&times;</button></header>
+    <div class="body">
+      <div id="payMsg"></div>
+      <p class="pass-note" id="payOwed"></p>
+      <label class="field"><span>Amount</span>
+        <input id="payAmount" type="number" min="0" step="0.01" required></label>
+      <div class="field"><span class="field-label">How</span>
+        <div class="pay-methods" id="payMethods"></div>
+      </div>
+      <div class="demo-qr" id="qrOption" hidden>
+        <div class="qr-pattern" aria-hidden="true"></div>
+        <div><b>Clinic counter QR</b><span>Show this demo QR at reception, then enter the successful UPI reference below.</span><small>Demo only · no real money is collected</small></div>
+      </div>
+      <label class="field"><span>Reference</span>
+        <input id="payRef" placeholder="UPI reference, last 4 digits, cheque number">
+        <small>Optional, but it is what makes the day reconcile later.</small></label>
+      <label class="field"><span>Received on</span>
+        <input id="payDate" type="date" required></label>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="payCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="paySave">Record it</button>
+    </footer>
+  </form>
+</dialog>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/plan-gate.js"></script>
+<script src="js/billing.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

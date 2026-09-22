@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Web | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/website.css">
+</head>
+<body>
+
+<!-- =========================================================================
+     The doctor's own place on the web.
+
+     Vijay: "just focus on creating the platform for doctors, keep this
+     button as WEB and let's give this option to doctors. It is real right,
+     everyone wants their thing to be real."
+
+     Every piece of this already existed in the API and was buried inside
+     Clinic setup, between the working hours and the ABDM registry ids -
+     which is where a doctor never finds it and never feels she has a
+     website. It is a thing she owns, so it gets its own place.
+
+     Nothing new is claimed here. The address and the booking page are what
+     TCOS already serves; the custom domain flow is the one that was already
+     written. What changed is that she can see it, copy it, and hand it to
+     somebody.
+
+     THERE IS NO PATIENT SIGN-IN, and this screen must never offer one. A
+     patient has no account and no password - they open their own record
+     through an unguessable link sent to them. The competitor screen that
+     prompted this lists "Patient login"; copying that row would advertise a
+     door that does not exist.
+     ========================================================================= -->
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header class="page-head">
+      <div><h1>Web</h1><p>Your clinic's own page, the address patients use, and where bookings come from.</p></div>
+      <div class="spacer"></div>
+      <button class="btn btn-primary" id="saveBtn">Save changes</button>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <!-- The three links she actually hands out. Copy buttons because she is
+         pasting these into WhatsApp, not retyping them. -->
+    <section class="panel">
+      <header><h2>Your links</h2><div class="spacer"></div>
+        <span class="pill" id="liveState">Loading…</span></header>
+      <div class="body">
+        <div id="links"><div class="empty">Loading…</div></div>
+        <p class="web-note" id="linksNote"></p>
+      </div>
+    </section>
+
+    <!-- Her address. This is the part that makes it hers. -->
+    <section class="panel">
+      <header><h2>Your address</h2></header>
+      <div class="body">
+        <label class="field"><span>Choose the short name for your clinic</span>
+          <div class="slug-row">
+            <span class="slug-prefix" id="slugPrefix">…</span>
+            <input id="slug" maxlength="40" placeholder="your-clinic"
+                   autocapitalize="none" spellcheck="false">
+          </div>
+          <small>Letters, numbers and hyphens. Short is better &mdash; it goes on
+            your prescription pad and gets read out over the phone.</small>
+        </label>
+
+        <label class="toggle">
+          <input type="checkbox" id="published">
+          <span>Publish my page &mdash; patients can find it and book</span>
+        </label>
+        <p class="web-note">Unpublished, the address stops working and nothing is
+          lost. Turn it back on whenever you like.</p>
+      </div>
+    </section>
+
+    <!-- What a patient reads. -->
+    <section class="panel">
+      <header><h2>What patients see</h2></header>
+      <div class="body">
+        <label class="field"><span>About your clinic</span>
+          <textarea id="intro" rows="4"
+            placeholder="What you treat, how you work, anything a patient should know before booking."></textarea>
+          <small>Your clinic name, qualification, registration number and address
+            come from Clinic setup and appear automatically.</small>
+        </label>
+        <label class="field"><span>Timings, in your own words</span>
+          <textarea id="hours" rows="3"
+            placeholder="Mon–Sat 10am–1pm and 5pm–8pm. Sunday closed."></textarea>
+          <small>Optional. Leave it blank and your clinic timings are shown instead.</small>
+        </label>
+      </div>
+    </section>
+
+    <!-- Her own domain. Existing flow, given room to breathe. -->
+    <section class="panel">
+      <header><h2>Use your own domain</h2><div class="spacer"></div>
+        <span class="pill" id="domainState">…</span></header>
+      <div class="body">
+        <p class="web-note">Optional. Your address above always works. If you own a
+          domain, point it here and your page is served on your own name instead.</p>
+
+        <!-- Hidden by js/website.js when Cloudflare for SaaS is not set up
+             on the account. A doctor must never be given DNS instructions
+             that cannot succeed - that is the bug this whole path was
+             rebuilt to remove. -->
+        <div id="domainForm">
+          <label class="field"><span>Your domain</span>
+            <input id="domain" placeholder="drdevi.com" autocapitalize="none" spellcheck="false">
+            <small>With or without www - we set up both, because patients type
+              both. Enter it and we will show you exactly what to add at
+              wherever you bought it.</small></label>
+
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <button class="btn btn-primary btn-sm" id="claimDomain">Connect</button>
+            <button class="btn btn-ghost btn-sm" id="checkDomain">Check now</button>
+            <button class="btn btn-ghost btn-sm" id="releaseDomain">Disconnect</button>
+          </div>
+        </div>
+        <div id="domainMsg"></div>
+        <div id="dns"></div>
+      </div>
+    </section>
+
+    <!-- A doctor is not a web developer, and showing her raw HTML on her own
+         clinic screen makes TCOS look like a developer tool. Connecting an
+         existing website is real work we do FOR her, so this is an offer,
+         not a snippet. Moved here from Clinic setup with the rest. -->
+    <section class="panel">
+      <header><h2>Already have a website?</h2></header>
+      <div class="body">
+        <p style="color:var(--ink-2);font-size:.92rem;margin:0 0 10px;max-width:64ch">
+          We can connect it to TCOS so patients book from your own site and the
+          request lands on your Today screen. It takes us about a day and there
+          is nothing for you to install.
+        </p>
+        <p class="web-note" style="margin:0">
+          Write to <b>hello@tharigopula.com</b> with your website address and we
+          will take it from there.
+        </p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="js/products.js"></script>
+<script src="js/tcos-plans.js"></script>
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/plan-gate.js"></script>
+<script src="js/website.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

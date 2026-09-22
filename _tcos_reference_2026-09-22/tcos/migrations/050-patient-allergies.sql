@@ -1,0 +1,26 @@
+-- =========================================================================
+-- Allergies on the patient record.
+--
+-- The prescription sheet has carried an allergy line since 10 Sep 2026 and
+-- it has always printed "Not recorded", because there was nowhere to record
+-- one. This is that place.
+--
+-- WHY IT SITS ON `patients` AND NOT ON `doctor_patients`
+-- A penicillin allergy is a fact about a person, not about her relationship
+-- with one clinic. The Ayurvedic physician she sees on Tuesday and the
+-- allopath she sees on Friday are both prescribing into the same body, and
+-- an allergy known to one and hidden from the other is exactly the failure
+-- this platform exists to prevent. `patients` is the shared identity table,
+-- so this is shared - the same reasoning that puts blood group there.
+--
+-- Free text, deliberately. A coded allergen list is the correct long-term
+-- answer, but a doctor who cannot find "sulpha drugs" in a dropdown writes
+-- nothing at all, and nothing is the dangerous value here. Text she can
+-- always complete beats a code she might abandon.
+--
+-- NULL means NOT RECORDED, and the sheet says so in amber. It must never be
+-- rendered as a blank, because a blank reads as "no allergies" to whoever
+-- is dispensing.
+-- =========================================================================
+
+ALTER TABLE patients ADD COLUMN allergies TEXT;

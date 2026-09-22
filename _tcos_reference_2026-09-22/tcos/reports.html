@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Diagnostics | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/billing.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <h1>Clinic diagnostics</h1>
+        <p>Tests performed inside your clinic—such as blood glucose, HbA1c or a clinic health panel.</p>
+      </div>
+      <div class="spacer"></div>
+      <a class="btn btn-primary" href="patients.html">+ Record a clinic test</a>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <div class="stat-row" id="headline"></div>
+
+    <div class="tabs queue-tabs" id="diagnosticTabs">
+      <button class="active" data-filter="all">All clinic tests <span id="allCount">0</span></button>
+      <button data-filter="abnormal">Abnormal <span id="abnormalCount">0</span></button>
+      <button data-filter="verified">Completed <span id="verifiedCount">0</span></button>
+    </div>
+    <div class="panel">
+      <header><h2 id="listTitle">Tests performed by this clinic</h2><div class="spacer"></div>
+        <input id="search" class="search-input" placeholder="Search patient or test"></header>
+      <div id="diagnosticList"><div class="empty">Loading…</div></div>
+    </div>
+  </main>
+</div>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/reports.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

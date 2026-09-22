@@ -1,0 +1,49 @@
+{
+  "name": "TCOS — Clinical Operating System",
+  "short_name": "TCOS",
+  "description": "Appointments, records, prescriptions, pharmacy and billing for an Indian clinic.",
+  "id": "/tcos-clinic.html",
+  "start_url": "/tcos-clinic.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FFFFFF",
+  "theme_color": "#00707C",
+  "lang": "en-IN",
+  "dir": "ltr",
+  "categories": ["medical", "productivity"],
+  "icons": [
+    {
+      "src": "assets/app/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/app/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/app/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today",
+      "short_name": "Today",
+      "description": "The diary and who is waiting",
+      "url": "/tcos-clinic.html"
+    },
+    {
+      "name": "Patients",
+      "short_name": "Patients",
+      "description": "Find a patient",
+      "url": "/patients.html"
+    }
+  ]
+}

@@ -1,0 +1,499 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Sign in | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+</head>
+<body>
+
+<div class="auth-wrap">
+
+  <aside class="auth-side">
+    <div class="auth-story">
+      <div class="auth-brand"><img class="tcos-logo" id="brandLogo" src="assets/tcos-logo.png" alt="TCOS — Clinical Operating System"></div>
+      <span class="auth-eyebrow" id="brandEyebrow">Clinic management for Indian practices</span>
+      <h1 id="brandHeadline">Run your whole clinic from one screen.</h1>
+      <p class="auth-lead" id="brandLead">Appointments, records, prescriptions, pharmacy and billing. Sign in and we will take you to your practice.</p>
+
+      <div class="auth-benefits" id="brandBenefits" aria-label="Capabilities"></div>
+
+      <div class="auth-trust"><span>One patient history</span><span>Doctor-controlled access</span><span>Built for Indian clinics</span></div>
+    </div>
+    <p class="foot" id="brandFoot">A Tharigopula Technologies product</p>
+  </aside>
+
+  <main class="auth-main">
+
+    <!-- ---------- sign in ---------- -->
+    <section class="auth-card" id="viewSignIn">
+      <h2 id="signInHeading">Sign in</h2>
+      <p class="sub">Use the mobile number or email you registered with.</p>
+      <div id="signInMsg"></div>
+      <!-- POST is the fail-safe if JavaScript is blocked: credentials must
+           never become query parameters or enter browser/server URL logs. -->
+      <form id="signInForm" method="post" autocomplete="on">
+        <label class="field"><span>Mobile or email</span>
+          <input id="signInId" name="username" autocomplete="username" required
+                 placeholder="9876543210 or you@clinic.com" autocapitalize="none" spellcheck="false">
+        </label>
+        <label class="field"><span>Password</span>
+          <input id="signInPassword" name="password" type="password"
+                 autocomplete="current-password" required placeholder="Your password">
+        </label>
+        <!-- Vijay: "i have my user id and pwd, let me signin from any
+             device right." Signing in has never ended another device's
+             session - but twelve hours means she is signed out of her own
+             phone twice a day, which feels exactly like being locked out.
+             Off by default, because a shared front-desk tablet should keep
+             the short session. -->
+        <label class="checkline">
+          <input id="rememberDevice" type="checkbox">
+          <span>Keep me signed in on this device<small>Leave this off on a shared or clinic computer.</small></span>
+        </label>
+        <div id="signInChallenge" hidden></div>
+        <button class="btn btn-primary btn-full" type="submit" id="signInSubmit">Sign in</button>
+      </form>
+
+      <!-- Vijay: "if mobile app we need to make that it should be embedded
+           to the mobile app fingerprint or pattern or the mobile lock -
+           just give that fingerprint or something, thats it, we are in."
+
+           Shown only where the device can actually do it, because a button
+           that cannot work is worse than no button. -->
+      <div id="passkeyRow" hidden>
+        <p class="or-line"><span>or</span></p>
+        <button type="button" class="btn btn-secondary btn-full" id="passkeySignIn">
+          Sign in with fingerprint
+        </button>
+        <p class="sub" style="text-align:center;margin:8px 0 0">
+          Set this up from <b>My practice</b> once you are signed in.
+        </p>
+      </div>
+      <div class="auth-links">
+        <button type="button" data-go="reset">Forgot password?</button>
+      </div>
+
+      <div class="onboarding-card">
+        <h3>Don't have an account?</h3>
+        <p>Tell us about your practice and we will call you within two working days.</p>
+        <a class="btn btn-secondary btn-full" href="apply.html">Create account</a>
+        <small>We verify every doctor's registration before activating an account.</small>
+      </div>
+
+      <!-- Offered BEFORE she is signed in, not only after.
+
+           Vijay: "keep it outside, from the time of creating account till
+           end it should be available." This is the screen a doctor is sent
+           to on the day we activate her, and the moment she is most likely
+           to want it on her phone rather than in a browser tab. -->
+      <div class="onboarding-card">
+        <h3>Use it like an app</h3>
+        <p>Add TCOS to your home screen and it opens full screen, with its own icon.</p>
+        <button type="button" class="btn btn-ghost btn-full install-cta" data-tcos-install hidden>Install app</button>
+      </div>
+    </section>
+
+    <!-- ---------- signup step 1: who are you ---------- -->
+    <section class="auth-card" id="viewSignup" hidden>
+      <h2 id="createHeading">Create your account</h2>
+      <p class="sub">We send a code to confirm it is really you.</p>
+      <div id="signupMsg"></div>
+      <form id="signupStartForm">
+        <label class="field"><span>Mobile or email</span>
+          <input id="signupId" required placeholder="9876543210 or you@clinic.com"
+                 autocapitalize="none" spellcheck="false">
+          <small>A mobile number gets an SMS. An email address gets an email.</small>
+        </label>
+        <div id="resetChallenge" hidden></div>
+        <button class="btn btn-primary btn-full" type="submit">Send code</button>
+      </form>
+      <div class="auth-links"><button type="button" data-go="signIn">Back to sign in</button></div>
+    </section>
+
+    <!-- ---------- signup step 2: code + details ---------- -->
+    <section class="auth-card" id="viewSignupVerify" hidden>
+      <h2>Confirm and set up</h2>
+      <p class="sub" id="signupSentTo"></p>
+      <div id="signupVerifyMsg"></div>
+      <form id="signupVerifyForm">
+        <label class="field"><span>6-digit code</span>
+          <input id="signupCode" inputmode="numeric" maxlength="6" required placeholder="000000">
+        </label>
+        <div class="field-row">
+          <label class="field"><span>Your name</span>
+            <input id="signupName" required placeholder="Your full name"></label>
+          <label class="field"><span>Qualification</span>
+            <input id="signupQual" placeholder="BAMS"></label>
+        </div>
+        <div class="field-row">
+          <label class="field"><span>Clinic name</span>
+            <input id="signupClinic" required placeholder="Your clinic's name"></label>
+          <label class="field"><span>Registration no.</span>
+            <input id="signupReg" placeholder="Council reg. no."></label>
+        </div>
+        <label class="field"><span>Choose a password</span>
+          <input id="signupPassword" type="password" autocomplete="new-password" required
+                 placeholder="At least 8 characters">
+          <small>Minimum 8 characters, with letters and numbers.</small>
+        </label>
+        <button class="btn btn-primary btn-full" type="submit">Create account</button>
+      </form>
+      <div class="auth-links"><button type="button" data-go="signup">Use a different number</button></div>
+    </section>
+
+    <!-- ---------- reset ---------- -->
+    <section class="auth-card" id="viewReset" hidden>
+      <h2>Reset your password</h2>
+      <p class="sub">We send a code to your registered mobile or email.</p>
+      <div id="resetMsg"></div>
+
+      <form id="resetStartForm">
+        <label class="field"><span>Mobile or email</span>
+          <input id="resetId" required placeholder="9876543210 or you@clinic.com"
+                 autocapitalize="none" spellcheck="false">
+        </label>
+        <button class="btn btn-primary btn-full" type="submit">Send code</button>
+      </form>
+
+      <form id="resetVerifyForm" hidden>
+        <label class="field"><span>6-digit code</span>
+          <input id="resetCode" inputmode="numeric" maxlength="6" required placeholder="000000">
+          <small>The code expires in 5 minutes.</small>
+        </label>
+        <label class="field"><span>New password</span>
+          <input id="resetPassword" type="password" autocomplete="new-password" required
+                 placeholder="At least 8 characters">
+        </label>
+        <label class="field"><span>Confirm new password</span>
+          <input id="resetConfirm" type="password" autocomplete="new-password" required>
+        </label>
+        <button class="btn btn-primary btn-full" type="submit">Set new password</button>
+      </form>
+
+      <div class="auth-links"><button type="button" data-go="signIn">Back to sign in</button></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/app-install.js"></script>
+<script src="js/products.js"></script>
+<script>
+/* Sign-in is deliberately neutral. The visitor has not identified herself
+   yet, so a remembered product from the previous doctor on this browser is
+   not trustworthy. The server returns the account's product after sign-in
+   and every authenticated screen is branded from that point onwards. */
+(() => {
+  const p = window.TCOSProducts && window.TCOSProducts.PLATFORM;
+  if (!p) return;
+
+  document.title = 'Sign in | ' + p.name;
+
+  const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  const logo = document.getElementById('brandLogo');
+  if (logo) { logo.src = p.logo; logo.alt = p.name + ' — ' + p.full; }
+
+  set('brandEyebrow', p.signIn.eyebrow);
+  set('brandHeadline', p.signIn.headline);
+  set('brandLead', p.signIn.lead);
+  set('signInHeading', 'Sign in to ' + p.name);
+  set('createHeading', 'Create your ' + p.name + ' account');
+  /* The platform is not "part of" itself - that line only makes sense for
+     one of the three products sitting under it. */
+  set('brandFoot', p.id === 'tcos'
+    ? 'A Tharigopula Technologies product'
+    : p.name + ' is part of TCOS · A Tharigopula Technologies product');
+
+  const box = document.getElementById('brandBenefits');
+  if (box) {
+    box.setAttribute('aria-label', p.name + ' capabilities');
+    box.replaceChildren(...p.signIn.benefits.map(([title, detail]) => {
+      const article = document.createElement('article');
+      const b = document.createElement('b');
+      b.textContent = title;
+      const span = document.createElement('span');
+      span.textContent = detail;
+      article.append(b, span);
+      return article;
+    }));
+  }
+})();
+</script>
+<script src="js/tcos-api.js"></script>
+<script src="js/passkeys.js"></script>
+<script src="js/security-challenge.js"></script>
+<script>
+(async () => {
+  const views = {
+    signIn: document.getElementById('viewSignIn'),
+    signup: document.getElementById('viewSignup'),
+    signupVerify: document.getElementById('viewSignupVerify'),
+    reset: document.getElementById('viewReset')
+  };
+
+  const show = name => {
+    Object.entries(views).forEach(([key, el]) => { el.hidden = key !== name; });
+    ['signInMsg', 'signupMsg', 'signupVerifyMsg', 'resetMsg']
+      .forEach(id => { document.getElementById(id).innerHTML = ''; });
+  };
+
+  const msg = (id, text, kind) => {
+    const box = document.getElementById(id);
+    box.replaceChildren();
+    if (!text) return;
+    const notice = document.createElement('div');
+    notice.className = 'notice ' + kind;
+    notice.textContent = text;
+    box.appendChild(notice);
+  };
+
+  TCOSChallenge.setup('signInChallenge', 'clinic_signin', TCOSApi.baseUrl())
+    .catch(error => msg('signInMsg', error.message, 'error'));
+  TCOSChallenge.setup('resetChallenge', 'password_reset', TCOSApi.baseUrl())
+    .catch(error => msg('resetMsg', error.message, 'error'));
+
+  /* Disable the button for the duration so a slow network cannot produce a
+     double signup. */
+  async function submitting(button, work) {
+    const label = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Please wait…';
+    try { return await work(); }
+    finally { button.disabled = false; button.textContent = label; }
+  }
+
+  /* Did the app send her here, or did she come herself?
+   *
+     `why` is set by TCOSBoot when a screen decides she is not signed in,
+     and `stuck` when it gave up after too many hand-overs. Either way,
+     bouncing her straight back to the app is the one thing not to do. */
+  const signInParams = new URLSearchParams(location.search);
+  const arrivedFromTheApp = () =>
+    signInParams.has('why') || signInParams.has('stuck');
+
+  /* Somebody who got caught in it deserves a sentence, not a silent screen
+     that looks like it simply forgot her. */
+  if (signInParams.has('stuck')) {
+    msg('signInMsg',
+      'You were signed out because your session had expired. Please sign in again.',
+      'error');
+  }
+
+  const landingFor = profile => {
+    const can = new Set((profile.me && profile.me.can) || []);
+    if (!profile.me || profile.me.isDoctor || can.has('appointments')) return 'tcos-clinic.html';
+    if (can.has('pharmacy')) return 'pharmacy.html';
+    if (can.has('billing')) return 'billing.html';
+    if (can.has('patients')) return 'patients.html';
+    return 'tcos-clinic.html';
+  };
+
+  /* ---- sign in ---- */
+  document.getElementById('signInForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const button = document.getElementById('signInSubmit');
+    msg('signInMsg', '');
+    try {
+      const result = await submitting(button, async () => TCOSApi.signIn(
+        document.getElementById('signInId').value.trim(),
+        document.getElementById('signInPassword').value,
+        await TCOSChallenge.token('clinic_signin'),
+        document.getElementById('rememberDevice').checked
+      ));
+      msg('signInMsg', 'Welcome back, ' + result.doctor.fullName + '.', 'ok');
+      const profile = await TCOSApi.me();
+      /* She already belongs to a product - it was set when we activated her
+         account. Remember it now so every screen from here on is branded as
+         hers, without another round trip and without her choosing anything. */
+      if (window.TCOSProducts) window.TCOSProducts.remember(profile.product);
+      const landing = landingFor(profile);
+      location.href = result.doctor.mustChangePassword
+        ? landing + (landing.includes('?') ? '&' : '?') + 'changePassword=1' : landing;
+    } catch (error) {
+      msg('signInMsg', error.message, 'error');
+    } finally {
+      TCOSChallenge.reset('clinic_signin');
+    }
+  });
+
+  /* ---- the fingerprint ----
+     Offered only where the device really has one. On a desktop with no
+     sensor and no paired phone the row stays hidden rather than promising
+     something that cannot happen. */
+  (async () => {
+    const row = document.getElementById('passkeyRow');
+    const button = document.getElementById('passkeySignIn');
+    if (!row || !button || !window.TCOSPasskeys) return;
+    if (!await TCOSPasskeys.platformAvailable()) return;
+    row.hidden = false;
+
+    button.addEventListener('click', async () => {
+      msg('signInMsg', '');
+      try {
+        const result = await submitting(button, () => TCOSApi.signInWithPasskey());
+        msg('signInMsg', 'Welcome back, ' + result.doctor.fullName + '.', 'ok');
+        const profile = await TCOSApi.me();
+        if (window.TCOSProducts) window.TCOSProducts.remember(profile.product);
+        const landing = landingFor(profile);
+        location.href = result.doctor.mustChangePassword
+          ? landing + (landing.includes('?') ? '&' : '?') + 'changePassword=1' : landing;
+      } catch (error) {
+        msg('signInMsg', error.message, 'error');
+      }
+    });
+  })();
+
+  /* ---- signup ---- */
+  let signupIdentifier = '';
+
+  document.getElementById('signupStartForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const button = event.target.querySelector('button');
+    msg('signupMsg', '');
+    signupIdentifier = document.getElementById('signupId').value.trim();
+    try {
+      const result = await submitting(button, () => TCOSApi.signupStart(signupIdentifier));
+      document.getElementById('signupSentTo').textContent =
+        'Code sent to ' + result.sentTo + ' by ' +
+        (result.channel === 'email' ? 'email' : 'SMS') +
+        '. It expires in ' + result.expiresInMinutes + ' minutes.';
+      show('signupVerify');
+      document.getElementById('signupCode').focus();
+    } catch (error) {
+      msg('signupMsg', error.message, 'error');
+    }
+  });
+
+  document.getElementById('signupVerifyForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const button = event.target.querySelector('button');
+    msg('signupVerifyMsg', '');
+    try {
+      await submitting(button, () => TCOSApi.signupVerify({
+        identifier: signupIdentifier,
+        code: document.getElementById('signupCode').value.trim(),
+        password: document.getElementById('signupPassword').value,
+        fullName: document.getElementById('signupName').value.trim(),
+        clinicName: document.getElementById('signupClinic').value.trim(),
+        qualification: document.getElementById('signupQual').value.trim(),
+        registrationNo: document.getElementById('signupReg').value.trim()
+      }));
+      /* Sign straight in - the doctor just proved the identifier and chose
+         the password, so making them type it again is pointless friction. */
+      await TCOSApi.signIn(signupIdentifier, document.getElementById('signupPassword').value);
+      location.href = 'tcos-clinic.html';
+    } catch (error) {
+      msg('signupVerifyMsg', error.message, 'error');
+    }
+  });
+
+  /* ---- reset ---- */
+  let resetIdentifier = '';
+
+  document.getElementById('resetStartForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const button = event.target.querySelector('button');
+    msg('resetMsg', '');
+    resetIdentifier = document.getElementById('resetId').value.trim();
+    try {
+      const result = await submitting(button, async () => TCOSApi.resetStart(
+        resetIdentifier, await TCOSChallenge.token('password_reset')));
+      document.getElementById('resetVerifyForm').hidden = false;
+      document.getElementById('resetStartForm').querySelector('button').disabled = true;
+      /* She may have typed her mobile and the code gone to her inbox, so
+         the server says where to look rather than the page assuming it.
+         `sentTo` is null in that case on purpose - printing the address
+         would say whether the account exists, and to whom. */
+      msg('resetMsg', 'If an account exists, a code is on its way to ' +
+        (result.sentTo || result.where || 'your account') + '.' +
+        (result.note ? ' ' + result.note : ''), 'info');
+      document.getElementById('resetCode').focus();
+    } catch (error) {
+      msg('resetMsg', error.message, 'error');
+    } finally {
+      TCOSChallenge.reset('password_reset');
+    }
+  });
+
+  document.getElementById('resetVerifyForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    const button = event.target.querySelector('button');
+    const next = document.getElementById('resetPassword').value;
+    if (next !== document.getElementById('resetConfirm').value) {
+      msg('resetMsg', 'Both passwords must match.', 'error');
+      return;
+    }
+    try {
+      await submitting(button, () => TCOSApi.resetVerify(
+        resetIdentifier, document.getElementById('resetCode').value.trim(), next));
+      show('signIn');
+      msg('signInMsg', 'Password updated. Sign in with your new password.', 'ok');
+      document.getElementById('signInId').value = resetIdentifier;
+      document.getElementById('signInPassword').focus();
+    } catch (error) {
+      msg('resetMsg', error.message, 'error');
+    }
+  });
+
+  document.querySelectorAll('[data-go]').forEach(button =>
+    button.addEventListener('click', () => show(button.dataset.go)));
+
+  /* A demo role link always starts clean. Otherwise the previous role's
+     session makes every card appear to open the same workspace. */
+  const demoAccounts = {
+    doctor: { label: 'Doctor', identifier: '9000000001', password: 'DoctorDemo2026' },
+    'front-desk': { label: 'Front desk', identifier: '9000000002', password: 'FrontDesk2026' },
+    pharmacist: { label: 'Pharmacist', identifier: '9000000003', password: 'Pharmacy2026' },
+    assistant: { label: 'Clinical assistant', identifier: '9000000004', password: 'Assistant2026' }
+  };
+  const demoParams = new URLSearchParams(location.search);
+  const selectedDemo = demoAccounts[demoParams.get('demo')];
+  const demoPages = {
+    today: 'tcos-clinic.html', patients: 'patients.html',
+    vijay: 'record.html?patient=pat_demo_vijay', prescriptions: 'prescriptions.html',
+    pharmacy: 'pharmacy.html', billing: 'billing.html', reports: 'reports.html',
+    team: 'team.html', practice: 'practice.html'
+  };
+  if (selectedDemo) {
+    await TCOSApi.signOut();
+    document.querySelector('#viewSignIn h2').textContent = 'Opening ' + selectedDemo.label + ' demo…';
+    document.querySelector('#viewSignIn .sub').textContent =
+      'The previous clinic session was cleared. Loading only this role’s permissions.';
+    document.getElementById('signInForm').hidden = true;
+    try {
+      await TCOSApi.signIn(selectedDemo.identifier, selectedDemo.password);
+      const profile = await TCOSApi.me();
+      location.replace(demoPages[demoParams.get('page')] || landingFor(profile));
+      return;
+    } catch (error) {
+      document.querySelector('#viewSignIn h2').textContent = 'Sign in as ' + selectedDemo.label;
+      document.getElementById('signInForm').hidden = false;
+      document.getElementById('signInId').value = selectedDemo.identifier;
+      document.getElementById('signInPassword').value = selectedDemo.password;
+      msg('signInMsg', error.message, 'error');
+    }
+  } else if (TCOSApi.isSignedIn() && !arrivedFromTheApp()) {
+    /* ONLY WHEN SHE CAME HERE HERSELF.
+     *
+       This used to run whenever a session marker existed, including when
+       the app had just sent her here because that same session did not
+       work. The two screens then handed her back and forth and neither
+       ever painted: fifteen minutes of white screen on a phone, which is
+       what Vijay sat in front of. The app counts the hand-overs now, and
+       this refuses to start another one. */
+    TCOSApi.me()
+      .then(() => { location.href = 'tcos-clinic.html'; })
+      .catch(() => { /* stale token, cleared by the client - stay here */ });
+  }
+})();
+</script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

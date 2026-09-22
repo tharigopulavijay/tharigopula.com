@@ -1,0 +1,60 @@
+/* =========================================================================
+   The waiting-room registration form.
+
+   Sits on top of css/upload.css, which already dresses the patient-facing
+   pages - same ground, same card, same very large button. This adds only
+   what a form needs.
+
+   Everything is sized for a thumb on a phone held one-handed while the
+   other hand holds a bag. Nothing here is small enough to need aiming at.
+   ========================================================================= */
+
+fieldset.card{border:1px solid var(--line); margin:0 0 14px}
+legend{
+  padding:0 6px; font-size:.78rem; font-weight:700; color:var(--muted);
+  letter-spacing:.02em;
+}
+
+/* First visit or not. Big tap targets, because this is the first thing she
+   touches and a fiddly radio is where she gives up. */
+.choices{display:grid; gap:8px}
+.choices label{
+  display:flex; align-items:center; gap:11px; cursor:pointer;
+  padding:12px 13px; border:1px solid var(--line); border-radius:5px;
+  background:#FCFDFC;
+}
+.choices input{width:20px; height:20px; accent-color:var(--deep); flex:none}
+.choices label:has(input:checked){
+  border-color:var(--deep); background:#EEF5F1; font-weight:600;
+}
+.choices span{font-size:.98rem}
+
+.f{display:block; margin-bottom:13px}
+.f:last-child{margin-bottom:0}
+.f > span{
+  display:block; font-size:.8rem; font-weight:700; color:var(--ink-2);
+  margin-bottom:5px;
+}
+.f input,.f select,.f textarea{
+  width:100%; font:inherit; font-size:1rem; padding:12px 12px;
+  border:1px solid var(--line); border-radius:5px; background:#fff;
+  color:var(--ink);
+}
+.f textarea{resize:vertical; line-height:1.5}
+.f input:focus,.f select:focus,.f textarea:focus{
+  outline:none; border-color:var(--deep);
+  box-shadow:0 0 0 3px rgba(31,92,66,.13);
+}
+
+.two{display:grid; grid-template-columns:1fr 1fr; gap:11px}
+.hint{margin:-6px 0 13px; font-size:.82rem; color:var(--muted); line-height:1.45}
+
+.pick:disabled{background:#8FA69A; cursor:default}
+
+.small{
+  font-size:.82rem; color:var(--muted); text-align:center;
+  margin:12px 0 0; line-height:1.5;
+}
+
+.message.done h1{color:var(--deep)}
+.message.done .small{margin-top:14px; text-align:center}

@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Prescriptions | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/billing.css">
+<link rel="stylesheet" href="css/prescriptions.css">
+<link rel="stylesheet" href="css/rx-document.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <h1>Prescriptions</h1>
+        <p>Everything you have issued. Drafts are not documents, so they are not here.</p>
+      </div>
+      <div class="spacer"></div>
+      <input type="date" id="fromDate" title="From">
+      <input type="date" id="toDate" title="To">
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <div class="search-card">
+      <label class="field"><span>Number, patient, or a medicine you wrote</span>
+        <div class="search-row">
+          <input id="search" autocomplete="off"
+                 placeholder="Search by prescription number, patient or medicine">
+        </div>
+      </label>
+    </div>
+
+    <div class="panel">
+      <header>
+        <h2 id="listTitle">Issued prescriptions</h2>
+        <div class="spacer"></div>
+        <span class="pill" id="rxCount"></span>
+      </header>
+      <div id="rxTable"><div class="empty">Loading…</div></div>
+    </div>
+  </main>
+</div>
+
+<dialog id="rxDialog" class="rx-document-dialog">
+  <header><h3>Prescription</h3><button type="button" id="rxClose">&times;</button></header>
+  <div class="body" id="rxDocument"><div class="empty">Loading…</div></div>
+  <footer><button type="button" class="btn btn-ghost" id="rxDone">Close</button><button type="button" class="btn btn-primary" id="rxPrint">Print / Save PDF</button></footer>
+</dialog>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/rx-document.js?v=1"></script>
+<script src="js/prescriptions.js?v=2"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

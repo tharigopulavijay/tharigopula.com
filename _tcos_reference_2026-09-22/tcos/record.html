@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Patient record | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/record.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <div id="pageMsg"></div>
+
+    <div class="patient-head">
+      <span class="patient-face" id="patientInitial">·</span>
+      <div class="patient-id">
+        <h1 id="patientName">…</h1>
+        <p id="patientMeta"></p>
+      </div>
+      <div class="patient-counts" id="patientCounts"></div>
+      <div class="spacer"></div>
+      <button class="btn btn-ghost" id="addReportBtn">+ Lab report</button>
+      <a class="btn btn-primary" id="consultLink" href="#">Start a visit</a>
+    </div>
+
+    <!-- Anything out of range comes first. A doctor should not have to hunt
+         for the abnormal value across four panels. -->
+    <div id="attention"></div>
+
+    <!-- The national health id. Collected by hand today so that the day the
+         ABDM integration is certified, the numbers are already here. A row
+         that says "no ABHA" is a real answer, and stops the front desk being
+         asked the same question at every visit. -->
+    <div class="panel" id="abhaPanel">
+      <header>
+        <div>
+          <h2>ABHA</h2>
+          <p class="muted">The patient’s national health id. Not connected to ABDM yet — this is recorded now so nothing has to be re-entered later.</p>
+        </div>
+        <button class="btn btn-ghost" id="abhaEdit" type="button">Edit</button>
+      </header>
+
+      <div id="abhaView"><div class="empty">Loading…</div></div>
+
+      <!-- Consent, kept next to the ABHA because both are asked at the same
+           moment: once, at the desk, with the patient in front of you. -->
+      <div id="waConsent" class="consent-row">
+        <label class="check">
+          <input id="waOptIn" type="checkbox">
+          Send this patient appointment reminders on WhatsApp
+        </label>
+        <p class="muted" id="waConsentNote"></p>
+      </div>
+
+      <form id="abhaForm" hidden>
+        <div class="field-row">
+          <label>
+            ABHA number
+            <input id="abhaNumber" type="text" inputmode="numeric"
+                   placeholder="91-1234-5678-9012" autocomplete="off">
+          </label>
+          <label>
+            ABHA address
+            <input id="abhaAddress" type="text" placeholder="name@abdm" autocomplete="off">
+          </label>
+        </div>
+        <label class="check">
+          <input id="abhaNone" type="checkbox">
+          This patient does not have an ABHA
+        </label>
+        <div id="abhaMsg"></div>
+        <div class="row-actions">
+          <button class="btn btn-primary" id="abhaSave" type="submit">Save</button>
+          <button class="btn btn-ghost" id="abhaCancel" type="button">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="care-grid">
+      <div class="panel"><header><h2>Current treatment</h2><span class="muted">Latest issued prescription</span></header><div id="currentTreatment"><div class="empty">Loading…</div></div></div>
+      <div class="panel"><header><h2>Care plan & next review</h2></header><div id="carePlan"><div class="empty">Loading…</div></div></div>
+    </div>
+
+    <div class="panel">
+      <header>
+        <div><h2>Investigation history</h2><p class="muted">The patient’s results, organised for clinical decisions.</p></div>
+        <div class="spacer"></div>
+        <span class="muted" id="seriesNote"></span>
+      </header>
+      <div class="investigation-switch tabs" id="investigationSwitch"><button class="active" data-investigation="trend">Trend by date</button><button data-investigation="reports">Original reports</button></div>
+      <div id="trendView"><div id="trends"><div class="empty">Loading…</div></div></div>
+      <div id="reportsView" hidden><div id="reportCards"><div class="empty">Loading…</div></div></div>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <header><h2>Visits</h2></header>
+        <div id="visits"><div class="empty">Loading…</div></div>
+      </div>
+      <div class="panel">
+        <header><h2>Prescription history</h2></header>
+        <div id="prescriptions"><div class="empty">Loading…</div></div>
+      </div>
+    </div>
+
+    <!-- Scans and letters on this patient. The values from a report are
+         above; this is the paper they came from. -->
+    <div class="panel">
+      <header><h2>Documents</h2><div class="spacer"></div>
+        <label class="btn btn-ghost btn-sm" style="margin:0">
+          <input type="file" id="docFile" hidden
+                 accept=".pdf,.jpg,.jpeg,.png,.webp,.heic">Attach a document</label>
+      </header>
+      <div id="docMsg"></div>
+      <div id="documents"><div class="empty">Loading…</div></div>
+    </div>
+  </main>
+</div>
+
+<dialog id="reportDialog">
+  <form id="reportForm" method="dialog">
+    <header><h3>Record a lab report</h3><button type="button" id="reportClose">&times;</button></header>
+    <div class="body">
+      <div id="reportMsg"></div>
+      <div class="field-row">
+        <label class="field"><span>Panel</span>
+          <select id="rPanel"></select>
+          <small>Fills the rows so you type only the numbers.</small></label>
+        <label class="field"><span>Date on the report</span>
+          <input id="rDate" type="date" required></label>
+      </div>
+      <label class="field"><span>Report name</span>
+        <input id="rName" required placeholder="Lipid profile"></label>
+      <label class="field"><span>Where it came from</span>
+        <select id="rSource">
+          <option value="lab">A laboratory</option>
+          <option value="patient_upload">The patient brought it</option>
+        </select></label>
+
+      <div class="values-head">
+        <span>Analyte</span><span>Value</span><span>Unit</span><span>Reference</span><span></span>
+      </div>
+      <div id="rValues"></div>
+      <button type="button" class="btn btn-ghost btn-sm" id="addValue">+ Add a line</button>
+
+      <!-- The scan itself. The values are what makes the report searchable
+           and trendable; the document is what anyone checks the values
+           against, and what the patient actually wants to see. -->
+      <label class="field" style="margin-top:18px"><span>The report itself</span>
+        <input type="file" id="rFile" accept=".pdf,.jpg,.jpeg,.png,.webp,.heic">
+        <small id="rFileHelp">Optional. A PDF or a photo of the page, up to 15&nbsp;MB.</small>
+      </label>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="reportCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="reportSave">Save report</button>
+    </footer>
+  </form>
+</dialog>
+
+<script src="js/lab-panels.js"></script>
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/record.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

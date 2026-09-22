@@ -1,0 +1,352 @@
+/* Consultation screen: form on the left, the sheet the patient will be
+   handed on the right. Print drops everything except the sheet. */
+
+.consult-bar {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 14px;
+  padding: 9px 18px; background: var(--navy); color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,.2);
+}
+.consult-bar .back {
+  color: rgba(255,255,255,.75); text-decoration: none; font-size: 1.05rem;
+  width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center;
+}
+.consult-bar .back:hover { color: #fff; background: rgba(255,255,255,.1); }
+.consult-bar .mark { color: #3FD2AC; width: 28px; height: 28px; }
+.consult-bar .mark svg { width: 28px; height: 28px; }
+.consult-bar .bar-title { color: #fff; font-weight: 700; font-size: .95rem; letter-spacing: .01em; }
+.consult-bar .bar-sep { width: 1px; height: 26px; background: rgba(255,255,255,.18); }
+
+/* The patient block. Same shape as the row she clicked to get here, so the
+   eye confirms it is the right person without reading. */
+.consult-bar .who { display: flex; align-items: center; gap: 10px; }
+.consult-bar .who-avatar {
+  width: 32px; height: 32px; border-radius: 50%; display: grid; place-items: center;
+  background: rgba(63,210,172,.18); color: #6FE0C0; font-weight: 700; font-size: .82rem;
+}
+.consult-bar .who b { display: block; font-size: .92rem; font-weight: 600; color: #fff; }
+.consult-bar .who span { font-size: .745rem; color: rgba(255,255,255,.62); }
+.consult-bar .saved { font-size: .76rem; color: rgba(255,255,255,.6); margin-right: 4px; }
+.consult-bar .spacer { margin-left: auto; }
+.consult-bar .btn { white-space: nowrap; }
+.consult-bar .btn-ghost { border-color: rgba(255,255,255,.3); color: #fff; }
+.consult-bar .btn-ghost:hover { background: rgba(255,255,255,.1); }
+
+.state {
+  font-size: .66rem; letter-spacing: .09em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 999px; font-weight: 600;
+}
+.state.draft { background: rgba(255,255,255,.16); color: #E6F1F6; }
+.state.issued { background: rgba(14,112,73,.42); color: #C9F0DC; }
+
+.bar-notice {
+  padding: 10px 18px; font-size: .85rem;
+  border-bottom: 1px solid var(--line);
+}
+.bar-notice.ok { background: var(--ok-soft); color: var(--ok); }
+.bar-notice.error { background: var(--bad-soft); color: var(--bad); }
+.bar-notice.info { background: var(--warn-soft); color: var(--warn); }
+
+.consult {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 480px);
+  gap: 18px; padding: 18px; align-items: start;
+}
+
+.card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 16px 18px; margin-bottom: 14px;
+}
+.card h3 {
+  font-size: .96rem; margin: 0 0 12px;
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+}
+.card h3 small { font-weight: 400; font-size: .76rem; color: var(--muted); }
+.card .field { margin-bottom: 10px; }
+.card textarea { resize: vertical; font-family: inherit; }
+
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0 14px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0 14px; }
+
+/* ---- medicine rows ---- */
+/* Six columns, not seven. The System dropdown came out on 19 Sep 2026 after
+   a doctor said it was the reason he would rather write by hand - so the
+   width it held goes back to the medicine name, which is the one he is
+   actually typing into. */
+.med-head, .med-row {
+  display: grid;
+  grid-template-columns: 2.1fr 1fr 1.1fr 1fr .6fr 28px;
+  gap: 6px; align-items: center;
+}
+.med-head {
+  font-size: .64rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); font-weight: 600; padding: 0 2px 6px;
+}
+.med-row { margin-bottom: 6px; }
+.med-row .m-note { grid-column: 1 / -2; font-size:.78rem; padding:6px 9px; background:var(--surface-2); }
+.med-row input, .med-row select {
+  width: 100%; padding: 7px 9px; font-size: .84rem;
+  border: 1px solid var(--line); border-radius: 7px; background: #fff;
+}
+.med-row input:focus, .med-row select:focus {
+  outline: none; border-color: var(--green-light);
+  box-shadow: 0 0 0 3px rgba(43,107,75,.13);
+}
+.med-row.stocked .m-name { border-color: var(--ok); background: var(--ok-soft); }
+.med-row .m-del {
+  border: none; background: none; color: var(--muted);
+  font-size: 1.15rem; cursor: pointer; line-height: 1;
+}
+.med-row .m-del:hover { color: var(--bad); }
+.med-row input:disabled, .med-row select:disabled { background: var(--surface-2); color: var(--muted); }
+
+/* ---- the sheet ---- */
+.sheet-col { position: sticky; top: 62px; }
+.sheet-scale {
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 14px; overflow: auto; max-height: calc(100vh - 92px);
+}
+.sheet {
+  background: #FDFBF6; padding: 22px 24px; border-top: 4px solid var(--gold);
+  box-shadow: 0 6px 24px rgba(0,0,0,.12); font-size: .78rem;
+}
+.sheet .rx-header { display: flex; align-items: center; gap: 12px; }
+.sheet .logo-fallback {
+  width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--gold);
+  display: grid; place-items: center; font-family: 'Libre Baskerville', Georgia, serif;
+  font-size: 1.2rem; font-weight: 700; color: var(--green); background: #fff; flex-shrink: 0;
+}
+.sheet .identity { flex: 1; min-width: 0; }
+.sheet h1 { font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.05rem; color: var(--green); margin: 0; }
+.sheet .tagline { font-size: .68rem; font-style: italic; color: var(--muted); margin: 0; }
+.sheet .doctor { font-size: .72rem; font-weight: 600; color: var(--green); margin: 2px 0 0; }
+.sheet .reg { font-size: .64rem; color: var(--muted); margin: 0; }
+.sheet .meta { text-align: right; font-size: .66rem; color: var(--muted); line-height: 1.6; }
+.sheet .rule { height: 2px; background: var(--gold); opacity: .7; margin: 10px 0; }
+.sheet .patient-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+  padding: 8px 10px; border: 1px solid var(--line); border-radius: 5px; margin-bottom: 12px;
+}
+.sheet .patient-strip p { margin: 0; font-size: .74rem; }
+.sheet .patient-strip b {
+  display: block; font-size: .56rem; text-transform: uppercase;
+  letter-spacing: .06em; color: var(--muted);
+}
+.sheet section { margin-bottom: 11px; }
+.sheet section h2 {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .09em;
+  color: var(--green); border-bottom: 1px solid var(--line);
+  padding-bottom: 3px; margin: 0 0 6px;
+}
+.sheet .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 16px; }
+.sheet .field-grid.single { grid-template-columns: 1fr; }
+.sheet .field-grid p { display: flex; gap: 7px; margin: 0; padding: 2px 0; font-size: .74rem; }
+.sheet .field-grid b { min-width: 96px; color: var(--muted); font-weight: 500; font-size: .7rem; }
+.sheet table.med { width: 100%; border-collapse: collapse; font-size: .72rem; }
+.sheet table.med th {
+  text-align: left; font-size: .56rem; text-transform: uppercase;
+  letter-spacing: .05em; color: var(--muted); padding: 3px 4px;
+  border-bottom: 1px solid var(--line); font-weight: 600;
+}
+.sheet table.med td { padding: 4px; border-bottom: 1px dotted var(--line); }
+.sheet table.med th:first-child,.sheet table.med td:first-child { width:18px; text-align:center; }
+.sheet table.med td:nth-child(2) { font-weight:600; color:var(--green); }
+.sheet table.med td:nth-child(2) small { display:block; color:var(--muted); font-size:.5rem; text-transform:uppercase; letter-spacing:.04em; }
+.sheet table.med td { line-height:1.25; }
+.sheet .sys {
+  display: inline-block; font-size: .54rem; text-transform: uppercase;
+  letter-spacing: .05em; padding: 1px 6px; border-radius: 999px; white-space: nowrap;
+}
+.sheet .sys-allopathy { background: #e4eefb; color: #1c4f86; }
+.sheet .sys-ayurveda { background: #e8f2e4; color: #2f6132; }
+.sheet .sys-homeopathy { background: #f3e9f8; color: #6a3d84; }
+.sheet .sys-supplement { background: #fdf0dd; color: #8a5b12; }
+.sheet .signature { display: flex; justify-content: flex-end; margin-top: 18px; }
+.sheet .signature div { text-align: center; min-width: 150px; }
+.sheet .signature i { display: block; border-top: 1px solid var(--green); margin-bottom: 3px; }
+.sheet .signature b { font-size: .7rem; color: var(--green); }
+.sheet .signature small { display: block; font-size: .62rem; color: var(--muted); }
+.sheet .clinic-footer {
+  margin-top: 10px; padding-top: 7px; border-top: 1px solid var(--line);
+  text-align: center; font-size: .64rem; color: var(--muted);
+}
+.sheet .platform-credit {
+  margin-top: 7px; padding-top: 6px; border-top: 1px dashed var(--line);
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: .58rem; color: #8a8a8a;
+}
+.sheet .platform-credit .mark {
+  width: 12px; height: 12px; border-radius: 3px; background: #14231c;
+  color: #fff; display: grid; place-items: center; font-size: .5rem; font-weight: 700;
+}
+
+@media print {
+  .consult-bar, .form-col, .bar-notice, dialog { display: none !important; }
+  .consult { display: block; padding: 0; }
+  .sheet-col { position: static; }
+  .sheet-scale { background: none; border: none; padding: 0; max-height: none; overflow: visible; }
+  .sheet { box-shadow: none; font-size: .82rem; padding: 0; }
+  body { background: #fff; }
+}
+
+@media (max-width: 1100px) {
+  .consult { grid-template-columns: minmax(0, 1fr); }
+  .sheet-col { position: static; }
+  .med-head { display: none; }
+  .med-row { grid-template-columns: 1fr 1fr; gap: 6px; padding: 10px; border: 1px solid var(--line); border-radius: 9px; }
+  .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+}
+
+/* ---------------- on a phone ----------------
+   The bar across the top is a single flex row holding a back arrow, a mark,
+   a title, the patient, a state badge and four buttons. At 375px it did not
+   wrap - it simply ran off the right-hand edge, so "Save draft" was sliced
+   in half and "Issue & print" sat under the screen edge. The two controls
+   that matter most on the busiest screen in the product were the two you
+   could not press.
+
+   So it wraps, and the actions get their own full-width row where a thumb
+   can reach them. */
+@media (max-width: 760px) {
+  .consult-bar {
+    flex-wrap: wrap; gap: 8px 10px; padding: 8px 12px;
+  }
+  /* The mark and the divider are decoration, and decoration is what gives
+     up its space first when there is none. */
+  .consult-bar .mark, .consult-bar .bar-sep, .consult-bar .bar-title { display: none; }
+  .consult-bar .who { flex: 1 1 auto; min-width: 0; }
+  .consult-bar .who div { min-width: 0; }
+  .consult-bar .who b, .consult-bar .who span {
+    display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  /* The actions take the second row, share it evenly, and are tall enough
+     to hit. Issue is the one she reaches for, so it leads. */
+  .consult-bar .spacer { display: none; }
+  .consult-bar .btn {
+    flex: 1 1 0; min-height: 44px; font-size: .84rem; white-space: nowrap;
+  }
+  .consult-bar #issueBtn { order: 2; }
+  .consult-bar #saveBtn { order: 3; }
+  .consult-bar #amendBtn, .consult-bar #printBtn { order: 4; }
+  .consult-bar .saved { order: 5; flex: 1 0 100%; font-size: .72rem; }
+
+  /* One column: two fields side by side at 375px is two fields nobody can
+     read the labels of. */
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+  .med-row { grid-template-columns: 1fr; }
+  /* Clear the bottom tab bar. */
+  .consult { padding-bottom: 86px; }
+}
+
+
+/* ---------------- card headings as numbered steps ---------------- */
+.card h3 {
+  display: flex; align-items: center; gap: 11px;
+  font-size: 1rem; font-weight: 700; letter-spacing: -.01em; color: var(--ink);
+}
+.card h3 .step {
+  width: 24px; height: 24px; border-radius: 50%; flex: none;
+  display: grid; place-items: center;
+  background: var(--cyan-soft); color: var(--cyan-deep);
+  font-size: .74rem; font-weight: 700;
+}
+.card h3 .head-icon { display: none; }
+.card h3 .head-text { display: block; }
+.card h3 small {
+  display: block; font-weight: 400; font-size: .78rem;
+  color: var(--muted); margin-top: 2px; letter-spacing: 0;
+}
+
+.card {
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  border: 1px solid var(--line); padding: 20px 22px;
+}
+
+/* ---------------- fields ---------------- */
+.card .field > span {
+  font-size: .735rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+}
+.card .field input, .card .field select, .card .field textarea {
+  width: 100%; padding: 10px 12px; border: 1px solid var(--line);
+  border-radius: 9px; background: var(--card);
+}
+.card .field input:focus, .card .field select:focus, .card .field textarea:focus {
+  outline: none; border-color: var(--cyan); box-shadow: 0 0 0 3px rgba(14,124,104,.13);
+}
+
+/* ---------------- medicine rows ---------------- */
+.med-head {
+  font-size: .705rem; text-transform: uppercase; letter-spacing: .07em;
+  font-weight: 700; color: var(--muted);
+  padding: 0 0 8px; border-bottom: 1px solid var(--line); margin-bottom: 10px;
+}
+.med-row input, .med-row select { border-radius: 8px; padding: 9px 11px; }
+.med-row.stocked .m-name {
+  border-color: var(--ok); background: var(--ok-soft); font-weight: 600;
+}
+
+/* ------------------------------------------------------------ the scribe
+   Set apart from the form it fills, because it is not part of the form:
+   what it produces is a suggestion the doctor edits, and it should never be
+   mistaken for something already saved. */
+.scribe {
+  margin-top: 14px;
+  border: 1px solid var(--line, #dfe6ea);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: var(--ground, #f7fafb);
+}
+.scribe-head {
+  display: flex; align-items: baseline; gap: 10px; margin-bottom: 8px;
+}
+.scribe-head b { font-size: .95rem; }
+.scribe-head .muted { margin-left: auto; font-size: .8rem; }
+
+/* The consent line is the thing a patient is entitled to hear, so it is
+   given room and normal weight rather than being a footnote. */
+.scribe .check {
+  display: flex; gap: 9px; align-items: flex-start;
+  font-size: .84rem; line-height: 1.45; margin-bottom: 10px;
+}
+.scribe .check input { margin-top: 3px; flex: none; }
+
+.scribe .row-actions { display: flex; gap: 8px; align-items: center; }
+.scribe #scribeTimer { font-variant-numeric: tabular-nums; font-size: .85rem; }
+.scribe #scribeSections { display: grid; gap: 8px; margin: 10px 0; }
+.scribe textarea { width: 100%; }
+
+/* ---- her own examination fields --------------------------------------
+   Two states worth seeing at a glance while she types: a field that will
+   appear on the prescription, and one that is recorded but does not print.
+   The second is the quieter of the two on purpose - it is still a real
+   field holding a real observation, not a disabled one. */
+.field-add {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 4px; padding-top: 10px; border-top: 1px dashed var(--line);
+}
+.field-add-form { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.field-add-form input {
+  width: 190px; padding: 6px 9px; font: inherit; font-size: .86rem;
+  border: 1px solid var(--line); border-radius: 7px; background: var(--card);
+  color: inherit;
+}
+.field-add-note { font-size: .76rem; color: var(--muted); flex: 1 1 200px; }
+
+.field-off-sheet > span { color: var(--muted); }
+.off-sheet-tag {
+  font-style: normal; font-size: .58rem; text-transform: uppercase;
+  letter-spacing: .05em; font-weight: 600; margin-left: 6px;
+  padding: 1px 5px; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--muted);
+}
+.field-off-sheet input { border-style: dashed; }
+
+/* Only on fields she added. A pack field is ours and she cannot delete it
+   from her form - she takes it off the sheet instead. */
+.field-drop {
+  border: 0; background: none; cursor: pointer; padding: 0 3px;
+  font-size: .95rem; line-height: 1; color: var(--muted); margin-left: 5px;
+}
+.field-drop:hover { color: var(--danger, #b4342a); }
+.field-drop:disabled { display: none; }

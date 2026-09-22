@@ -1,0 +1,98 @@
+name: Encrypted production D1 backup
+
+on:
+  schedule:
+    # 00:30 IST every day (GitHub schedules are UTC).
+    - cron: '0 19 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tcos-production-d1-backup
+  cancel-in-progress: false
+
+jobs:
+  backup-and-restore-check:
+    name: Export, encrypt and rehearse restore
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_D1_BACKUP_TOKEN }}
+      BACKUP_PASSPHRASE: ${{ secrets.TCOS_BACKUP_PASSPHRASE }}
+
+    steps:
+      - name: Check out the exact revision
+        uses: actions/checkout@v5
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Refuse missing backup credentials
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_ACCOUNT_ID" || { echo 'Missing CLOUDFLARE_ACCOUNT_ID variable'; exit 1; }
+          test -n "$CLOUDFLARE_API_TOKEN" || { echo 'Missing CLOUDFLARE_D1_BACKUP_TOKEN secret'; exit 1; }
+          test -n "$BACKUP_PASSPHRASE" || { echo 'Missing TCOS_BACKUP_PASSPHRASE secret'; exit 1; }
+          test "${#BACKUP_PASSPHRASE}" -ge 24 || { echo 'Backup passphrase must be at least 24 characters'; exit 1; }
+
+      - name: Export production D1
+        run: npx wrangler d1 export tcos-db --remote --config wrangler.jsonc --output tcos-production.sql
+
+      - name: Encrypt before persistence
+        shell: bash
+        run: |
+          printf '%s' "$BACKUP_PASSPHRASE" | gpg \
+            --batch --yes --pinentry-mode loopback --passphrase-fd 0 \
+            --symmetric --cipher-algo AES256 --compress-algo zlib \
+            --output tcos-production.sql.gpg tcos-production.sql
+          sha256sum tcos-production.sql.gpg > tcos-production.sql.gpg.sha256
+
+      - name: Rehearse decryption and full restore
+        shell: bash
+        run: |
+          printf '%s' "$BACKUP_PASSPHRASE" | gpg \
+            --batch --yes --pinentry-mode loopback --passphrase-fd 0 \
+            --decrypt --output tcos-restore-rehearsal.sql tcos-production.sql.gpg
+          cmp --silent tcos-production.sql tcos-restore-rehearsal.sql
+          node scripts/audit-production-baseline.js tcos-restore-rehearsal.sql 49 49
+
+      - name: Write non-clinical manifest
+        shell: bash
+        run: |
+          {
+            echo "created_utc=$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+            echo "repository=${GITHUB_REPOSITORY}"
+            echo "commit=${GITHUB_SHA}"
+            echo "workflow_run=${GITHUB_RUN_ID}"
+            echo "database=tcos-db"
+            echo "migration=049"
+            echo "restore_rehearsal=passed"
+          } > backup-manifest.txt
+
+      - name: Remove plaintext copies
+        if: always()
+        shell: bash
+        run: |
+          shred -u tcos-production.sql 2>/dev/null || rm -f tcos-production.sql
+          shred -u tcos-restore-rehearsal.sql 2>/dev/null || rm -f tcos-restore-rehearsal.sql
+
+      - name: Store encrypted off-laptop backup
+        uses: actions/upload-artifact@v4
+        with:
+          name: tcos-production-d1-${{ github.run_id }}
+          path: |
+            tcos-production.sql.gpg
+            tcos-production.sql.gpg.sha256
+            backup-manifest.txt
+          if-no-files-found: error
+          retention-days: 90
+

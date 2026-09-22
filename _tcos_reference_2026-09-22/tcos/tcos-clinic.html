@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Today | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/today.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div id="welcome"></div>
+      <div class="spacer"></div>
+      <div class="top-quick" id="quickActions"></div>
+      <button class="btn btn-primary" id="bookBtn">+ Book</button>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <!-- Somebody who has just filled in the form at the counter. It stays on
+         screen until the front desk looks, because the person it is about is
+         standing in the room. -->
+    <div id="arrivals" aria-live="polite"></div>
+
+    <div class="stat-row" id="daySummary"></div>
+
+    <div class="today-layout">
+    <div class="today-main">
+
+    <div class="queue-tabs" id="queueTabs">
+      <button class="active" data-queue="today">Today <span id="todayCount">0</span></button>
+      <button data-queue="requests">Requests &amp; gaps <span id="requestCount">0</span></button>
+      <button data-queue="upcoming">Coming up <span id="upcomingCount">0</span></button>
+    </div>
+
+    <section class="queue-view active" data-queue-panel="today">
+
+    <div class="day-bar">
+      <button class="btn btn-ghost btn-sm" id="prevDay">←</button>
+      <div class="day-name"><b id="dayLabel">…</b></div>
+      <div class="spacer"></div>
+      <input type="date" id="dayPicker">
+      <button class="btn btn-ghost btn-sm" id="todayBtn">Today</button>
+      <button class="btn btn-ghost btn-sm" id="nextDay">→</button>
+    </div>
+
+    <div class="panel"><div class="body-list" id="dayList"><div class="empty">Loading…</div></div></div>
+    </section>
+
+    <section class="queue-view" data-queue-panel="requests">
+    <div id="requests"></div>
+    <div id="unresolved"></div>
+    </section>
+    <section class="queue-view" data-queue-panel="upcoming">
+    <div id="upcoming"></div>
+
+      <!-- The week she is actually in, drawn from appointments that already
+           existed. Nothing is recorded to produce it. -->
+      <div class="panel">
+        <header><h2>This week</h2><div class="spacer"></div>
+          <span class="muted" id="weekNote"></span></header>
+        <div class="body"><div class="week-chart" id="weekChart"></div></div>
+      </div>
+    </section>
+
+    </div><!-- /today-main -->
+
+    <aside class="today-side">
+      <div class="panel">
+        <header><h2>Needs a decision</h2><div class="spacer"></div>
+          <span class="pill" id="attentionCount"></span></header>
+        <div id="attention"><div class="empty">Loading…</div></div>
+      </div>
+
+    </aside>
+    </div><!-- /today-layout -->
+  </main>
+</div>
+
+<dialog id="bookDialog">
+  <form id="bookForm" method="dialog">
+    <header><h3>Book an appointment</h3><button type="button" id="bookClose">&times;</button></header>
+    <div class="body">
+      <div id="bookMsg"></div>
+      <label class="field"><span>Patient</span><select id="bPatient" required></select></label>
+      <div class="field-row">
+        <label class="field"><span>Date</span><input id="bDate" type="date" required></label>
+        <label class="field"><span>Time</span>
+          <input id="bTime" type="time">
+          <small>Leave blank if you work walk-in.</small></label>
+      </div>
+      <label class="field"><span>Reason</span>
+        <input id="bReason" placeholder="Follow-up review, lab review…"></label>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="bookCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary">Book</button>
+    </footer>
+  </form>
+</dialog>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/today.js?v=2"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

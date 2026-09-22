@@ -1,0 +1,276 @@
+/* =========================================================================
+   What the patient opens.
+
+   This is the only screen a patient ever sees, usually on a phone, often
+   standing outside the clinic, sometimes handed to a relative. It used to
+   render as a stack of app cards - a product's UI shown to somebody who is
+   not using a product. It should read as the PRESCRIPTION IT IS.
+
+   Decisions, and why:
+
+   NO LOGO, NO LETTER MARK. Vijay's call and the right one: the top of a
+   prescription is the most valuable space on it, and a coloured circle with
+   an initial in it buys nothing. The clinic's NAME is the identity.
+
+   PAPER, NOT APP. Warm off-white ground, a serif for the clinic and section
+   headings, hairline rules. A patient trusts a document that looks like the
+   one the doctor handed them. Deliberately single-theme: a prescription is
+   a printed object and does not have a dark mode.
+
+   THE FOOTER SITS AT THE BOTTOM. Not after the content - at the bottom of
+   the screen when there is little content. A signature and clinic address
+   that float up under three lines of medicine look like an unfinished form.
+
+   MEDICINES FIRST AND BIGGEST. "What am I supposed to take" is the only
+   question most people open this to answer.
+   ========================================================================= */
+
+:root{
+  --paper:#F7F5EF;          /* warm off-white - printed paper, not screen white */
+  --sheet:#FFFDF8;
+  --ink:#1A241F;
+  --ink-2:#4A5A52;
+  --muted:#7B8C83;
+  --rule:#E0DCD0;
+  --rule-strong:#C9C3B2;
+  --deep:#1C4B39;           /* the clinical green the product already uses */
+  --deep-soft:#EAF1EC;
+  --gold:#9A7B2F;
+  --flag:#9C3327;
+  --flag-soft:#FBEDEA;
+  --serif:"Libre Baskerville",Georgia,"Times New Roman",serif;
+  --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+*{box-sizing:border-box}
+
+html{background:var(--paper)}
+
+/* The page is a column so the footer can be pushed to the bottom on a
+   short record - see footer{margin-top:auto}. */
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); font-size:16px; line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  min-height:100dvh; display:flex; flex-direction:column;
+}
+
+.wrap{
+  width:100%; max-width:620px; margin:0 auto; padding:0 16px 28px;
+  flex:1; display:flex; flex-direction:column;
+}
+
+.loading{padding:64px 0; text-align:center; color:var(--muted)}
+
+/* ------------------------------------------------------------ masthead --- */
+/* The clinic's name, set like the top of a prescription pad. */
+header.clinic{
+  padding:30px 0 18px; margin-bottom:20px;
+  border-bottom:2px solid var(--deep); text-align:center;
+}
+header.clinic h1{
+  font-family:var(--serif); font-weight:700;
+  font-size:clamp(1.42rem,5.6vw,1.95rem); line-height:1.2;
+  color:var(--deep); margin:0 0 5px; letter-spacing:-.01em;
+}
+header.clinic p{
+  margin:0; color:var(--ink-2); font-size:.9rem; font-weight:500;
+}
+/* Kept as a hook in case a clinic ever wants a mark back, but it renders
+   nothing: the name is the identity and the space is worth more. */
+header.clinic .mark{display:none}
+
+/* -------------------------------------------------------- patient band --- */
+.patient-line{
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:6px 12px;
+  padding:11px 14px; margin-bottom:18px;
+  background:var(--deep-soft); border:1px solid var(--rule);
+  border-left:3px solid var(--deep);
+}
+.patient-line b{font-size:1.05rem; font-weight:700}
+.patient-line span{color:var(--ink-2); font-size:.85rem}
+
+/* ---------------------------------------------------------------- card --- */
+.card{
+  background:var(--sheet); border:1px solid var(--rule);
+  padding:18px 18px 16px; margin-bottom:14px;
+}
+.card-head{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:12px; flex-wrap:wrap; margin-bottom:12px;
+}
+.card h2{
+  font-family:var(--serif); font-weight:700; font-size:1.06rem;
+  margin:0 0 12px; color:var(--deep);
+}
+.card-head h2{margin:0}
+.when{color:var(--muted); font-size:.78rem; white-space:nowrap}
+
+.card.message{text-align:center; padding:34px 20px}
+.card.message h1,.card.message h2{margin-bottom:8px}
+.card.message p{color:var(--ink-2); margin:0}
+
+/* ----------------------------------------------------------- medicines --- */
+/* The reason the page exists, so it gets the most weight on the page. */
+.med{padding:13px 0; border-bottom:1px solid var(--rule)}
+.med:last-of-type{border-bottom:0; padding-bottom:2px}
+.med-top{display:flex; align-items:center; gap:9px; flex-wrap:wrap}
+.med-top b{font-size:1.08rem; font-weight:700; letter-spacing:-.01em}
+.sys{
+  font-size:.63rem; letter-spacing:.09em; text-transform:uppercase;
+  font-weight:700; padding:2px 7px; border:1px solid; border-radius:2px;
+  white-space:nowrap;
+}
+.sys-allopathy{color:#1F4E79; border-color:#B9CFE2; background:#EDF4FA}
+.sys-ayurveda{color:#3D6B2E; border-color:#BFD6B4; background:#EFF6EB}
+.sys-homeopathy{color:#6B4A86; border-color:#CFC0DC; background:#F4EFF8}
+.sys-supplement{color:#7A5A16; border-color:#DCC994; background:#FAF3E2}
+
+/* Dose, frequency, duration. Bigger than a caption - somebody is reading
+   this to decide what to swallow. */
+.med-detail{
+  margin-top:3px; font-size:.95rem; color:var(--ink-2);
+  font-variant-numeric:tabular-nums;
+}
+.med-note{
+  margin-top:5px; font-size:.87rem; color:var(--gold);
+  padding-left:10px; border-left:2px solid var(--gold);
+}
+.rx-no{
+  margin:14px 0 0; padding-top:10px; border-top:1px solid var(--rule);
+  font-size:.74rem; color:var(--muted); letter-spacing:.03em;
+}
+
+/* --------------------------------------------------------- next visit --- */
+.next-visit{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; background:var(--deep); border-color:var(--deep); color:#fff;
+}
+.next-visit .label{
+  font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+  color:#A9C8B8; font-weight:600;
+}
+.next-visit b{font-size:1.06rem; font-family:var(--serif)}
+
+/* -------------------------------------------------------------- advice --- */
+.advice-label{
+  font-size:.66rem; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--muted); font-weight:700; margin:12px 0 2px;
+}
+.advice-label:first-of-type{margin-top:0}
+.advice{margin:0 0 4px; font-size:.98rem}
+
+/* --------------------------------------------------------------- labs --- */
+.report{padding:12px 0; border-bottom:1px solid var(--rule)}
+.report:last-child{border-bottom:0; padding-bottom:0}
+.report-head{
+  display:flex; justify-content:space-between; align-items:baseline;
+  gap:10px; margin-bottom:7px;
+}
+.report-head span{color:var(--muted); font-size:.78rem; white-space:nowrap}
+.card table{width:100%; border-collapse:collapse; font-size:.88rem}
+.card td{padding:5px 0; border-bottom:1px solid var(--rule)}
+.card tr:last-child td{border-bottom:0}
+.card td.value{
+  text-align:right; font-weight:700; white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+.card td.ref{
+  text-align:right; color:var(--muted); font-size:.78rem;
+  white-space:nowrap; padding-left:10px;
+}
+/* Out of range. Stated, never diagnosed - the disclaimer at the foot of the
+   page is what stops a colour becoming a verdict. */
+tr.flagged td,.flagged{color:var(--flag)}
+tr.flagged td.value{background:var(--flag-soft)}
+
+/* -------------------------------------------------------- lab trends --- */
+.trend-help{margin:0 0 10px; font-size:.82rem; color:var(--muted)}
+.trend-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+table.patient-trends{min-width:420px; font-size:.84rem}
+table.patient-trends th{
+  text-align:left; font-weight:700; padding:6px 8px 6px 0;
+  border-bottom:1px solid var(--rule-strong); vertical-align:top;
+}
+table.patient-trends thead th{
+  font-size:.68rem; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--muted); white-space:nowrap;
+}
+table.patient-trends th small{
+  display:block; font-weight:400; color:var(--muted); font-size:.7rem;
+}
+table.patient-trends td{
+  padding:6px 8px 6px 0; text-align:right; white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+}
+table.patient-trends td small{color:var(--muted); font-size:.7rem; margin-left:2px}
+td.movement{font-weight:700; color:var(--deep)}
+
+/* ------------------------------------------------------------ timeline --- */
+.stream{display:flex; flex-direction:column}
+.moment{display:flex; gap:12px; padding:12px 0; border-bottom:1px solid var(--rule)}
+.moment:last-child{border-bottom:0; padding-bottom:0}
+.moment-when{
+  flex:0 0 74px; font-size:.76rem; color:var(--muted); line-height:1.4;
+  padding-top:2px;
+}
+.moment-body{flex:1; min-width:0; border-left:3px solid var(--rule-strong); padding-left:12px}
+.moment.prescription .moment-body{border-left-color:var(--gold)}
+.moment.visit .moment-body{border-left-color:var(--deep)}
+.moment.report .moment-body{border-left-color:#4E7FA8}
+.moment .kind{
+  display:block; font-size:.63rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--muted); font-weight:700; margin-bottom:2px;
+}
+.moment .kind em{color:var(--flag); font-style:normal}
+.moment-body > b{display:block; font-size:.98rem; margin-bottom:3px}
+.moment .where{display:block; margin-top:5px; font-size:.76rem; color:var(--muted)}
+.detail{margin:0; font-size:.9rem; color:var(--ink-2)}
+
+.mini-meds,.mini-vals{list-style:none; margin:4px 0 0; padding:0; font-size:.87rem}
+.mini-meds li,.mini-vals li{padding:2px 0; color:var(--ink-2)}
+.mini-meds li b{color:var(--ink); margin-right:6px}
+.mini-meds li span{color:var(--muted)}
+.mini-vals li span{color:var(--muted); margin-left:4px; font-size:.8rem}
+.mini-vals li.more,.mini-meds li.more{color:var(--muted); font-style:italic}
+
+.clinic-list{list-style:none; margin:0; padding:0}
+.clinic-list li{padding:8px 0; border-bottom:1px solid var(--rule)}
+.clinic-list li:last-child{border-bottom:0}
+.clinic-list b{display:block}
+.clinic-list span{font-size:.83rem; color:var(--muted)}
+
+/* ---------------------------------------------------------------- call --- */
+.call{
+  display:block; text-align:center; padding:15px; margin:6px 0 0;
+  background:var(--deep); color:#fff; text-decoration:none;
+  font-weight:700; font-size:1rem; letter-spacing:.01em;
+}
+.call:active{filter:brightness(1.12)}
+
+/* -------------------------------------------------------------- footer --- */
+/* margin-top:auto is the fix for the complaint that the signature and
+   clinic details drift up the page when the record is short. */
+footer{
+  margin-top:auto; padding-top:24px; text-align:center;
+}
+footer p{margin:0 0 6px; font-size:.82rem; color:var(--muted)}
+footer .safety{
+  margin:14px 0 10px; padding:11px 13px; font-size:.82rem;
+  color:var(--gold); background:#FBF6E9; border:1px solid #E8DBB6;
+  line-height:1.5;
+}
+footer .credit{
+  font-size:.7rem; color:var(--muted); letter-spacing:.05em;
+  padding-top:10px; border-top:1px solid var(--rule);
+}
+
+/* --------------------------------------------------------------- print --- */
+/* A patient who prints this should get something a pharmacist accepts. */
+@media print{
+  html,body{background:#fff}
+  .call{display:none}
+  .card{border-color:#999; break-inside:avoid; page-break-inside:avoid}
+  .wrap{max-width:none; padding:0}
+  footer{margin-top:32px}
+}

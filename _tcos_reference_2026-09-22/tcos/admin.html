@@ -1,0 +1,805 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Platform console | TCOS</title>
+
+<!-- THE OWNER CONSOLE INSTALLS AS ITS OWN APP.
+
+     Vijay: "give me what is the owner app, tell me how can i download it,
+     and is it like everytime i need to ask you to download. i want you to
+     give me the link."
+
+     It is the same TCOS, wearing navy instead of white, so the two icons
+     are told apart on one home screen at a glance. Nothing here is a
+     secret: Cloudflare Access still stands in front of every /admin path,
+     so installing this gets you an icon, not an entrance.
+
+     These tags are written out rather than injected by js/app-install.js
+     because that file's defaults describe the CLINIC app - TCOS, teal,
+     icon-192. It skips anything a page already declares, which is exactly
+     how the console says it is something else. -->
+<link rel="manifest" href="/owner.webmanifest">
+<meta name="theme-color" content="#02254B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Owner">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="apple-touch-icon" href="/assets/app/owner-192.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+</head>
+<body>
+
+<!-- ---------------- sign in ---------------- -->
+<div class="auth-wrap" id="gate">
+  <aside class="auth-side">
+    <div>
+      <!-- The "TC" badge next to the word TCOS was saying the same thing
+           twice and shrinking the name to fit. The name is the mark. -->
+      <div class="auth-brand">TCOS</div>
+      <h1>Platform console</h1>
+      <p>Every doctor on TCOS — their plan, their usage, their access. Internal use only.</p>
+    </div>
+    <p class="foot">© 2026 Tharigopula Technologies</p>
+  </aside>
+  <main class="auth-main">
+    <section class="auth-card">
+      <h2>Sign in</h2>
+      <p class="sub">Platform team only.</p>
+      <div id="gateMsg"></div>
+      <form id="gateForm">
+        <!-- Cloudflare Access has already said who you are by the time this
+             form is on screen. Showing it removes the only way this sign-in
+             can fail while both the email and the password are correct. -->
+        <div id="accessIdentity" class="notice info" style="max-width:none" hidden></div>
+        <label class="field"><span>Email</span>
+          <input id="adminEmail" type="email" required autocomplete="username"
+                 placeholder="you@tharigopula.com"></label>
+        <label class="field"><span>Password</span>
+          <input id="adminPassword" type="password" required autocomplete="current-password"></label>
+        <div id="adminSignInChallenge" hidden></div>
+        <button class="btn btn-primary btn-full" type="submit" id="gateSubmit">Sign in</button>
+      </form>
+
+      <!-- Vijay: "as an owner i can login from anywhere, my tab or pc or
+           laptop or phone, and we have multiple email ids ... remove that
+           dependency." One passkey per device, no shared email anywhere,
+           and nothing to type. -->
+      <div id="adminPasskeyRow" hidden>
+        <p class="or-line"><span>or</span></p>
+        <button type="button" class="btn btn-secondary btn-full" id="adminPasskeySignIn">
+          Sign in with fingerprint
+        </button>
+        <p class="sub" style="text-align:center;margin:8px 0 0">
+          Set this up on each device from <b>Team access</b> after signing in once.
+        </p>
+      </div>
+      <!-- Offered on the GATE, before sign-in, because that is the screen he
+           needs to get back to and the one he is on when he wants it. -->
+      <div class="demo-hint">
+        <b>Keep this console on your home screen.</b>
+        It installs as its own app, with a navy icon so you can tell it from
+        the clinic app.
+        <button type="button" class="btn btn-ghost btn-sm btn-full install-cta"
+                style="margin-top:10px" data-tcos-install hidden>Install app</button>
+      </div>
+
+      <!-- Vijay: "what happens if the pc is lost or not working - i do
+           nothing right?" Right, so this exists: a code to the address the
+           account already has, openable on anything. -->
+      <div class="demo-hint" id="resetHint">
+        <b>Forgotten your password?</b>
+        We email a code to your console account's own address. It works on any
+        device — no passkey and no Cloudflare account needed.
+        <button class="btn btn-ghost btn-sm btn-full" style="margin-top:10px"
+                id="showReset">Email me a reset code</button>
+      </div>
+
+      <form id="resetStartForm" hidden style="margin-top:16px">
+        <label class="field"><span>Your console email</span>
+          <input id="resetEmail" type="email" required autocomplete="username"
+                 placeholder="you@tharigopula.com" autocapitalize="none" spellcheck="false"></label>
+        <button class="btn btn-primary btn-full" type="submit">Send the code</button>
+        <div class="auth-links"><button type="button" id="resetCancel">Back to sign in</button></div>
+      </form>
+
+      <form id="resetVerifyForm" hidden style="margin-top:16px">
+        <label class="field"><span>6-digit code</span>
+          <input id="resetCode" inputmode="numeric" maxlength="6" required placeholder="000000">
+          <small>It expires in 5 minutes.</small></label>
+        <label class="field"><span>New password</span>
+          <input id="resetNewPassword" type="password" required autocomplete="new-password"
+                 minlength="12" placeholder="At least 12 characters"></label>
+        <label class="field"><span>Repeat new password</span>
+          <input id="resetNewPasswordAgain" type="password" required autocomplete="new-password"
+                 minlength="12">
+          <small>Letters and numbers. Every open console session is signed out.</small></label>
+        <button class="btn btn-primary btn-full" type="submit">Set new password</button>
+      </form>
+
+      <div class="demo-hint" id="bootstrapHint">
+        <b>Owner access or locked out?</b> Recover the configured owner account
+        through the same verified email used for Cloudflare Access. Every old
+        owner session is revoked.
+        <button class="btn btn-ghost btn-sm btn-full" style="margin-top:10px" id="showBootstrap">Recover owner access</button>
+      </div>
+      <form id="bootstrapForm" hidden style="margin-top:16px">
+        <label class="field"><span>Owner email</span>
+          <input id="bootEmail" type="email" required autocomplete="username"
+                 placeholder="you@tharigopula.com"></label>
+        <label class="field"><span>New password</span>
+          <input id="bootPassword" type="password" required autocomplete="new-password"
+                 minlength="12" placeholder="At least 12 characters"></label>
+        <label class="field"><span>Repeat new password</span>
+          <input id="bootPasswordConfirm" type="password" required autocomplete="new-password"
+                 minlength="12">
+          <small>Only you see it. TCOS stores a one-way hash and revokes old sessions.</small></label>
+        <div id="adminRecoveryChallenge" hidden></div>
+        <button class="btn btn-primary btn-full" type="submit">Reset owner password</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<!-- ---------------- console ---------------- -->
+<div class="console" id="console" hidden>
+  <nav class="rail">
+    <div class="rail-brand"><span>TCOS<small>Platform console</small></span></div>
+    <button class="nav active" data-view="business">Business</button>
+    <button class="nav" data-view="applications">Applications<span class="nav-count" id="applicationsCount" hidden></span></button>
+    <button class="nav" data-view="doctors">Doctors</button>
+    <button class="nav" data-view="patients">Patients</button>
+    <button class="nav" data-view="insights">Health insights</button>
+    <button class="nav" data-view="money">Money</button>
+    <button class="nav" data-view="subscriptions">Subscriptions</button>
+    <button class="nav" data-view="webdomains">Web &amp; domains<span class="nav-count" id="domainRequestCount" hidden></span></button>
+    <button class="nav" data-view="coupons">Coupons</button>
+    <button class="nav" data-view="delivery">Communications</button>
+    <button class="nav" data-view="support">Support</button>
+    <button class="nav" data-view="team">Team access</button>
+    <div class="rail-foot">
+      <span id="whoami" style="display:block;margin-bottom:8px"></span>
+      <button class="btn btn-ghost btn-sm btn-full" id="adminSignOut">Sign out</button>
+    </div>
+  </nav>
+
+  <main class="workspace">
+    <!-- The business on one screen. Every figure here is counted from a real
+         table - see worker/ownerdashboard.js, which names the source of each
+         one. Nothing is estimated and nothing clinical is read. -->
+    <section data-panel="business">
+      <header>
+        <div><h1>Business</h1><p>Who is on TCOS, what they pay, and who is actually using it.</p></div>
+      </header>
+      <div class="stat-row" id="bizStats"></div>
+      <div class="panel">
+        <header><h2>By package</h2></header>
+        <div class="body" id="bizPlans"><div class="empty">Loading…</div></div>
+      </div>
+      <div class="panel">
+        <header><h2>Who is using it</h2>
+          <div class="spacer"></div>
+          <span class="muted" style="font-size:.8rem">Signed in recently AND recording visits</span>
+        </header>
+        <div class="body" id="bizEngagement"><div class="empty">Loading…</div></div>
+      </div>
+      <div class="panel">
+        <header><h2>Every clinic</h2></header>
+        <div class="body" id="bizClinics"><div class="empty">Loading…</div></div>
+      </div>
+    </section>
+
+    <section data-panel="applications" hidden>
+      <header>
+        <div><h1>Applications</h1><p>Doctors waiting to be verified and activated.</p></div>
+      </header>
+      <div class="notice info" style="max-width:none">
+        Approving creates the account and shows a temporary password
+        <strong>once</strong>. It is not stored in readable form, so hand it
+        over on the call before closing the box.
+      </div>
+      <div class="stat-row" id="applicationStats"></div>
+      <div class="panel"><div id="applicationTable"><div class="empty">Loading…</div></div></div>
+    </section>
+
+    <section data-panel="doctors" hidden>
+      <header>
+        <div><h1>Doctors</h1><p>Every practice on TCOS.</p></div>
+        <div class="spacer"></div>
+        <button class="btn btn-primary" id="inviteBtn">+ Onboard a doctor</button>
+      </header>
+      <div id="adminMsg"></div>
+      <div class="stat-row" id="adminStats"></div>
+
+      <!-- Twelve demonstration clinics: three products by four packages.
+           The point of having all twelve is the comparison - Free beside
+           Group in one discipline shows what the money buys, and AyurCOS
+           beside HomeoCOS on the same package shows what the discipline
+           changes. They carry no billing and never expire. -->
+      <div class="panel" id="demoPanel">
+        <header class="panel-head">
+          <h2>Seeded clinics</h2>
+          <div class="spacer"></div>
+          <span class="pill" id="demoCount"></span>
+        </header>
+        <div class="body">
+          <p class="hint">
+            Twelve demonstrations &mdash; three products &times; four packages
+            &mdash; and three <strong>Vijay Hospital</strong> test accounts on
+            the three paid packages. All of them have every feature of their
+            package, no billing screens and no expiry, and all of them are
+            left out of revenue and attrition, so made-up clinics never reach
+            the numbers.
+          </p>
+          <p class="hint">
+            <strong>These are real accounts on the live system.</strong> Only
+            the clinics are invented, so pick a password you would not mind
+            on a production sign-in page, and remove them when you are done.
+          </p>
+          <div class="row-actions">
+            <input id="demoPassword" type="password" autocomplete="new-password"
+                   placeholder="One password for all fifteen (min 10 characters)">
+            <button type="button" class="btn btn-primary" id="demoBuild">Create / refresh all fifteen</button>
+            <button type="button" class="btn btn-quiet" id="demoRemove">Remove them all</button>
+          </div>
+          <div id="demoMsg" class="hint"></div>
+          <div id="demoTable"></div>
+        </div>
+      </div>
+
+      <div class="panel"><div id="doctorTable"><div class="empty">Loading…</div></div></div>
+    </section>
+
+    <section data-panel="patients" hidden>
+      <header><div><h1>Patients</h1><p>Identity and clinic connection only—never clinical notes.</p></div></header>
+      <div class="notice info" style="max-width:none">Use this list to help with access links, duplicate identities and clinic routing. Diagnoses, medicines and reports are intentionally absent.</div>
+      <div class="panel"><div id="patientTable"><div class="empty">Loading…</div></div></div>
+    </section>
+
+    <section data-panel="insights" hidden>
+      <header><div><h1>Health insights</h1><p>De-identified demand signals across TCOS.</p></div></header>
+      <div class="notice info" style="max-width:none">
+        No patient record appears here. A diagnosis, test or laboratory is shown only after at least
+        five different patients contribute to the same group. Use these patterns for education,
+        product planning and general partnerships—not to target an individual by illness.
+      </div>
+      <div class="stat-row" id="insightStats"></div>
+      <div class="panel"><header><h2>Common recorded diagnoses</h2></header><div class="body" id="diagnosisInsights"></div></div>
+      <div class="panel"><header><h2>Tests patients receive most</h2></header><div class="body" id="testInsights"></div></div>
+      <div class="panel"><header><h2>Diagnostic laboratories</h2></header><div class="body" id="labInsights"></div></div>
+    </section>
+
+    <!-- Coupons. A code a doctor can remember, bolted to a Razorpay offer
+         that does the actual discounting - see worker/coupons.js. A coupon
+         cannot be switched on without one, because a percentage typed here
+         changes nothing on Razorpay's side and she would be charged in full. -->
+    <!-- Doctors' own domains. Who asked, who has it, and what Cloudflare
+         charges us against the ₹50 we charge them. custom_domain is in no
+         plan, so the only way a clinic has it is somebody granting it here. -->
+    <section data-panel="webdomains" hidden>
+      <header>
+        <div><h1>Web &amp; domains</h1><p>Doctors using their own domain name, and what it costs.</p></div>
+      </header>
+
+      <div class="stat-row" id="domainStats"></div>
+      <div id="domainMsgAdmin"></div>
+
+      <div class="panel">
+        <header><h2>Waiting for you</h2>
+          <div class="spacer"></div>
+          <span class="muted" style="font-size:.8rem">Asked from their Web tab</span>
+        </header>
+        <div class="body" id="domainRequests"><div class="empty">Loading…</div></div>
+      </div>
+
+      <div class="panel">
+        <header><h2>Switched on</h2></header>
+        <div class="body" id="domainGranted"><div class="empty">Loading…</div></div>
+      </div>
+    </section>
+
+    <section data-panel="coupons" hidden>
+      <header>
+        <div><h1>Coupons</h1><p>Festival offers and discount codes.</p></div>
+        <div class="spacer"></div>
+        <button class="btn btn-primary btn-sm" id="addCouponBtn">New coupon</button>
+      </header>
+
+      <div class="notice info" style="max-width:none">
+        <b>The discount happens at Razorpay, not here.</b>
+        Create the offer in Razorpay (Offers), copy its <code>offer_…</code> id into the
+        coupon, and only then switch it on. Without that link a doctor would read
+        “10% off” and be charged the full amount, so TCOS refuses to switch on a
+        coupon that has no offer behind it.
+      </div>
+
+      <div id="couponMsg"></div>
+      <div class="panel"><div id="couponTable"><div class="empty">Loading…</div></div></div>
+    </section>
+
+    <dialog id="couponDialog" class="sheet">
+      <form id="couponForm" method="dialog">
+        <header><h2 id="couponDialogTitle">New coupon</h2></header>
+        <div class="body">
+          <input type="hidden" id="couponId">
+          <label class="field"><span>Code</span>
+            <input id="couponCode" placeholder="DIWALI25" autocapitalize="characters"
+                   spellcheck="false" required>
+            <small>What the doctor types. Letters, numbers and hyphens.</small></label>
+          <label class="field"><span>Name</span>
+            <input id="couponLabel" placeholder="Diwali 2026">
+            <small>For you, in this list. The doctor never sees it.</small></label>
+          <label class="field"><span>Discount %</span>
+            <input id="couponPercent" type="number" min="1" max="100" required>
+            <small>Whole percent. Must match the Razorpay offer, or the screen
+              and the charge disagree.</small></label>
+          <label class="field"><span>Razorpay offer id</span>
+            <input id="couponOffer" placeholder="offer_ABC123XYZ" spellcheck="false">
+            <small>From Razorpay → Offers. Required before it can be switched on.</small></label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <label class="field"><span>Starts</span>
+              <input id="couponStarts" type="date"></label>
+            <label class="field"><span>Ends</span>
+              <input id="couponEnds" type="date"></label>
+          </div>
+          <label class="field"><span>Maximum uses</span>
+            <input id="couponMax" type="number" min="1" placeholder="Leave blank for unlimited">
+          </label>
+          <label class="field" style="flex-direction:row;align-items:center;gap:8px">
+            <input id="couponOnce" type="checkbox">
+            <span>One use per clinic</span></label>
+          <label class="field"><span>Note</span>
+            <input id="couponNote" placeholder="Why this exists"></label>
+          <div id="couponFormMsg"></div>
+        </div>
+        <footer>
+          <button class="btn btn-ghost" type="button" id="couponCancel">Cancel</button>
+          <button class="btn btn-primary" type="button" id="couponSave">Save</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <section data-panel="money" hidden>
+      <header>
+        <div><h1>Money</h1><p>What each clinic pays, what it costs to run, and what is left.</p></div>
+        <div class="spacer"></div>
+        <input type="month" id="costMonth">
+        <button class="btn btn-primary" id="addCostBtn">+ Add business cost</button>
+      </header>
+      <div class="notice info" style="max-width:none">
+        Costs are <b>estimates</b> from the rates below, not a Cloudflare
+        invoice. Fixed monthly costs are spread across active clinics, so at
+        three customers they matter and at three hundred they disappear.
+      </div>
+      <div class="stat-row" id="moneyStats"></div>
+      <div class="panel">
+        <header><h2>Where the money goes</h2></header>
+        <div class="body"><div id="costCategories"></div></div>
+      </div>
+      <div class="panel">
+        <header><h2>Per clinic</h2></header>
+        <div id="costTable"><div class="empty">Loading…</div></div>
+      </div>
+      <div class="panel">
+        <header><h2>Recurring and one-time business costs</h2></header>
+        <div id="businessCostTable"><div class="empty">Loading…</div></div>
+      </div>
+      <div class="panel">
+        <header><h2>Unit rates</h2><div class="spacer"></div>
+          <span class="pill trial">Editable</span></header>
+        <div class="body">
+          <p style="color:var(--muted);font-size:.88rem;margin-top:0">
+            What one unit of each thing costs us. Prices change without us, so
+            these are edited here rather than in code. Enter rupees.
+          </p>
+          <div id="rateTable"></div>
+        </div>
+      </div>
+    </section>
+
+    <section data-panel="subscriptions" hidden>
+      <header>
+        <div><h1>Subscriptions</h1><p>Payment status, renewal risk and automatic plan access.</p></div>
+        <div class="spacer"></div>
+        <button class="btn btn-ghost" id="subscriptionRefresh">Refresh</button>
+        <button class="btn btn-primary" id="syncPaymentPlans">Sync payment plans</button>
+      </header>
+      <div id="subscriptionMsg"></div>
+      <div class="notice info" id="paymentHealth" style="max-width:none"></div>
+      <div class="stat-row" id="subscriptionStats"></div>
+      <div class="panel"><div id="subscriptionTable"><div class="empty">Loading…</div></div></div>
+    </section>
+
+    <!-- Whether a message can actually leave the building. Every check here
+         is read-only: nothing is sent and nothing is spent, so it can be
+         refreshed as often as you like. -->
+    <section data-panel="delivery" hidden>
+      <header>
+        <div><h1>Communications</h1><p>Email, SMS and WhatsApp readiness, balance and delivery risk.</p></div>
+        <div class="spacer"></div>
+        <button class="btn btn-ghost" id="deliveryRefresh">Check again</button>
+      </header>
+      <div class="notice info" style="max-width:none">
+        A provider that quietly drops messages looks exactly like one that is
+        working. This asks the provider directly, so a broken setup is found
+        here rather than by a doctor who never receives her code.
+      </div>
+      <div id="deliveryMsg"></div>
+      <div class="panel"><div id="deliveryBody"><div class="empty">Loading…</div></div></div>
+    </section>
+
+    <section data-panel="support" hidden>
+      <header><div><h1>Support requests</h1><p>Questions, feature changes and operational help from clinics.</p></div></header>
+      <div class="notice info" style="max-width:none">Open any request to read the complete conversation, assign an owner, add an internal note or reply to the clinic.</div>
+      <div class="stat-row" id="supportStats"></div>
+      <div class="panel"><div id="supportTable"><div class="empty">Loading…</div></div></div>
+    </section>
+
+    <section data-panel="team" hidden>
+      <header><div><h1>Team access</h1><p>Who can use this console and exactly what they can do.</p></div><div class="spacer"></div><button class="btn btn-primary" id="addTeamBtn">+ Add employee</button></header>
+      <div class="notice info" style="max-width:none">
+        This list controls what a teammate can do once inside. Put the same
+        addresses on the Cloudflare Access policy so people who are not on it
+        never receive the page at all.
+      </div>
+      <div class="panel"><div id="teamTable"><div class="empty">Loading…</div></div></div>
+
+      <!-- This is where the email dependency actually goes away. One
+           passkey per device he uses, each unlocked by that device's own
+           fingerprint, face or PIN. -->
+      <div class="panel">
+        <header>
+          <h2>Your devices</h2>
+          <div class="spacer"></div>
+          <button class="btn btn-primary btn-sm" id="addPasskeyBtn" hidden>
+            Set up this device
+          </button>
+        </header>
+        <div class="body">
+          <div id="passkeyMsg"></div>
+          <p class="muted" style="margin-top:0">
+            Set up a device once and sign in on it with your fingerprint, face or
+            screen lock — no password, and no particular email address on any
+            particular machine. Do this on every device you use.
+          </p>
+          <div id="passkeyList"><div class="empty">Loading…</div></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- A normal console session may stay open for a working day. Changes that
+     can stop a clinic or replace credentials require the password again. -->
+<!-- ONE CUSTOMER, OPENED.
+
+     Vijay: "i want to look into his account full access, like how many
+     doctors and how many devices he is logging in and how many staffs he
+     added ... if doctor says this is not working we will have access to
+     check."
+
+     Everything on this screen is operational: her people, her live
+     devices, her plan, what she has paid, how much she uses, and what has
+     happened on the account. Patients, visits and prescriptions appear as
+     COUNTS and are never opened - see tenants.overview in worker/platform.js
+     for why that line is drawn where it is. -->
+<dialog id="clinicDialog" class="wide">
+  <header>
+    <h3 id="clinicTitle">Clinic</h3>
+    <button type="button" id="clinicClose" aria-label="Close">&times;</button>
+  </header>
+  <div class="body" id="clinicBody"></div>
+  <footer><button type="button" class="btn btn-primary" id="clinicDone">Close</button></footer>
+</dialog>
+
+<dialog id="reauthDialog">
+  <form id="reauthForm" method="dialog">
+    <header>
+      <h3>Confirm it is still you</h3>
+      <button type="button" id="reauthClose" aria-label="Cancel">&times;</button>
+    </header>
+    <div class="body">
+      <div class="notice info">
+        This change affects access, credentials or money. Enter your platform
+        password again; confirmation remains valid for five minutes.
+      </div>
+      <div id="reauthMsg" aria-live="polite"></div>
+      <label class="field"><span>Platform password</span>
+        <input id="reauthPassword" type="password" autocomplete="current-password" required>
+      </label>
+      <div id="adminReauthChallenge" hidden></div>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="reauthCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="reauthSubmit">Continue</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog id="platformPasswordDialog">
+  <form id="platformPasswordForm">
+    <header><h3>Choose your own password</h3></header>
+    <div class="body">
+      <div class="notice info">Your temporary password has opened the account. Replace it before using any platform data.</div>
+      <div id="platformPasswordMsg"></div>
+      <label class="field"><span>Temporary password</span><input id="platformCurrentPassword" type="password" autocomplete="current-password" required></label>
+      <label class="field"><span>New password</span><input id="platformNewPassword" type="password" autocomplete="new-password" minlength="12" required><small>At least 12 characters, with letters and numbers.</small></label>
+      <label class="field"><span>Repeat new password</span><input id="platformNewPasswordAgain" type="password" autocomplete="new-password" minlength="12" required></label>
+    </div>
+    <footer><button type="submit" class="btn btn-primary">Save password and continue</button></footer>
+  </form>
+</dialog>
+
+<!-- ---------------- invite dialog ---------------- -->
+<dialog id="inviteDialog">
+  <form id="inviteForm" method="dialog">
+    <header><h3>Onboard a doctor</h3><button type="button" id="inviteClose">&times;</button></header>
+    <div class="body">
+      <div id="inviteMsg"></div>
+      <label class="field"><span>Mobile or email</span>
+        <input id="invIdentifier" required placeholder="Mobile or email">
+        <small>This is what they sign in with.</small></label>
+      <div class="field-row">
+        <label class="field"><span>Doctor name</span>
+          <input id="invName" required ></label>
+        <label class="field"><span>Qualification</span>
+          <input id="invQual" ></label>
+      </div>
+      <div class="field-row">
+        <label class="field"><span>Clinic name</span>
+          <input id="invClinic" required placeholder="Their clinic's name"></label>
+        <label class="field"><span>Registration no.</span>
+          <input id="invReg" placeholder="Council reg. no."></label>
+      </div>
+      <label class="field"><span>Registration council</span>
+        <input id="invCouncil" placeholder="NMC, State Medical Council, AYUSH council…"></label>
+      <label class="field"><span>Address</span><input id="invAddress" placeholder="Area, City"></label>
+      <div class="field-row">
+        <label class="field"><span>Package</span>
+          <select id="invPlan">
+            <option value="basic">Basic — free</option>
+            <option value="starter">Practice — ₹899/mo</option>
+            <option value="pro">Clinic — ₹2,199/mo</option>
+            <option value="pro_plus">Group — ₹4,499/mo</option>
+          </select></label>
+        <label class="field"><span>Patient ID prefix</span>
+          <input id="invPrefix" maxlength="6"></label>
+      </div>
+      <label class="field"><span>What they practise</span>
+        <small style="margin-top:0">Only these sections appear on their prescription.</small></label>
+      <div class="toggle-grid" id="invPacks"></div>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="inviteCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="inviteSave">Create account</button>
+    </footer>
+  </form>
+</dialog>
+
+<!-- Approving is the one moment where the package and the account type are
+     decided, so both are asked for here rather than left to be fixed on the
+     Doctors screen afterwards. Vijay: "i need to have a radio button where i
+     check in if it is a demo or not... while aproving only i will need to
+     do it."
+
+     Approve used to send nothing at all, which meant every doctor approved
+     through this console landed on Free whatever her application said. -->
+<dialog id="approveDialog">
+  <form id="approveForm" method="dialog">
+    <header><h3>Approve and create the account</h3><button type="button" id="approveClose">&times;</button></header>
+    <div class="body">
+      <div id="approveMsg"></div>
+      <div class="notice info" style="max-width:none" id="approveWho"></div>
+
+      <label class="field"><span>Package</span>
+        <select id="appPlan">
+          <option value="basic">Free — ₹0</option>
+          <option value="starter">Practice — ₹899/mo</option>
+          <option value="pro">Clinic — ₹2,199/mo</option>
+          <option value="pro_plus">Group — ₹4,499/mo</option>
+        </select>
+        <small>What she is activated on. She can pay to change it later.</small></label>
+
+      <label class="field"><span>Account type</span></label>
+      <div class="choice-row">
+        <label class="choice">
+          <input type="radio" name="approveAccountType" value="live" checked>
+          <span><b>Live account</b><small>A real clinic. Pays for its package,
+            and moves to Free by itself if payment does not arrive.</small></span>
+        </label>
+        <label class="choice">
+          <input type="radio" name="approveAccountType" value="demo">
+          <span><b>Demo account</b><small>Every feature of the package, no
+            billing screens, never expires. Left out of revenue and attrition,
+            and it cannot be sent an invoice.</small></span>
+        </label>
+      </div>
+
+      <label class="field"><span>Registration checked?</span></label>
+      <label class="choice choice-single">
+        <input type="checkbox" id="appRegisterChecked">
+        <span><b>I looked this number up on the council register just now</b>
+          <small>Leave unticked to onboard first and verify within 60 days —
+            which is the normal path. Ticking it marks her verified, and the
+            badge then says we checked.</small></span>
+      </label>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="approveCancel">Cancel</button>
+      <button type="submit" class="btn btn-primary" id="approveGo">Approve and create</button>
+    </footer>
+  </form>
+</dialog>
+
+<dialog id="handoverDialog">
+  <header><h3>Account created</h3></header>
+  <div class="body">
+    <div class="notice ok" style="max-width:none">
+      Give these to the doctor. The password is shown <b>once</b> — it is not
+      stored in the clear and cannot be looked up again. They must change it
+      the first time they sign in.
+    </div>
+    <div id="handoverDetail"></div>
+  </div>
+  <footer>
+    <button type="button" class="btn btn-ghost" id="copyHandover">Copy</button>
+    <button type="button" class="btn btn-primary" id="handoverDone">Done</button>
+  </footer>
+</dialog>
+
+<dialog id="patientDetailDialog">
+  <header><h3>Patient operations</h3><button type="button" id="patientDetailClose">&times;</button></header>
+  <div class="body" id="patientDetailBody"></div>
+  <footer><button type="button" class="btn btn-primary" id="patientDetailDone">Done</button></footer>
+</dialog>
+
+<dialog id="supportDetailDialog">
+  <header><h3 id="supportDetailTitle">Support request</h3><button type="button" id="supportDetailClose">&times;</button></header>
+  <div class="body">
+    <div id="supportDetailMeta"></div>
+    <div id="supportThread"></div>
+    <div class="field-row" style="margin-top:16px">
+      <label class="field"><span>Assigned to</span><select id="supportAssignee"></select></label>
+      <label class="field"><span>Status</span><select id="supportDetailStatus">
+        <option value="open">Open</option><option value="in_progress">In progress</option>
+        <option value="waiting">Waiting for clinic</option><option value="resolved">Resolved</option>
+      </select></label>
+    </div>
+    <form id="supportReplyForm">
+      <label class="field"><span>Reply</span><textarea id="supportReply" rows="5" maxlength="10000" required placeholder="Write the complete answer or next step"></textarea></label>
+      <label class="toggle"><input type="checkbox" id="supportInternal"><span>Internal note — clinic cannot see this</span></label>
+      <div id="supportDetailMsg"></div>
+    </form>
+  </div>
+  <footer><button type="button" class="btn btn-ghost" id="supportDetailDone">Close</button><button type="submit" form="supportReplyForm" class="btn btn-primary">Send</button></footer>
+</dialog>
+
+<dialog id="teamDialog">
+  <form id="teamForm">
+    <header><h3>Add platform employee</h3><button type="button" id="teamClose">&times;</button></header>
+    <div class="body">
+      <div class="notice info">TCOS access has two locks. This creates the inside account; add the same email to Cloudflare Access before handover.</div>
+      <div id="teamMsg"></div>
+      <div class="field-row">
+        <label class="field"><span>Name</span><input id="teamName" required placeholder="Employee name"></label>
+        <label class="field"><span>Email</span><input id="teamEmail" type="email" required placeholder="name@tharigopula.com"></label>
+      </div>
+      <label class="field"><span>Starting role</span><select id="teamRole">
+        <option value="support">Support</option><option value="finance">Finance</option>
+        <option value="viewer">Viewer</option><option value="admin">Administrator</option>
+      </select><small>A role selects a sensible starting set. You can then tick the exact areas below.</small></label>
+      <div class="toggle-grid" id="teamCapabilities"></div>
+    </div>
+    <footer><button type="button" class="btn btn-ghost" id="teamCancel">Cancel</button><button type="submit" class="btn btn-primary">Create employee access</button></footer>
+  </form>
+</dialog>
+
+<dialog id="costDialog">
+  <form id="costForm">
+    <header><h3>Add business cost</h3><button type="button" id="costClose">&times;</button></header>
+    <div class="body">
+      <div id="costMsg"></div>
+      <div class="field-row">
+        <label class="field"><span>Cost name</span><input id="costLabel" required placeholder="ChatGPT Pro, owner time, employee salary…"></label>
+        <label class="field"><span>Vendor</span><input id="costVendor" placeholder="OpenAI, MSG91, employee name…"></label>
+      </div>
+      <div class="field-row">
+        <label class="field"><span>Category</span><select id="costCategory">
+          <option value="people">People</option><option value="software">Software</option>
+          <option value="infrastructure">Infrastructure</option><option value="communications">Communications</option>
+          <option value="marketing">Marketing</option><option value="professional">Professional services</option>
+          <option value="other">Other</option>
+        </select></label>
+        <label class="field"><span>Scope</span><select id="costScope">
+          <option value="tcos">Only TCOS</option><option value="shared">Shared across Tharigopula products</option>
+          <option value="clinic">One clinic directly</option>
+        </select></label>
+      </div>
+      <label class="field" id="costClinicField" hidden><span>Clinic</span><select id="costClinic"></select></label>
+      <div class="field-row">
+        <label class="field"><span>Amount (₹)</span><input id="costAmount" type="number" min="0" step="0.01" required></label>
+        <label class="field"><span>Cadence</span><select id="costCadence"><option value="monthly">Every month</option><option value="yearly">Every year</option><option value="one_time">One time</option></select></label>
+      </div>
+      <div class="field-row">
+        <label class="field"><span>Money type</span><select id="costCashType"><option value="cash">Leaves the bank</option><option value="imputed">Time / opportunity cost</option></select></label>
+        <label class="field"><span>TCOS allocation (%)</span><input id="costAllocation" type="number" min="0" max="100" value="100" required><small>For a shared subscription, enter the portion TCOS uses.</small></label>
+      </div>
+      <div class="field-row">
+        <label class="field"><span>Starts</span><input id="costStarts" type="date" required></label>
+        <label class="field"><span>Ends (optional)</span><input id="costEnds" type="date"></label>
+      </div>
+      <label class="field"><span>Note</span><textarea id="costNote" rows="3" maxlength="500" placeholder="Invoice, calculation or why this allocation is fair"></textarea></label>
+    </div>
+    <footer><button type="button" class="btn btn-ghost" id="costCancel">Cancel</button><button type="submit" class="btn btn-primary">Add cost</button></footer>
+  </form>
+</dialog>
+
+<script src="js/products.js"></script>
+<script src="js/clinic-registry.js"></script>
+<style>
+/* Classes this console uses that css/tcos.css does not define. `.table`
+   lives in css/management.css, which this page deliberately does not load -
+   the console is not the doctor's app and pulling a second stylesheet in
+   for one selector would tie the two screens together. */
+
+.hint { font-size: .82rem; color: var(--ink-2); line-height: 1.55; margin: 0 0 10px; }
+.row-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 14px 0 10px; }
+.row-actions input {
+  flex: 1 1 260px; min-width: 200px; padding: 9px 11px; font: inherit; font-size: .88rem;
+  border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--card); color: inherit;
+}
+.panel-head { display: flex; align-items: baseline; gap: 12px; padding: 14px 18px 0; }
+.panel-head h2 { font-size: 1rem; margin: 0; }
+
+/* A plain readable grid. Dense on purpose: twelve demonstration clinics
+   should fit on one screen, because comparing them IS the feature. */
+table.table { width: 100%; border-collapse: collapse; font-size: .86rem; }
+table.table th, table.table td {
+  text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line);
+  vertical-align: middle;
+}
+table.table thead th {
+  font-size: .66rem; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--muted); font-weight: 600; border-bottom-width: 2px;
+}
+table.table tbody tr:last-child td { border-bottom: 0; }
+table.table code { font-family: var(--mono); font-size: .86rem; }
+td.demo-state { font-weight: 500; }
+
+/* Radios that read as the choice they are, not as two dots in a row. The
+   difference between a live clinic and a demo one is worth a sentence
+   each, because picking the wrong one is expensive in both directions. */
+.choice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px; }
+.choice {
+  display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+  padding: 11px 13px; border: 1px solid var(--line);
+  border-radius: var(--radius-sm); background: var(--card);
+}
+.choice:hover { border-color: var(--cyan); }
+.choice:has(input:checked) { background: var(--cyan-soft); border-color: #A9D5DF; }
+.choice input { margin-top: 3px; flex: none; accent-color: var(--cyan); }
+.choice span { display: flex; flex-direction: column; gap: 3px; }
+.choice b { font-size: .88rem; }
+.choice small { font-size: .74rem; color: var(--ink-2); line-height: 1.45; }
+.choice-single { margin-bottom: 4px; }
+
+@media (max-width: 720px) {
+  .choice-row { grid-template-columns: 1fr; }
+}
+</style>
+
+<script src="js/tcos-plans.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/tcos-admin-api.js"></script>
+<script src="js/passkeys.js"></script>
+<script src="js/security-challenge.js"></script>
+<script src="js/tcos-admin-console.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

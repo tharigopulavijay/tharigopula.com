@@ -1,0 +1,3 @@
+@import url("clinical-v4.css");
+.clinical-rail{background:transparent!important;color:var(--ink)!important;padding:0!important;height:auto!important;width:auto!important;left:auto!important;z-index:auto!important;transition:none!important}
+.clinical-rail .card{color:var(--ink)}

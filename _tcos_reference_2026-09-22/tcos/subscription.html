@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Plan &amp; payment | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/plans.css">
+</head>
+<body>
+<div class="console">
+<nav class="rail"></nav>
+<main class="workspace">
+  <header class="page-head">
+    <div><h1>Plan &amp; payment</h1><p>Your plan changes automatically after a successful payment.</p></div>
+  </header>
+
+  <div id="pageMsg"></div>
+
+  <section class="panel">
+    <header><h2>Current subscription</h2><div class="spacer"></div>
+      <span class="pill" id="subscriptionState">Loading…</span></header>
+    <div class="body" id="subscriptionBody"><div class="empty">Loading…</div></div>
+  </section>
+
+  <!-- The plans. Vijay: "payment should not be a payment, it should show
+       what they would be getting." It used to be a price and a Choose
+       button, which asks a doctor to spend ₹2,199 on faith.
+
+       Every number and every tick on these cards comes from what the
+       software enforces - the feature lists in js/tcos-plans.js and the
+       seat and volume limits in migration 030 - never from copy written
+       to sell. test/plan-page.test.js fails if the two drift apart. -->
+  <section class="panel plans-panel">
+    <header>
+      <h2>Choose a plan</h2>
+      <div class="spacer"></div>
+      <div class="cadence-toggle" id="cadenceToggle" role="group" aria-label="Billing period">
+        <button type="button" data-cadence="monthly" class="on">Monthly</button>
+        <button type="button" data-cadence="yearly">Yearly</button>
+      </div>
+    </header>
+    <div class="body">
+      <div class="plan-grid" id="planCards"></div>
+
+      <!-- Bigger than Group: no price, no checkout, a conversation. The
+           enquiry goes through the support queue the owner console already
+           reads, rather than a mailto: that lands nowhere we can track. -->
+      <dialog id="enquiryDialog" class="enquiry">
+        <form id="enquiryForm" method="dialog">
+          <h2>Tell us about your practice</h2>
+          <p class="sub">We will come back to you on the Support screen with
+            seats, volumes and terms that fit.</p>
+          <div id="enquiryMsg"></div>
+          <div class="enquiry-two">
+            <label class="field"><span>How many doctors?</span>
+              <input id="enquiryDoctors" inputmode="numeric" placeholder="e.g. 40"></label>
+            <label class="field"><span>How many locations?</span>
+              <input id="enquiryPlaces" inputmode="numeric" placeholder="e.g. 3"></label>
+          </div>
+          <label class="field"><span>What do you need?</span>
+            <textarea id="enquiryDetail" rows="4"
+              placeholder="Anything that matters — volumes, branches, how you invoice, a date you are working to."></textarea></label>
+          <footer>
+            <button type="button" class="btn btn-ghost" id="enquiryClose">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="enquirySend">Send enquiry</button>
+          </footer>
+        </form>
+      </dialog>
+
+      <p class="plan-foot">
+        Payment opens on Razorpay's secure page. TCOS never sees or stores your
+        card, UPI mandate or bank details. You can stop a renewal at any time and
+        keep your access until the period you have paid for ends.
+      </p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <header><h2>If a renewal fails</h2></header>
+    <div class="body">
+      <p style="margin:0;color:var(--ink-2);max-width:70ch">
+        Your clinic keeps its paid access for three days while Razorpay retries and tells you what needs attention.
+        If it is still unpaid after that, TCOS moves to Free. Records are retained and paid access returns as soon as payment succeeds.
+      </p>
+    </div>
+  </section>
+</main>
+</div>
+
+<script src="js/products.js"></script>
+<script src="js/tcos-plans.js"></script>
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/subscription.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

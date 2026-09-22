@@ -1,0 +1,973 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Clinic setup | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div><h1>Clinic setup</h1><p>Your practice, prescription identity and working hours.</p></div>
+      <div class="spacer"></div>
+      <button class="btn btn-primary" id="saveBtn">Save changes</button>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <div class="settings-layout">
+    <div class="settings-main">
+
+    <!-- What they practise comes first: it is the setting that actually
+         changes the software, not just the letterhead. -->
+    <div class="panel">
+      <header>
+        <h2 id="modulesTitle">Clinical modules</h2>
+        <div class="spacer"></div>
+        <span id="packCount" class="pill trial-pill"></span>
+      </header>
+      <div class="body">
+        <div class="notice info" id="modulesNotice" style="max-width:none"></div>
+        <div class="toggle-grid" id="packs"></div>
+        <div id="preview" class="preview"></div>
+      </div>
+    </div>
+
+    <!-- Set once, used on every prescription after it. Vijay: "setting the
+         prescription once and use it everytime means they make chagnes to
+         their prescripton and save it and everytime same format comes in."
+
+         The cap is on the SHEET, not on her. She records as many fields as
+         her examination needs; six of them fit on the paper under a medicine
+         table, and the rest stay in the record where they are searchable and
+         still on her screen. -->
+    <div class="panel">
+      <header>
+        <h2>What prints on the prescription</h2>
+        <div class="spacer"></div>
+        <span id="rxLayoutCount" class="pill"></span>
+      </header>
+      <div class="body">
+        <p class="hint" id="rxLayoutHint"></p>
+        <div id="rxLayoutChosen" class="rx-layout-chosen"></div>
+        <div class="toggle-grid" id="rxLayoutFields"></div>
+        <p class="hint" id="rxLayoutOwnHint"></p>
+        <div class="row-actions">
+          <button type="button" class="btn btn-primary btn-sm" id="rxLayoutSave">Save this layout</button>
+          <button type="button" class="btn btn-quiet btn-sm" id="rxLayoutClear">Print every filled field</button>
+          <span id="rxLayoutMsg" class="hint"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <header><h2>Your clinic</h2></header>
+      <div class="body">
+        <label class="field"><span>Clinic name</span><input id="clinicName" required></label>
+        <label class="field"><span>Tagline</span>
+          <input id="tagline">
+          <small>Appears under your clinic name on the prescription.</small></label>
+        <div class="field-row">
+          <label class="field"><span>Your name</span><input id="fullName" required></label>
+          <label class="field"><span>Qualification</span>
+            <input id="qualification" placeholder="Degree and qualification"></label>
+        </div>
+        <div class="field-row">
+          <label class="field"><span>Registration number</span>
+            <input id="registrationNo" placeholder="Council registration">
+            <small>Printed on every prescription.</small></label>
+          <label class="field"><span>Patient ID prefix</span>
+            <input id="patientPrefix" maxlength="6">
+            <small>A short code for your clinic. It appears in your patient and prescription numbers.</small></label>
+        </div>
+        <label class="field"><span>Clinic address</span><input id="address"></label>
+
+        <!-- The only way back into this account if the password is
+             forgotten. A verification code goes by SMS, but SMS to an
+             Indian number needs DLT registration - so until that clears,
+             this address is the ONLY route. A doctor with neither is locked
+             out permanently, with her patients' records inside. -->
+        <label class="field"><span>Email for password recovery</span>
+          <input id="email" type="email" autocomplete="email"
+                 placeholder="you@example.com">
+          <small id="recoveryNote"></small></label>
+        <label class="field" hidden><span>Website</span><input id="website" tabindex="-1"></label>
+
+        <!-- The ABDM registries. Held now so that on the day we are
+             certified nothing has to be collected from scratch. Optional,
+             and labelled as not yet connected, because claiming an
+             integration we do not have is worse than not having one. -->
+        <div class="field-row">
+          <label class="field"><span>HPR id</span>
+            <input id="hprId" placeholder="Healthcare Professionals Registry">
+            <small>Your own id on the national practitioner registry. Optional.</small></label>
+          <label class="field"><span>HFR id</span>
+            <input id="hfrId" placeholder="Health Facility Registry">
+            <small>Your clinic’s id on the national facility registry. Optional.</small></label>
+        </div>
+        <p class="muted">
+          TCOS is not connected to ABDM yet. These are stored so that when it is,
+          your clinic is ready on day one instead of starting from an empty form.
+        </p>
+      </div>
+    </div>
+    <div class="panel">
+      <header><h2>Clinic timings</h2><div class="spacer"></div><span class="pill">Shown to patients</span></header>
+      <div class="body">
+        <p style="color:var(--muted);font-size:.88rem;margin-top:0">
+          Add a second sitting for any day you run a morning and an evening.
+          Set Monday how you want it, then copy it across the week.
+        </p>
+        <div class="schedule-tools">
+          <button type="button" class="btn btn-ghost btn-sm" id="applyWeekdays">Copy Monday to Tue–Fri</button>
+          <span id="hoursPreview" class="hours-preview"></span>
+        </div>
+        <div id="weeklyHours"></div>
+      </div>
+    </div>
+
+    <!-- What her plan includes and what she has used. Shown so she is asked
+         to pay while everything still works, rather than discovering a
+         ceiling by hitting it. -->
+    <div class="panel">
+      <header><h2>Your plan</h2><div class="spacer"></div>
+        <span class="pill" id="planName">…</span></header>
+      <div class="body">
+        <div id="planAlert"></div>
+        <div id="planUsage" class="usage-list"></div>
+        <a class="btn btn-primary btn-sm" href="subscription.html" style="margin-top:14px">Manage plan &amp; payment</a>
+        <p style="color:var(--muted);font-size:.84rem;margin:14px 0 0">
+          Counts reset on the 1st of each month. If you go past an allowance
+          your clinic keeps working for three days, so nothing stops in the
+          middle of a consultation.
+        </p>
+      </div>
+    </div>
+
+    <!-- Days off. Separate from the weekly pattern because an exception
+         expires by itself and an edited pattern does not. -->
+    <div class="panel">
+      <header><h2>Days you are closed</h2><div class="spacer"></div>
+        <span class="pill" id="closureCount"></span></header>
+      <div class="body">
+        <p style="color:var(--muted);font-size:.88rem;margin-top:0">
+          Going away, or shutting for a festival? Add it here rather than
+          changing your weekly timings &mdash; these clear themselves once the
+          date passes, so your clinic reopens without you having to remember.
+        </p>
+        <div class="closure-add">
+          <label class="field"><span>From</span><input type="date" id="closeFrom"></label>
+          <label class="field"><span>To</span><input type="date" id="closeTo">
+            <small>Leave blank for a single day.</small></label>
+          <label class="field"><span>Reason patients will see</span>
+            <input id="closeReason" maxlength="120"></label>
+        </div>
+        <label class="toggle" style="margin:6px 0 12px">
+          <input type="checkbox" id="closeHalf">
+          <span>Open for part of the day instead of closing completely</span>
+        </label>
+        <div class="closure-add" id="closeHalfHours" hidden>
+          <label class="field"><span>Opens</span><input type="time" id="closeHalfOpen" value="09:00"></label>
+          <label class="field"><span>Closes</span><input type="time" id="closeHalfClose" value="12:00"></label>
+        </div>
+        <button type="button" class="btn btn-primary btn-sm" id="addClosure">Add</button>
+        <div id="closureMsg"></div>
+        <div id="closureList" class="closure-list"></div>
+      </div>
+    </div>
+
+    <!-- The web address, the clinic page and connecting an existing site
+         all moved to the Web screen on 12 September 2026. They lived here,
+         below the working hours and beside the ABDM registry ids, which is
+         where a doctor never found them.
+
+         Two screens editing one setting is also a way to lose work: this
+         one rebuilt the page hours from the weekly timings on every save,
+         so anything she typed on the Web screen was overwritten the next
+         time she touched Clinic setup. The server already falls back to
+         the weekly timings when the page hours are blank, so writing them
+         here was never needed. -->
+    <div class="panel">
+      <header><h2>Your web address and clinic page</h2></header>
+      <div class="body">
+        <p style="color:var(--ink-2);font-size:.92rem;margin:0 0 12px;max-width:64ch">
+          Your clinic page, the address patients use, your own domain and
+          connecting an existing website all live on the Web screen now.
+        </p>
+        <a class="btn btn-primary btn-sm" href="website.html">Open Web</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <header><h2>Medical registration certificate</h2><div class="spacer"></div><span class="pill" id="certificateState">Not uploaded</span></header>
+      <div class="body">
+        <p style="color:var(--muted);font-size:.88rem;margin-top:0">Used by the Tharigopula platform team to verify the practitioner during onboarding. Patients see only a verification badge—not the document.</p>
+        <label class="field"><span>Certificate file</span><input type="file" id="certificateFile" accept=".pdf,.jpg,.jpeg,.png"><small id="certificateHelp">Submit once for platform verification. After submission, replacement requires a support request and audit review.</small></label>
+      </div>
+    </div>
+
+    </div><!-- /settings-main -->
+
+    <aside class="settings-side">
+      <div class="panel setup-card">
+        <header><h2>Setting up</h2></header>
+        <div class="body">
+          <div class="setup-bar"><span id="setupFill"></span></div>
+          <p class="setup-count" id="setupCount">…</p>
+          <ul class="setup-list" id="setupList"></ul>
+        </div>
+      </div>
+
+      <div class="panel">
+        <header><h2>Need a hand?</h2></header>
+        <div class="body">
+          <p style="color:var(--muted);font-size:.87rem;margin:0 0 12px">
+            We set this up with you. If something here does not fit how you
+            practise, tell us and we will change it.
+          </p>
+          <button class="btn btn-ghost btn-full" id="supportBtn" type="button">Request help or a change</button>
+          <div id="supportHistory" style="margin-top:12px"></div>
+        </div>
+      </div>
+    </aside>
+    </div><!-- /settings-layout -->
+  </main>
+</div>
+
+<dialog id="supportDialog">
+  <form id="supportForm" method="dialog">
+    <header><h3>Request help or a change</h3><button type="button" id="supportClose">&times;</button></header>
+    <div class="body">
+      <div id="supportMsg"></div>
+      <label class="field"><span>Type</span><select id="supportCategory"><option value="help">How do I…?</option><option value="feature_change">Turn a feature on or off</option><option value="billing">Plan or billing</option><option value="data_correction">Data correction</option><option value="technical">Something is not working</option></select></label>
+      <label class="field"><span>Subject</span><input id="supportSubject" required placeholder="What do you need?"></label>
+      <label class="field"><span>Details</span><textarea id="supportMessage" rows="5" required placeholder="Tell the TCOS team what should happen."></textarea></label>
+      <label class="field"><span>Priority</span><select id="supportPriority"><option value="normal">Normal</option><option value="urgent">Urgent—clinic work is blocked</option></select></label>
+    </div>
+    <footer><button type="button" class="btn btn-ghost" id="supportCancel">Cancel</button><button type="submit" class="btn btn-primary">Send request</button></footer>
+  </form>
+</dialog>
+
+<dialog id="supportThreadDialog">
+  <header><h3 id="supportThreadTitle">Support conversation</h3><button type="button" id="supportThreadClose">&times;</button></header>
+  <div class="body">
+    <div id="supportThreadMessages"></div>
+    <form id="clinicSupportReplyForm">
+      <label class="field"><span>Add a reply</span><textarea id="clinicSupportReply" rows="4" maxlength="10000" required></textarea></label>
+      <div id="clinicSupportReplyMsg"></div>
+    </form>
+  </div>
+  <footer><button type="button" class="btn btn-ghost" id="supportThreadDone">Close</button><button type="submit" form="clinicSupportReplyForm" class="btn btn-primary">Send reply</button></footer>
+</dialog>
+
+<script src="js/products.js"></script>
+<script src="js/tcos-plans.js"></script>
+<script src="js/clinic-registry.js"></script>
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script>
+(async () => {
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const el = id => document.getElementById(id);
+  const msg = (text, kind) => {
+    el('pageMsg').innerHTML = text
+      ? '<div class="notice ' + kind + '" style="max-width:none">' + text + '</div>' : '';
+  };
+
+  if (!TCOSApi.isSignedIn()) { location.replace('tcos-login.html'); return; }
+
+  let me;
+  try { me = await TCOSApi.me(); }
+  catch (error) {
+    if (error.status === 401) { location.replace('tcos-login.html'); return; }
+    msg(esc(error.message), 'error');
+    return;
+  }
+  TCOSRail.paint(me);
+  const product = window.TCOSProducts.resolve(me);
+  el('modulesTitle').textContent = product.discipline + ' clinical modules';
+  el('modulesNotice').textContent = product.name + ' is configured for ' +
+    product.discipline + ' by the Tharigopula platform team. Additional ' +
+    'therapies are enabled only after review, so the clinical record cannot ' +
+    'be casually changed.';
+  el('qualification').placeholder = product.qualificationHint || 'Degree and qualification';
+
+  ['clinicName', 'tagline', 'fullName', 'qualification',
+   'registrationNo', 'patientPrefix', 'address', 'website', 'email']
+    .forEach(key => { el(key).value = me[key] || ''; });
+
+  /* Say out loud when there is no way back in.
+
+     A doctor discovers a missing recovery route at the exact moment she
+     needs it, which is the moment she cannot do anything about it. Better
+     to say it now, while she is signed in and it takes ten seconds. */
+  el('recoveryNote').textContent = me.email
+    ? 'If you forget your password, we send a code here.'
+    : 'No recovery address yet. Without one you cannot reset a forgotten ' +
+      'password — add it now, it takes ten seconds.';
+  el('recoveryNote').style.color = me.email ? '' : 'var(--danger, #b3261e)';
+
+  /* Nested under abdm rather than flat, so it is obvious at a glance that
+     these are registry ids and not something TCOS issued. */
+  el('hprId').value = (me.abdm && me.abdm.hprId) || '';
+  el('hfrId').value = (me.abdm && me.abdm.hfrId) || '';
+
+  const DAYS = [
+    ['mon','Monday'],['tue','Tuesday'],['wed','Wednesday'],['thu','Thursday'],
+    ['fri','Friday'],['sat','Saturday'],['sun','Sunday']
+  ];
+  /* ---- clinic timings ----------------------------------------------
+     A day is a list of sittings, because that is how clinics run: a
+     morning and an evening with the afternoon shut. The whole schedule is
+     held in this object and re-rendered from it, rather than being read
+     back out of the inputs - reading the DOM was what made the old
+     single-pair version awkward to extend. */
+  const schedule = {};
+  DAYS.forEach(([id]) => {
+    const saved = (me.weeklyHours || {})[id];
+    if (saved && Array.isArray(saved.sessions)) {
+      schedule[id] = { closed: !!saved.closed, sessions: saved.sessions.map(s => ({ ...s })) };
+    } else if (saved && (saved.open || saved.close)) {
+      /* A row written before sittings existed. */
+      schedule[id] = { closed: !!saved.closed,
+        sessions: saved.closed ? [] : [{ open: saved.open || '09:00', close: saved.close || '18:00' }] };
+    } else {
+      schedule[id] = id === 'sun'
+        ? { closed: true, sessions: [] }
+        : { closed: false, sessions: [{ open: '09:00', close: id === 'sat' ? '13:00' : '18:00' }] };
+    }
+  });
+
+  function renderHours() {
+    el('weeklyHours').innerHTML = DAYS.map(([id, label]) => {
+      const day = schedule[id];
+      const sittings = day.closed || !day.sessions.length
+        ? '<span class="day-closed">Closed all day</span>'
+        : day.sessions.map((s, i) =>
+            '<span class="sitting">' +
+              '<input type="time" data-day="' + id + '" data-i="' + i + '" data-part="open" value="' + esc(s.open) + '">' +
+              '<i>to</i>' +
+              '<input type="time" data-day="' + id + '" data-i="' + i + '" data-part="close" value="' + esc(s.close) + '">' +
+              (day.sessions.length > 1
+                ? '<button type="button" class="sit-x" data-drop="' + id + '" data-i="' + i + '" title="Remove this sitting">&times;</button>'
+                : '') +
+            '</span>').join('');
+
+      return '<div class="schedule-row' + (day.closed ? ' is-closed' : '') + '">' +
+        '<b>' + label + '</b>' +
+        '<div class="sittings">' + sittings + '</div>' +
+        '<div class="day-do">' +
+          (day.closed ? '' :
+            '<button type="button" class="btn btn-ghost btn-sm" data-add="' + id + '">+ sitting</button>') +
+          '<label class="toggle"><input type="checkbox" data-closed="' + id + '"' +
+            (day.closed ? ' checked' : '') + '><span>Closed</span></label>' +
+        '</div></div>';
+    }).join('');
+
+    el('hoursPreview').textContent = 'Patients will see: ' + describeSchedule();
+
+    el('weeklyHours').querySelectorAll('input[type="time"][data-day]').forEach(input =>
+      input.addEventListener('change', () => {
+        schedule[input.dataset.day].sessions[Number(input.dataset.i)][input.dataset.part] = input.value;
+        el('hoursPreview').textContent = 'Patients will see: ' + describeSchedule();
+      }));
+
+    el('weeklyHours').querySelectorAll('[data-add]').forEach(button =>
+      button.addEventListener('click', () => {
+        const day = schedule[button.dataset.add];
+        const last = day.sessions[day.sessions.length - 1];
+        /* A second sitting defaults to an evening one, which is what it
+           almost always is. */
+        day.sessions.push(last && last.close < '15:00'
+          ? { open: '17:00', close: '20:00' }
+          : { open: '17:00', close: '20:00' });
+        renderHours();
+      }));
+
+    el('weeklyHours').querySelectorAll('[data-drop]').forEach(button =>
+      button.addEventListener('click', () => {
+        schedule[button.dataset.drop].sessions.splice(Number(button.dataset.i), 1);
+        renderHours();
+      }));
+
+    el('weeklyHours').querySelectorAll('[data-closed]').forEach(box =>
+      box.addEventListener('change', () => {
+        const day = schedule[box.dataset.closed];
+        day.closed = box.checked;
+        if (!box.checked && !day.sessions.length) day.sessions = [{ open: '09:00', close: '18:00' }];
+        renderHours();
+      }));
+  }
+
+  /* The same collapse the public page does, so what she sees while editing
+     is what a patient will read. */
+  function describeSchedule() {
+    const of = id => {
+      const d = schedule[id];
+      return d.closed || !d.sessions.length ? 'Closed'
+        : d.sessions.map(s => s.open + '-' + s.close).join(', ');
+    };
+    const parts = [];
+    let start = 0;
+    for (let i = 1; i <= DAYS.length; i++) {
+      if (i < DAYS.length && of(DAYS[i][0]) === of(DAYS[start][0])) continue;
+      if (of(DAYS[start][0]) !== 'Closed') {
+        const span = start === i - 1 ? DAYS[start][1].slice(0, 3)
+          : DAYS[start][1].slice(0, 3) + '-' + DAYS[i - 1][1].slice(0, 3);
+        parts.push(span + ' ' + of(DAYS[start][0]));
+      }
+      start = i;
+    }
+    return parts.join(' · ') || 'By appointment';
+  }
+
+  renderHours();
+
+  el('applyWeekdays').addEventListener('click', () => {
+    const from = schedule.mon;
+    ['tue', 'wed', 'thu', 'fri'].forEach(id => {
+      schedule[id] = { closed: from.closed, sessions: from.sessions.map(s => ({ ...s })) };
+    });
+    renderHours();
+  });
+
+  const readHours = () => schedule;
+
+  /* ---- what her plan includes ---------------------------------------- */
+  (function paintPlan() {
+    const status = me.planStatus;
+    if (!status) return;
+
+    /* These were wrong: `starter` read "Starter" and `pro_plus` read
+       "Practice" - which is the name of the CHEAPEST paid plan, so a group
+       paying ₹4,499 saw the ₹899 plan's name on their own settings screen.
+       The names live in js/tcos-plans.js; this reads them rather than
+       keeping a second copy that can drift again. */
+    const PLAN_NAME = Object.fromEntries(
+      Object.values((window.TCOSPlans && window.TCOSPlans.PLANS) || {})
+        .map(p => [p.id, p.name]));
+    /* The legacy key some rows still carry - see migration 030. */
+    PLAN_NAME.clinic = PLAN_NAME.pro;
+    el('planName').textContent = (PLAN_NAME[status.plan] || status.plan) +
+      (status.pricePaise ? ' · ₹' + (status.pricePaise / 100).toLocaleString('en-IN') + '/month' : ' · free');
+
+    /* One banner, for the worst thing. Five separate warnings is noise she
+       learns to ignore; one is a message. */
+    const a = status.attention;
+    /* Four states, four sentences. A seat limit needs its own: no clock is
+       running and nothing is about to break, so telling her she has "used
+       most of her doctors this month" would be both wrong and alarming. */
+    const BANNER = {
+      expired: ['error', 'You passed your ' + esc(a && a.label) +
+        ' and the extra three days have run out. <b>Move up a plan and it starts working again straight away.</b>'],
+      blocked: ['warn', 'You have reached the ' + esc(a && a.label) +
+        ' your plan covers. Everything you already have keeps working &mdash; move up a plan to add more.'],
+      over: ['warn', 'You are past your ' + esc(a && a.label) +
+        '. Everything still works for <b>' + esc(a && a.daysLeft) +
+        (a && a.daysLeft === 1 ? ' more day' : ' more days') +
+        '</b> &mdash; move up a plan before then and nothing stops.'],
+      approaching: ['info', 'You have used most of your ' + esc(a && a.label) +
+        ' this month. Worth moving up a plan before you run out.']
+    };
+    const banner = a && BANNER[a.state];
+    el('planAlert').innerHTML = banner
+      ? '<div class="notice ' + banner[0] + '" style="max-width:none">' + banner[1] + '</div>'
+      : '';
+
+    el('planUsage').innerHTML = status.limits.map(l => {
+      const width = Math.min(100, l.percent);
+      /* 'blocked' has to colour like a problem. Left out of this list once,
+         and a seat limit she had already hit rendered in the same calm grey
+         as one she had barely touched. */
+      const tone = ['expired', 'over', 'blocked'].includes(l.state) ? 'bad'
+        : l.state === 'approaching' ? 'warn' : 'ok';
+      /* `included` is null when a line is not metered at all - patients,
+         since 11 September 2026. Calling toLocaleString on it threw, so
+         this whole panel rendered as nothing on every screen. There is no
+         ceiling to be "of", so it just says how many she has. */
+      const right = l.unavailable
+        ? 'Not on this plan'
+        : l.unlimited
+          ? l.used.toLocaleString('en-IN') + ' · no limit'
+          : l.used.toLocaleString('en-IN') + ' of ' + l.included.toLocaleString('en-IN');
+
+      return '<div class="usage-row"><div class="usage-top">' +
+        '<span>' + esc(l.label) + '</span>' +
+        '<b class="usage-' + tone + '">' + esc(right) + '</b></div>' +
+        '<span class="usage-track"><span class="usage-fill usage-' + tone +
+          '" style="width:' + width + '%"></span></span>' +
+        (l.state === 'over' && l.daysLeft != null
+          ? '<small class="usage-note">' + esc(l.daysLeft) +
+            (l.daysLeft === 1 ? ' day' : ' days') + ' of extra time left</small>'
+          : l.overagePaise && !l.seat && !l.unavailable
+            ? '<small class="usage-note">₹' + (l.overagePaise / 100) + ' each beyond this</small>'
+            : '') +
+      '</div>';
+    }).join('');
+  })();
+
+  /* ---- days closed --------------------------------------------------- */
+  const prettyDay = iso => {
+    const d = new Date(iso + 'T00:00:00');
+    return d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
+  };
+
+  async function loadClosures() {
+    let list = [];
+    try { list = (await TCOSApi.listClosures()).closures || []; }
+    catch (error) { el('closureList').innerHTML = '<p class="empty">' + esc(error.message) + '</p>'; return; }
+
+    el('closureCount').textContent = list.length
+      ? list.length + ' coming up' : 'None';
+    el('closureList').innerHTML = list.length ? list.map(c => {
+      let sessions = [];
+      try { sessions = c.sessions ? JSON.parse(c.sessions) : []; } catch (_) {}
+      const when = c.starts_on === c.ends_on
+        ? prettyDay(c.starts_on)
+        : prettyDay(c.starts_on) + ' – ' + prettyDay(c.ends_on);
+      return '<div class="closure-item">' +
+        '<div><b>' + esc(when) + '</b>' +
+          '<small>' + esc(c.reason || 'Closed') +
+            (sessions.length
+              ? ' · open ' + esc(sessions.map(s => s.open + '-' + s.close).join(', '))
+              : ' · closed all day') + '</small></div>' +
+        '<button type="button" class="btn btn-ghost btn-sm" data-drop-closure="' + esc(c.id) + '">Remove</button>' +
+      '</div>';
+    }).join('') : '<p class="empty">Nothing scheduled. Your normal timings apply.</p>';
+
+    el('closureList').querySelectorAll('[data-drop-closure]').forEach(button =>
+      button.addEventListener('click', async () => {
+        button.disabled = true;
+        try { await TCOSApi.removeClosure(button.dataset.dropClosure); await loadClosures(); }
+        catch (error) { msg('closureMsg', error.message, 'error'); button.disabled = false; }
+      }));
+  }
+
+  el('closeHalf').addEventListener('change', event => {
+    el('closeHalfHours').hidden = !event.target.checked;
+  });
+
+  el('addClosure').addEventListener('click', async () => {
+    msg('closureMsg', '');
+    const from = el('closeFrom').value;
+    if (!from) return msg('closureMsg', 'Choose the first day you are closed.', 'error');
+    const details = {
+      startsOn: from,
+      endsOn: el('closeTo').value || from,
+      reason: el('closeReason').value.trim() || null
+    };
+    if (el('closeHalf').checked) {
+      details.sessions = [{ open: el('closeHalfOpen').value, close: el('closeHalfClose').value }];
+    }
+    try {
+      await TCOSApi.addClosure(details);
+      ['closeFrom', 'closeTo', 'closeReason'].forEach(id => { el(id).value = ''; });
+      el('closeHalf').checked = false;
+      el('closeHalfHours').hidden = true;
+      await loadClosures();
+    } catch (error) { msg('closureMsg', error.message, 'error'); }
+  });
+
+  loadClosures();
+
+
+  const cert = me.certificate || {};
+  el('certificateState').textContent = (cert.status || 'not_uploaded').replaceAll('_', ' ');
+  el('certificateState').className = 'pill ' + (cert.status === 'verified' ? 'active' : 'trial');
+  if (cert.status && !['not_uploaded','not_submitted'].includes(cert.status)) {
+    el('certificateFile').disabled = true;
+    el('certificateHelp').textContent = 'Submitted as ' + (cert.name || 'certificate') +
+      '. To replace it, use Request help or a change so the platform team can review and unlock it.';
+
+    /* She can see what she sent. Obvious, and missing until the document
+       was a document rather than a filename. */
+    if (cert.fileId) {
+      const view = document.createElement('button');
+      view.type = 'button';
+      view.className = 'btn btn-ghost btn-sm';
+      view.style.marginTop = '10px';
+      view.textContent = 'View what you sent';
+      view.addEventListener('click', async () => {
+        view.disabled = true;
+        try {
+          const opened = await TCOSApi.openFile(cert.fileId);
+          window.open(opened.url, '_blank', 'noopener');
+          /* Freed once the new tab has taken it; holding every opened file
+             in memory for the life of the page is how a long clinic day
+             ends in a tab using a gigabyte. */
+          setTimeout(() => URL.revokeObjectURL(opened.url), 60000);
+        } catch (error) {
+          msg(error.message, 'error');
+        } finally { view.disabled = false; }
+      });
+      el('certificateHelp').after(view);
+    }
+  }
+
+  /* ---- practice packs ---- */
+  const packs = window.ClinicRegistry.PRACTICE_PACKS;
+  const chosen = new Set(me.practicePacks || []);
+
+  el('packs').innerHTML = Object.entries(packs).map(([id, pack]) =>
+    '<label class="toggle' + (chosen.has(id) ? ' on' : '') + '">' +
+      '<input type="checkbox" disabled value="' + esc(id) + '"' + (chosen.has(id) ? ' checked' : '') + '>' +
+      '<span>' + esc(pack.label) + '</span></label>').join('');
+
+  const readPacks = () =>
+    Array.from(document.querySelectorAll('#packs input:checked')).map(i => i.value);
+
+  /* Showing the resulting prescription outline is the only honest way to
+     explain what ticking a box does. */
+  function paintPreview() {
+    const selected = readPacks();
+    document.querySelectorAll('#packs input').forEach(input =>
+      input.closest('.toggle').classList.toggle('on', input.checked));
+
+    const core = window.ClinicRegistry.CORE_SECTIONS;
+    const order = window.ClinicRegistry.resolveLayout(selected).sections;
+    const coreIds = new Set(core.map(s => s.id));
+
+    el('packCount').textContent = selected.length
+      ? selected.length + ' selected' : 'Core only';
+
+    el('preview').innerHTML =
+      '<h4>Your prescription will have these sections</h4>' +
+      '<ol>' + order.map(section =>
+        '<li class="' + (coreIds.has(section.id) ? 'core' : 'pack') + '">' +
+        esc(section.title) +
+        (coreIds.has(section.id) ? '' : '<span>from your selection</span>') +
+        '</li>').join('') + '</ol>';
+  }
+
+  document.querySelectorAll('#packs input').forEach(input =>
+    input.addEventListener('change', paintPreview));
+  paintPreview();
+
+  /* ---- what prints on the prescription -------------------------------
+
+     Every examination field she has - ours from the packs above, hers from
+     the consultation screen - with at most six ticked. Ticking is the whole
+     interaction: there is no ordering control, because the order is the
+     order of the form and a doctor reading her own sheet expects it to run
+     the way she filled it in.
+
+     Nothing here decides what is RECORDED. Everything she types is saved
+     whether it is ticked or not; this is only the paper. */
+  (async () => {
+    let own = [], printed = null, max = 6;
+    try {
+      const layout = await TCOSApi.clinicFields();
+      own = layout.fields || [];
+      printed = layout.printFields || null;
+      max = layout.max || 6;
+    } catch (error) {
+      el('rxLayoutHint').textContent = 'Could not load your examination fields: ' + error.message;
+      return;
+    }
+
+    /* Only the packs she actually has on. Offering fields from a pack she
+       does not practise would put a slot on the sheet for something her
+       consultation screen never shows her. */
+    const everyField = () => {
+      const fromPacks = (me.practicePacks || [])
+        .map(id => packs[id]).filter(Boolean)
+        .flatMap(pack => pack.sections)
+        .flatMap(section => section.fields
+          ? section.fields.map(field => ({
+              key: section.id + '.' + field, label: field, from: section.title
+            })) : []);
+      return fromPacks.concat(own.map(f =>
+        ({ key: f.slug, label: f.label, from: 'Yours' })));
+    };
+
+    const ticked = () => Array.from(
+      document.querySelectorAll('#rxLayoutFields input:checked')).map(i => i.value);
+
+    function paintLayout() {
+      const all = everyField();
+      const chosenKeys = printed || [];
+
+      el('rxLayoutFields').innerHTML = all.map(f =>
+        '<label class="toggle' + (chosenKeys.includes(f.key) ? ' on' : '') + '">' +
+          '<input type="checkbox" value="' + esc(f.key) + '"' +
+            (chosenKeys.includes(f.key) ? ' checked' : '') + '>' +
+          '<span>' + esc(f.label) + '<small>' + esc(f.from) + '</small></span></label>').join('') ||
+        '<p class="hint">No examination fields yet. Turn on a clinical module above, ' +
+        'or add your own from a consultation.</p>';
+
+      document.querySelectorAll('#rxLayoutFields input').forEach(input =>
+        input.addEventListener('change', onTick));
+
+      el('rxLayoutOwnHint').textContent = own.length
+        ? 'Fields marked "Yours" were added from a consultation screen.'
+        : 'You can add your own fields — Naabhi, ANG, anything you examine — ' +
+          'from the "+" on the consultation screen.';
+
+      onTick();
+    }
+
+    function onTick() {
+      const chosen = ticked();
+      document.querySelectorAll('#rxLayoutFields input').forEach(input => {
+        input.closest('.toggle').classList.toggle('on', input.checked);
+        /* The cap enforced where she can see it, rather than as an error
+           after she has made her choice. The server refuses a seventh as
+           well - a disabled checkbox has never been a rule. */
+        input.disabled = !input.checked && chosen.length >= max;
+      });
+
+      el('rxLayoutCount').textContent = printed
+        ? chosen.length + ' of ' + max : 'Not set';
+      el('rxLayoutHint').textContent = printed
+        ? 'These print, in this order. Everything else you examine is still ' +
+          'recorded and still on your screen — it just does not go on the paper.'
+        : 'Right now every filled examination field prints. Tick up to ' + max +
+          ' to fix the layout, and the rest stay in the record.';
+
+      const labels = everyField().filter(f => chosen.includes(f.key)).map(f => f.label);
+      el('rxLayoutChosen').innerHTML = labels.length
+        ? '<b>On the sheet:</b> ' + labels.map(esc).join(' · ')
+        : '';
+    }
+
+    el('rxLayoutSave').addEventListener('click', async () => {
+      el('rxLayoutSave').disabled = true;
+      el('rxLayoutMsg').textContent = 'Saving…';
+      try {
+        const saved = await TCOSApi.setRxLayout(ticked());
+        printed = saved.fields;
+        el('rxLayoutMsg').textContent = 'Saved. Every prescription from now on uses this.';
+        onTick();
+      } catch (error) {
+        el('rxLayoutMsg').textContent = error.message;
+      } finally { el('rxLayoutSave').disabled = false; }
+    });
+
+    /* Back to "everything prints". Sent as an explicit null, because an
+       empty tick list is a different and equally real choice - print no
+       examination fields at all - and the server must not have to guess
+       which of the two she meant. */
+    el('rxLayoutClear').addEventListener('click', async () => {
+      el('rxLayoutClear').disabled = true;
+      try {
+        await TCOSApi.setRxLayout(null);
+        printed = null;
+        el('rxLayoutMsg').textContent =
+          'Back to printing every filled examination field.';
+        paintLayout();
+      } catch (error) {
+        el('rxLayoutMsg').textContent = error.message;
+      } finally { el('rxLayoutClear').disabled = false; }
+    });
+
+    paintLayout();
+  })();
+
+  /* ---- save ---- */
+  el('saveBtn').addEventListener('click', async () => {
+    el('saveBtn').disabled = true;
+    msg('');
+    try {
+      const updated = await TCOSApi.updateMe({
+        clinicName: el('clinicName').value,
+        tagline: el('tagline').value,
+        fullName: el('fullName').value,
+        qualification: el('qualification').value,
+        registrationNo: el('registrationNo').value,
+        patientPrefix: el('patientPrefix').value.toUpperCase(),
+        address: el('address').value,
+        website: el('website').value,
+        email: el('email').value,
+        hprId: el('hprId').value,
+        hfrId: el('hfrId').value,
+        weeklyHours: readHours()
+      });
+
+      /* The certificate is a real document, uploaded separately - sending
+         only its filename is what let the platform mark a registration
+         "verified" having never seen anything. Done after the profile save
+         so a rejected file does not lose the rest of her edits. */
+      const chosen = el('certificateFile').files[0];
+      if (chosen) {
+        el('certificateHelp').textContent = 'Sending…';
+        await TCOSApi.uploadFile(chosen, { kind: 'certificate' }, percent => {
+          el('certificateHelp').textContent = 'Sending… ' + percent + '%';
+        });
+        el('certificateFile').value = '';
+      }
+      TCOSRail.paint(updated);
+
+      /* The success line used to be written by the clinic-page half of this
+         handler, which moved to the Web screen. Removing that block took the
+         message with it and left Save doing nothing visible - the save
+         worked, and she had no way to know. */
+      msg('Saved. Your next prescription uses these settings.', 'ok');
+    } catch (error) {
+      msg(esc(error.message), 'error');
+    } finally {
+      el('saveBtn').disabled = false;
+    }
+  });
+
+
+  /* ---- support and controlled feature changes ---- */
+  const supportDialog = el('supportDialog');
+  const supportThreadDialog = el('supportThreadDialog');
+  let supportThreadId = null;
+  async function loadSupport() {
+    try {
+      const list = (await TCOSApi.supportRequests()).requests || [];
+      el('supportHistory').innerHTML = list.slice(0, 3).map(request =>
+        '<button type="button" data-support-thread="' + esc(request.id) + '" style="display:block;width:100%;text-align:left;background:none;border:0;font:inherit;font-size:.78rem;padding:8px 0;border-top:1px solid var(--line);cursor:pointer"><b>' +
+        esc(request.subject) + '</b><br><span style="color:var(--muted)">' +
+        esc(request.status.replace('_', ' ')) + ' · ' + esc(request.created_at.slice(0, 10)) +
+        ' · ' + esc(request.message_count || 1) + ' message' + (Number(request.message_count) === 1 ? '' : 's') +
+        '</span></button>').join('');
+      document.querySelectorAll('[data-support-thread]').forEach(button =>
+        button.addEventListener('click', () => openClinicSupport(button.dataset.supportThread)));
+    } catch (_) {}
+  }
+  el('supportBtn').addEventListener('click', () => { el('supportForm').reset(); supportDialog.showModal(); });
+  el('supportClose').addEventListener('click', () => supportDialog.close());
+  el('supportCancel').addEventListener('click', () => supportDialog.close());
+  el('supportForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    try {
+      await TCOSApi.createSupportRequest({
+        category: el('supportCategory').value, subject: el('supportSubject').value.trim(),
+        message: el('supportMessage').value.trim(), priority: el('supportPriority').value
+      });
+      supportDialog.close(); await loadSupport();
+      msg('Your request was sent to the TCOS team. You can track it here.', 'ok');
+    } catch (error) { el('supportMsg').innerHTML = '<div class="notice error">' + esc(error.message) + '</div>'; }
+  });
+  const closeSupportThread = () => { supportThreadDialog.close(); supportThreadId = null; };
+  el('supportThreadClose').addEventListener('click', closeSupportThread);
+  el('supportThreadDone').addEventListener('click', closeSupportThread);
+  async function openClinicSupport(id) {
+    supportThreadId = id;
+    el('supportThreadMessages').innerHTML = '<div class="empty">Loading conversation…</div>';
+    if (!supportThreadDialog.open) supportThreadDialog.showModal();
+    try {
+      const data = await TCOSApi.supportRequest(id);
+      el('supportThreadTitle').textContent = data.request.subject;
+      el('supportThreadMessages').innerHTML = (data.messages || []).map(message =>
+        '<article class="panel" style="margin:10px 0"><div class="body"><b>' +
+        esc(message.author_type === 'platform' ? 'TCOS support' : 'Your clinic') + '</b>' +
+        '<small style="display:block;color:var(--muted)">' +
+        esc(new Date(message.created_at).toLocaleString('en-IN')) + '</small><p style="white-space:pre-wrap">' +
+        esc(message.body) + '</p></div></article>').join('');
+    } catch (error) {
+      el('supportThreadMessages').innerHTML = '<div class="notice error">' + esc(error.message) + '</div>';
+    }
+  }
+  el('clinicSupportReplyForm').addEventListener('submit', async event => {
+    event.preventDefault();
+    if (!supportThreadId) return;
+    try {
+      await TCOSApi.replySupportRequest(supportThreadId, el('clinicSupportReply').value.trim());
+      el('clinicSupportReplyForm').reset();
+      await openClinicSupport(supportThreadId);
+      await loadSupport();
+    } catch (error) {
+      el('clinicSupportReplyMsg').innerHTML = '<div class="notice error">' + esc(error.message) + '</div>';
+    }
+  });
+  await loadSupport();
+
+  /* Reads the form as it stands, so ticking a box here is the same act as
+     filling the field - there is no second place to keep this in step. */
+  function paintSetup() {
+    const filled = id => !!(el(id) && String(el(id).value || '').trim());
+    const steps = [
+      ['Clinic name', filled('clinicName')],
+      ['Your name and qualification', filled('fullName') && filled('qualification')],
+      ['Registration number', filled('registrationNo')],
+      ['Patient ID prefix', filled('patientPrefix')],
+      ['Clinic address', filled('address')],
+      /* Was hardcoded true, so the checklist told every doctor she was
+         verified regardless - including one the API was actively refusing
+         to let publish a public page. It reads the real status now. */
+      ['Practice verified by TCOS',
+        !!(me && me.verification && me.verification.verified)],
+      ['Clinic timings configured', Object.values(readHours()).some(day => !day.closed)]
+    ];
+    const done = steps.filter(([, ok]) => ok).length;
+    el('setupFill').style.width = Math.round((done / steps.length) * 100) + '%';
+    el('setupCount').textContent = done + ' of ' + steps.length + ' done';
+    el('setupList').innerHTML = steps.map(([label, ok]) =>
+      '<li class="' + (ok ? 'done' : '') + '"><span class="tick">' +
+      (ok ? '&#10003;' : '') + '</span>' + label + '</li>').join('');
+  }
+
+  /* Any edit anywhere on the page can change the answer. */
+  document.querySelectorAll('#setupWatch, .settings-main input, .settings-main select')
+    .forEach(node => {
+      node.addEventListener('input', paintSetup);
+      node.addEventListener('change', paintSetup);
+    });
+  paintSetup();
+
+
+  el('signOutBtn').addEventListener('click', async () => {
+    await TCOSApi.signOut(); location.href = 'tcos-login.html';
+  });
+})();
+</script>
+
+<style>
+.preview {
+  margin-top: 18px; padding: 15px 17px;
+  background: var(--sunken, var(--surface-2)); border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.preview h4 {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--ink-2); margin-bottom: 10px; font-weight: 600;
+}
+.preview ol { margin: 0; padding-left: 20px; display: grid; gap: 4px; }
+.preview li { font-size: .87rem; }
+.preview li.core { color: var(--ink-2); }
+.preview li.pack { color: var(--ink); font-weight: 500; }
+.preview li span {
+  font-size: .7rem; color: var(--cyan); margin-left: 8px;
+  font-family: var(--mono); letter-spacing: .03em;
+}
+
+/* ---- what prints on the prescription ---- */
+.hint { font-size: .8rem; color: var(--ink-2); margin: 0 0 12px; line-height: 1.5; }
+.row-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.row-actions .hint { margin: 0; }
+#rxLayoutFields { margin-bottom: 12px; }
+/* Her field's own name on the first line, where it came from underneath -
+   the same field label may exist in two packs, and "Nails" alone would not
+   tell her which one she is putting on the paper. */
+#rxLayoutFields .toggle span { display: flex; flex-direction: column; line-height: 1.3; }
+#rxLayoutFields .toggle small { font-size: .66rem; color: var(--muted); }
+#rxLayoutFields .toggle input:disabled { cursor: not-allowed; }
+#rxLayoutFields .toggle:has(input:disabled) { opacity: .5; cursor: not-allowed; }
+/* The answer to "so what will my prescription actually say", spelled out
+   rather than left to be counted off the tick list. */
+.rx-layout-chosen {
+  font-size: .84rem; line-height: 1.6; margin-bottom: 12px;
+  padding: 9px 12px; border-radius: var(--radius-sm);
+  background: var(--cyan-soft); border: 1px solid #A9D5DF;
+}
+.rx-layout-chosen:empty { display: none; }
+</style>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Find a patient | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<link rel="stylesheet" href="css/lookup.css">
+</head>
+<body>
+
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <h1>Find a patient</h1>
+        <p>Type the number they give you. One number often carries a whole family.</p>
+      </div>
+    </header>
+
+    <div class="search-card">
+      <label class="field"><span>Mobile number</span>
+        <div class="search-row">
+          <input id="mobile" inputmode="numeric" autocomplete="off">
+          <button class="btn btn-primary" id="searchBtn">Search</button>
+        </div>
+      </label>
+    </div>
+
+    <div id="pageMsg"></div>
+    <div id="results"></div>
+  </main>
+</div>
+
+<!-- The patient approves before any other clinic's record is opened. -->
+<dialog id="consentDialog">
+  <form id="consentForm" method="dialog">
+    <header><h3>Ask the patient to approve</h3><button type="button" id="consentClose">&times;</button></header>
+    <div class="body">
+      <div id="consentMsg"></div>
+      <p class="explain">
+        Records held by another clinic belong to the patient, not to us. A code
+        goes to their phone; they read it out and confirm their own name. The
+        approval lasts 24 hours and every record you open is logged for them
+        to see.
+      </p>
+      <div id="consentStep1">
+        <p class="sent-to" id="sentTo"></p>
+        <button type="button" class="btn btn-primary btn-full" id="sendCode">Send the code</button>
+      </div>
+      <div id="consentStep2" hidden>
+        <label class="field"><span>Patient's full name</span>
+          <input id="cName" placeholder="As they say it">
+          <small>A number can carry several people. The name says which one.</small></label>
+        <label class="field"><span>The 6-digit code on their phone</span>
+          <input id="cCode" inputmode="numeric" maxlength="6" placeholder="000000"></label>
+        <button type="submit" class="btn btn-primary btn-full">Open their history</button>
+      </div>
+    </div>
+    <footer>
+      <button type="button" class="btn btn-ghost" id="consentCancel">Cancel</button>
+    </footer>
+  </form>
+</dialog>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/lookup.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+/* Find a patient. The number is the way in, so it gets the whole first screen. */
+
+.search-card {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: var(--radius); padding: 20px 22px; margin-bottom: 18px;
+}
+.search-card .field { margin: 0; max-width: 460px; }
+.search-row { display: flex; gap: 9px; }
+.search-row input {
+  flex: 1; font-size: 1.05rem; letter-spacing: .03em;
+  font-variant-numeric: tabular-nums;
+}
+.search-row .btn { flex-shrink: 0; }
+
+.people { padding: 4px 0; }
+.person {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 13px 16px; border-bottom: 1px solid var(--line-soft);
+}
+.person:last-child { border-bottom: none; }
+.person .who { flex: 1; min-width: 180px; }
+.person .who b { display: block; font-size: .95rem; }
+.person .who small {
+  display: block; color: var(--muted); font-size: .77rem;
+  font-family: var(--mono);
+}
+.person .seen { font-size: .8rem; color: var(--muted); }
+
+/* Records held elsewhere: a count, never a name. */
+.elsewhere {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  background: var(--cyan-soft); border: 1px solid color-mix(in srgb, var(--cyan) 32%, transparent);
+  border-radius: var(--radius); padding: 16px 18px; margin-bottom: 18px;
+}
+.elsewhere .head { flex: 1; min-width: 240px; }
+.elsewhere .head b { display: block; font-size: .95rem; }
+.elsewhere .head span { font-size: .82rem; color: var(--ink-2); }
+.elsewhere.none { background: var(--surface-2); border-color: var(--line); }
+.elsewhere.none .head b { color: var(--muted); font-weight: 500; }
+
+.add-new .body b { display: block; font-size: .92rem; margin-bottom: 4px; }
+.add-new .body p { font-size: .85rem; color: var(--muted); margin-bottom: 11px; max-width: 62ch; }
+
+/* ---- shared history ---- */
+.shared-block { margin-bottom: 20px; }
+.shared-block:last-of-type { margin-bottom: 8px; }
+.shared-block h3 {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--ink-2); font-weight: 600; margin-bottom: 8px;
+  padding-bottom: 5px; border-bottom: 1px solid var(--line);
+}
+.shared-block .none { font-size: .85rem; color: var(--muted); padding: 6px 0; }
+.entry {
+  display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: 12px;
+  padding: 8px 0; border-bottom: 1px solid var(--line-soft);
+}
+.entry:last-child { border-bottom: none; }
+.entry time {
+  font-family: var(--mono); font-size: .76rem; color: var(--muted); white-space: nowrap;
+}
+.entry b { display: block; font-size: .89rem; font-weight: 500; }
+.entry span { display: block; font-size: .82rem; color: var(--ink-2); }
+.entry .clinic, .entry .advice { color: var(--muted); font-size: .78rem; }
+.logged {
+  font-size: .8rem; color: var(--muted); padding-top: 12px;
+  border-top: 1px dashed var(--line); margin: 0;
+}
+
+dialog .explain {
+  font-size: .86rem; color: var(--ink-2); margin-bottom: 16px;
+  padding: 12px 14px; background: var(--surface-2);
+  border-left: 3px solid var(--cyan); border-radius: var(--radius-sm);
+}
+dialog .sent-to { font-size: .88rem; margin-bottom: 12px; }
+
+@media (max-width: 700px) {
+  .person { align-items: flex-start; }
+  .entry { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+}

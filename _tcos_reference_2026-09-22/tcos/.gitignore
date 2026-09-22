@@ -1,0 +1,21 @@
+.vercel/
+.claude/
+node_modules/
+.DS_Store
+Thumbs.db
+*.bak
+
+.vercel
+.wrangler/
+.wrangler-ci/
+.wrangler-dry-run/
+
+# Local worker secrets - PEPPER and any API keys. Never committed.
+.dev.vars
+
+# Built by scripts/build-public.js. This is the ONLY directory that may be
+# deployed to Pages. Generated, never committed.
+dist/
+
+# Local smoke-test reports and one-off diagnostic scripts.
+tmp/

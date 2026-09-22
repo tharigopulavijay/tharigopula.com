@@ -1,0 +1,226 @@
+/* =========================================================================
+   The plans.
+
+   Vijay, holding up a competitor's pricing page: "payment should not be a
+   payment, it should show what they would be getting."
+
+   He is right, and the old screen was indefensible: a name, a number and a
+   Choose button, which asks a doctor to commit ₹2,199 a month on faith and
+   gives her nothing to compare. A pricing page has one job - to let someone
+   work out which row is theirs - and it does that by putting the plans side
+   by side and letting the differences do the arguing.
+
+   WHAT THIS DELIBERATELY DOES NOT DO
+   No "POPULAR" flash, no "most practices choose this". TCOS has no paying
+   customers yet, so a popularity badge would be an invented claim on the
+   one screen where a doctor is deciding whether to trust us with money.
+   The cards earn attention with real numbers instead: what each plan adds
+   over the one before it, and the seats and volumes the software actually
+   holds her to.
+   ========================================================================= */
+
+.plans-panel > header { flex-wrap: wrap; gap: 12px; }
+
+/* ---- monthly / yearly ---------------------------------------------------
+   A segmented control, not a dropdown. She compares by flicking between the
+   two, and a select hides the yearly saving behind a click she has no
+   reason to make. */
+.cadence-toggle {
+  display: inline-flex; padding: 3px; gap: 3px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.cadence-toggle button {
+  border: 0; background: transparent; color: var(--ink-2);
+  font: inherit; font-weight: 650; font-size: .86rem;
+  padding: 7px 17px; border-radius: 999px; cursor: pointer;
+  white-space: nowrap;
+}
+.cadence-toggle button:hover { color: var(--ink); }
+.cadence-toggle button.on {
+  background: var(--card); color: var(--ink);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+}
+
+/* ---- the grid -----------------------------------------------------------
+   Four plans. `auto-fit` with a floor rather than a fixed count, so three
+   across on a laptop and one on a phone happen without breakpoints doing
+   the arithmetic. */
+.plan-grid {
+  display: grid; gap: 16px; align-items: stretch;
+  grid-template-columns: repeat(auto-fit, minmax(232px, 1fr));
+}
+
+.plan {
+  display: flex; flex-direction: column;
+  padding: 20px 18px;
+  border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--card);
+  position: relative;
+}
+/* The plan she is on. Named rather than merely tinted, because "which one
+   am I already paying for" is the first question this screen is asked. */
+.plan.is-current {
+  border-color: var(--ok);
+  box-shadow: 0 0 0 1px var(--ok) inset;
+}
+.plan-badge {
+  position: absolute; top: -9px; left: 18px;
+  padding: 2px 9px; border-radius: 999px;
+  background: var(--ok); color: #fff;
+  font-size: .66rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.plan h3 { margin: 0; font-size: 1.06rem; }
+.plan-tagline {
+  margin: 4px 0 0; color: var(--ink-2); font-size: .84rem; line-height: 1.4;
+  min-height: 2.4em;
+}
+
+.plan-price { margin: 14px 0 0; display: flex; align-items: baseline; gap: 7px; flex-wrap: wrap; }
+.plan-price strong { font-size: 1.75rem; letter-spacing: -.02em; line-height: 1; }
+.plan-price .plan-soon { color: var(--muted); }
+.plan-per { color: var(--muted); font-size: .8rem; }
+
+/* Computed from the two real prices, never asserted - so it cannot keep
+   saying "2 months free" after somebody changes one of them. */
+.plan-saving {
+  margin: 7px 0 0; font-size: .79rem; font-weight: 650;
+  color: var(--ok);
+}
+
+/* Seats and patients, straight from what the software enforces. */
+.plan-scope {
+  margin: 13px 0 0; padding-top: 12px; border-top: 1px solid var(--line-soft);
+  font-size: .8rem; font-weight: 600; color: var(--ink-2);
+}
+.plan-pitch {
+  margin: 8px 0 2px; font-size: .83rem; line-height: 1.5; color: var(--ink-2);
+}
+
+.plan-adds {
+  margin: 18px 0 9px; font-size: .76rem; font-weight: 700;
+  letter-spacing: .04em; text-transform: uppercase; color: var(--muted);
+}
+
+.plan-features { list-style: none; margin: 0; padding: 0; display: grid; gap: 7px; }
+.plan-features li {
+  display: grid; grid-template-columns: 16px 1fr; gap: 8px;
+  align-items: start; font-size: .84rem; line-height: 1.35; color: var(--ink-2);
+}
+.plan-features svg {
+  width: 16px; height: 16px; margin-top: 1px;
+  fill: none; stroke: var(--ok); stroke-width: 2.2;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+/* What this plan adds over the one below it. The upgrade decision is made
+   on the difference, so the difference is what gets the ink. */
+.plan-features li.is-new { color: var(--ink); font-weight: 600; }
+
+.plan-limits {
+  margin: 16px 0 0; padding-top: 13px; border-top: 1px solid var(--line-soft);
+  display: grid; gap: 6px;
+}
+.plan-limits > div { display: flex; justify-content: space-between; gap: 10px; }
+.plan-limits dt { font-size: .79rem; color: var(--muted); }
+.plan-limits dd {
+  margin: 0; font-size: .79rem; font-weight: 650; color: var(--ink);
+  font-variant-numeric: tabular-nums; text-align: right;
+}
+
+/* Pushed to the floor of the card, so the four buttons line up across
+   the row however long the feature lists above them are. */
+.plan .btn-full { margin-top: 18px; }
+.plan-limits { margin-top: auto; }
+
+.plan-foot {
+  margin: 18px 0 0; max-width: 78ch;
+  font-size: .82rem; line-height: 1.55; color: var(--muted);
+}
+
+@media (max-width: 620px) {
+  .plan-tagline { min-height: 0; }
+  .plans-panel > header .cadence-toggle { width: 100%; justify-content: center; }
+}
+
+/* ---- bigger than Group --------------------------------------------------
+   No price and no checkout, because the answer is a conversation. Held
+   apart from the four purchasable cards by a tinted ground rather than a
+   louder border: it is the one a doctor should skip unless it is obviously
+   hers, and a card that shouts gets clicked by people it is not for. */
+.plan-contact {
+  background: var(--surface-2);
+  border-style: dashed;
+}
+.plan-contact .plan-price strong { font-size: 1.5rem; }
+.plan-contact .plan-features { margin-bottom: 4px; }
+.plan-contact .btn-full { margin-top: auto; }
+
+/* ---- the enquiry -------------------------------------------------------- */
+dialog.enquiry {
+  width: min(520px, calc(100vw - 28px));
+  /* Explicit, because a margin reset elsewhere beats the native centring
+     a modal dialog would otherwise get, and it opened in the top-left. */
+  margin: auto;
+  padding: 0; border: 1px solid var(--line); border-radius: var(--radius);
+  background: var(--card); color: var(--ink);
+  box-shadow: 0 18px 48px rgba(16, 28, 22, .22);
+}
+dialog.enquiry::backdrop { background: rgba(16, 28, 22, .45); }
+dialog.enquiry form { padding: 22px; }
+dialog.enquiry h2 { margin: 0; font-size: 1.12rem; }
+dialog.enquiry .sub {
+  margin: 6px 0 16px; color: var(--ink-2); font-size: .87rem; line-height: 1.5;
+}
+.enquiry-two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+dialog.enquiry footer {
+  display: flex; justify-content: flex-end; gap: 9px; margin-top: 18px;
+}
+@media (max-width: 480px) {
+  .enquiry-two { grid-template-columns: 1fr; }
+}
+
+/* Not metered at all. Worth its own colour: it is the line a doctor
+   comparing us against somebody who charges per patient will look for. */
+.plan-unmetered { color: var(--ok); }
+
+/* Started, not paid. Amber rather than green: it is not a plan she has,
+   it is one she has begun and not finished - and the whole bug this fixes
+   was the screen implying otherwise. */
+.plan.is-pending { border-color: var(--warn); box-shadow: 0 0 0 1px var(--warn) inset; }
+.plan-badge.pending { background: var(--warn); }
+/* The server refuses a second subscription while one is alive, so these
+   cannot be chosen until the pending one is finished or cancelled. */
+.plan.is-blocked { opacity: .62; }
+
+/* ---- a screen the plan does not cover ----------------------------------
+   Still listed and still openable, because a downgrade must never hide the
+   records a clinic already entered - she can read her stock and reprint an
+   old invoice. Dimmed with a small mark so it is clear before she clicks
+   that adding something will ask her to move up a plan. */
+nav.rail a.not-on-plan { opacity: .55; }
+nav.rail a.not-on-plan::after {
+  content: "\2191";
+  margin-left: 6px; font-size: .78em; font-weight: 700;
+  color: var(--warn);
+}
+nav.rail a.not-on-plan.active { opacity: 1; }
+
+/* ---- a capability the plan does not cover ------------------------------
+   Shown on the screen she is standing on, not hidden behind a click that
+   fails. The records below it still load - what is off is the button that
+   would add another one. */
+.notice.plan-gate {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  max-width: none;
+}
+.notice.plan-gate > div { flex: 1 1 320px; }
+.notice.plan-gate .btn { flex: 0 0 auto; }
+
+/* Greyed, and it stays greyed on hover - a button that lights up under the
+   cursor is promising something it will not do. */
+.btn.is-locked,
+.btn.is-locked:hover {
+  opacity: .5; cursor: not-allowed; filter: grayscale(1);
+}

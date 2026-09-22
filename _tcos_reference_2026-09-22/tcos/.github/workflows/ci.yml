@@ -1,0 +1,46 @@
+name: TCOS CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - 'codex/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tcos-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Full safety gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out the exact revision
+        uses: actions/checkout@v5
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install locked dependencies
+        run: npm ci
+
+      - name: Run every TCOS assertion
+        run: npm test
+
+      - name: Build only allow-listed public assets
+        run: npm run build
+
+      - name: Dry-run the staging Worker bundle
+        run: npx wrangler deploy --dry-run --config wrangler.jsonc --env staging --outdir .wrangler-ci/staging
+
+      - name: Dry-run the production Worker bundle
+        run: npx wrangler deploy --dry-run --config wrangler.jsonc --env="" --outdir .wrangler-ci/production

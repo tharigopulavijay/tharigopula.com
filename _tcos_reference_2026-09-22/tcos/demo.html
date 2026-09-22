@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TCOS live demo</title>
+<style>
+  :root{color-scheme:light;font-family:Inter,system-ui,sans-serif;background:#f4f7f5;color:#173c2d}
+  body{margin:0}.wrap{max-width:1050px;margin:auto;padding:48px 24px}.eyebrow{color:#a06e1b;font-weight:800;letter-spacing:.12em;font-size:12px}.hero{background:#173c2d;color:white;border-radius:24px;padding:34px;margin-bottom:24px}.hero h1{margin:8px 0;font-size:38px}.hero p{margin:0;color:#d4e3db}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:16px}.card{background:white;border:1px solid #dce6e0;border-radius:18px;padding:20px;box-shadow:0 8px 24px #173c2d0d}.card h2{font-size:19px;margin:0 0 14px}.row{font-size:14px;margin:7px 0}.row b{display:inline-block;min-width:78px}.button{display:block;margin-top:18px;padding:11px 14px;text-align:center;text-decoration:none;border-radius:10px;background:#1b4a34;color:white;font-weight:750}.patient{border-color:#d7b56f}.note{margin-top:24px;padding:16px 18px;border-radius:12px;background:#fff7e7;color:#684b16}.status{margin:0 0 24px;padding:13px 16px;border-radius:12px;background:#e5f3eb}.status.bad{background:#fee9e7;color:#8d241c}.guide{margin:28px 0;background:#fff;border:1px solid #dce6e0;border-radius:22px;padding:26px}.guide h2{margin:0 0 6px}.guide>p{margin:0 0 20px;color:#53685f}.journey{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}.step{display:flex;gap:12px;padding:15px;border:1px solid #e0e8e3;border-radius:14px;text-decoration:none;color:inherit;background:#fbfdfc}.step:hover{border-color:#1b4a34}.num{display:grid;place-items:center;flex:0 0 30px;height:30px;border-radius:50%;background:#173c2d;color:white;font-weight:800}.step b,.step small{display:block}.step small{margin-top:4px;color:#607269;line-height:1.35}.facts{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0}.facts span{background:#eaf3ee;border-radius:999px;padding:7px 11px;font-size:13px;font-weight:700}
+</style>
+</head>
+<body><main class="wrap">
+  <section class="hero"><div class="eyebrow">LIVE SAMPLE DATA · NOT FOR REAL PATIENTS</div><h1>TCOS role testing</h1><p>Choose a role, sign in, and compare exactly what each person may access.</p></section>
+  <div class="status" id="apiStatus">Checking the TCOS demo service…</div>
+
+  <section class="guide">
+    <div class="eyebrow">ONE CODEBASE · THREE PRODUCTS</div>
+    <h2>The same system, three faces</h2>
+    <p>AyurCOS, HomeoCOS and AlloCOS are one platform, one API and one database. Only the branding, the consultation form and the medicine system the doctor sees first differ. Each doctor below signs in with the password <b>DoctorDemo2026</b>.</p>
+    <div class="journey">
+      <a class="step" href="tcos-login.html?product=ayurcos"><span class="num" style="background:#123f32">आ</span><span><b>AyurCOS &middot; 9000000001</b><small>Dr. Sri Devi. Prakriti, Vikriti, Agni, Koshtha and Nadi Pariksha. Ayurvedic formulations first.</small></span></a>
+      <a class="step" href="tcos-login.html?product=homeocos"><span class="num" style="background:#1e2a5a">ह</span><span><b>HomeoCOS &middot; 9000000011</b><small>Dr. Kavitha Menon. Case taking, repertorisation, remedy and potency.</small></span></a>
+      <a class="step" href="tcos-login.html?product=allocos"><span class="num" style="background:#02254b">A</span><span><b>AlloCOS &middot; 9000000021</b><small>Dr. Imran Sheikh. Systemic examination, detailed history, molecules and strengths.</small></span></a>
+    </div>
+    <div class="facts"><span>Shared: patients</span><span>Shared: medicine catalogue</span><span>Shared: billing &amp; pharmacy</span><span>Separate: branding</span><span>Separate: consultation form</span></div>
+    <p class="note" style="margin-top:20px"><b>Worth opening in this order:</b> Vijay is patient <b>DEMO-1001</b> at the AyurCOS clinic and <b>ALO-1003</b> at the AlloCOS clinic &mdash; one person, one record, two doctors on two different products. His Ayurvedic antacids and his allopathic Pantoprazole sit in one medication history, which is the only way anyone notices he is being treated twice for the same reflux. Neither doctor can read the other&rsquo;s clinical notes without his consent.</p>
+  </section>
+
+  <section class="guide">
+    <div class="eyebrow">START HERE · ONE CONNECTED PATIENT STORY</div>
+    <h2>Follow Vijay through the clinic</h2>
+    <p>Open these in order. Each button signs you into the correct demo role and takes you directly to the sample record.</p>
+    <div class="journey">
+      <a class="step" href="tcos-login.html?demo=doctor&page=today"><span class="num">1</span><span><b>Appointment arrives</b><small>See Vijay booked at 10:15 and today’s waiting room.</small></span></a>
+      <a class="step" href="tcos-login.html?demo=doctor&page=vijay"><span class="num">2</span><span><b>Doctor opens Vijay</b><small>Two visits, diagnosis, vitals, advice and CBC results.</small></span></a>
+      <a class="step" href="tcos-login.html?demo=doctor&page=prescriptions"><span class="num">3</span><span><b>Prescription is issued</b><small>Vijay’s fixed prescription and the clinic’s issued list.</small></span></a>
+      <a class="step" href="tcos-login.html?demo=pharmacist"><span class="num">4</span><span><b>Pharmacy dispenses</b><small>Real batches, low-stock warnings and near expiry stock.</small></span></a>
+      <a class="step" href="tcos-login.html?demo=front-desk&page=billing"><span class="num">5</span><span><b>Front desk collects</b><small>Paid, part-paid and ₹400 outstanding examples.</small></span></a>
+      <a class="step" href="p.html#demo-vijay-read-only-link-2026-x"><span class="num">6</span><span><b>Vijay sees the result</b><small>Read-only medicines, advice, visits and lab report.</small></span></a>
+    </div>
+    <div class="facts"><span>15 patients</span><span>11 today</span><span>10-medicine care plan</span><span>8 diagnostic reports</span><span>5 invoices</span><span>3 support tickets</span></div>
+  </section>
+  <section class="grid">
+    <article class="card"><h2>Platform admin</h2><div class="row"><b>Login</b> admin@tcos.demo</div><div class="row"><b>Password</b> AdminDemo2026</div><a class="button" href="admin.html">Open admin console</a></article>
+    <article class="card"><h2>Doctor</h2><div class="row"><b>Login</b> 9000000001</div><div class="row"><b>Password</b> DoctorDemo2026</div><a class="button" href="tcos-login.html?demo=doctor">Open as doctor</a></article>
+    <article class="card"><h2>Front desk</h2><div class="row"><b>Login</b> 9000000002</div><div class="row"><b>Password</b> FrontDesk2026</div><a class="button" href="tcos-login.html?demo=front-desk">Open as front desk</a></article>
+    <article class="card"><h2>Pharmacist</h2><div class="row"><b>Login</b> 9000000003</div><div class="row"><b>Password</b> Pharmacy2026</div><a class="button" href="tcos-login.html?demo=pharmacist">Open as pharmacist</a></article>
+    <article class="card"><h2>Clinical assistant</h2><div class="row"><b>Login</b> 9000000004</div><div class="row"><b>Password</b> Assistant2026</div><a class="button" href="tcos-login.html?demo=assistant">Open as clinical assistant</a></article>
+    <article class="card patient"><h2>Patient Vijay</h2><div class="row"><b>Number</b> DEMO-1001</div><div class="row">Patients use a secure read-only link—no password.</div><a class="button" href="p.html#demo-vijay-read-only-link-2026-x">Open Vijay's record</a></article>
+    <article class="card patient"><h2>Patient Lakshmi</h2><div class="row"><b>Number</b> DEMO-1006</div><div class="row">Four dates of HbA1c, cholesterol and cardiac care.</div><a class="button" href="p.html#demo-lakshmi-read-only-link-2026-x">Open Lakshmi's history</a></article>
+  </section>
+  <p class="note"><b>Demo only:</b> all names and clinical activity here are fictional sample records. Do not enter real patient information.</p>
+</main>
+<script>
+/* The same base every other screen resolves, so this page cannot report the
+   service down while the app is talking to a different worker - it was
+   pinned to a demo worker that no longer answers. */
+const API_BASE = (['localhost','127.0.0.1'].includes(location.hostname))
+  ? 'http://127.0.0.1:8787'
+  : 'https://tcos-api.hello-tharigopula.workers.dev';
+fetch(API_BASE + '/health').then(r=>{if(!r.ok)throw 0;return r.json()}).then(()=>{
+  document.getElementById('apiStatus').textContent='TCOS demo service is online and ready.';
+}).catch(()=>{
+  const box=document.getElementById('apiStatus');box.className='status bad';box.textContent='The TCOS demo API could not be reached. Please try again in a moment.';
+});
+</script></body></html>

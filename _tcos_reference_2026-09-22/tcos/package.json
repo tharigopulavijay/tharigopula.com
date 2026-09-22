@@ -1,0 +1,33 @@
+{
+  "name": "tharigopula-clinical-os",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node scripts/run-tests.js",
+    "dev": "wrangler dev",
+    "build": "node scripts/build-public.js",
+    "//deploy:api": "Worker releases are committed, migration-clean, fully tested, dry-run, strict and tagged with their git commit. The guarded script refuses any missing condition.",
+    "deploy:api": "node scripts/deploy-api.js production",
+    "deploy:api:staging": "node scripts/deploy-api.js staging",
+    "//deploy:web": "NEVER 'wrangler pages deploy .' here. The repository root holds .dev.vars, the Worker source, the schema, the migrations and the internal documents, and Pages publishes every one of them. On 7 Sep 2026 that is exactly how the OpenAI key and the password pepper were served to the public internet. deploy-web.js builds dist/ from an allow-list, refuses if a secret shape is in it, and tags the deployment with the commit.",
+    "deploy:web": "node scripts/deploy-web.js production",
+    "deploy:web:preview": "node scripts/deploy-web.js preview",
+    "deploy:web:staging": "node scripts/deploy-web.js staging",
+    "db:local": "wrangler d1 execute tcos-db --local --file=schema.sql -y",
+    "//db:remote": "Removed 7 Sep 2026. It applied the old monolithic schema.sql to the PRODUCTION database with -y - no prompt, and bypassing the migration ledger entirely. Production schema changes go through the migration commands below and nothing else.",
+    "db:migrate:local": "wrangler d1 migrations apply tcos-db --local",
+    "//db:migrate:remote": "Guarded, and currently REFUSES. Production's ledger is empty while the schema is already at 035, so wrangler sees the full 001-036 history as pending and would replay it against live clinical data. Baseline the ledger first - scripts/migrate-remote.js explains how.",
+    "db:migrate:remote": "node scripts/migrate-remote.js"
+  },
+  "dependencies": {
+    "@tharigopula/core": "github:tharigopulavijay/thari-core",
+    "jose": "^6.2.12",
+    "pdf-lib": "^1.17.1",
+    "wrangler": "^4.128.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.1": true,
+    "workerd@1.20260831.1": true
+  },
+  "//dependencies": "@tharigopula/core is the shared foundation at platform/core in the workspace - primitives, auth and comms that every Tharigopula product uses. A git dependency rather than a file: path so it resolves the same from the main checkout and any worktree, and so a clone on another machine works."
+}

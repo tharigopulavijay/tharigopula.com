@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Create your TCOS account</title>
+<meta name="description" content="Tell us about your practice. We verify your registration with the council, then set up your clinic and call you. No card, and nothing to pay to start.">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="index.html" aria-label="TCOS — Clinical Operating System">
+      <img src="assets/tcos-logo.png" alt="TCOS — Clinical Operating System">
+    </a>
+    <nav>
+      <a href="products.html" class="hide-sm">Products</a>
+      <a href="features.html" class="hide-sm">What it does</a>
+      <a href="how.html" class="hide-sm">Getting started</a>
+      <a href="tcos-login.html">Sign in</a>
+    </nav>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="wrap">
+    <div class="eyebrow">Create account</div>
+    <h1>Tell us about your practice</h1>
+    <p>Three short steps, about two minutes. We call you within two working days &mdash; there is nothing to pay to get started, and no card is needed.</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap apply">
+    <div>
+      <ul class="assure">
+        <li><b>Your details are not published anywhere.</b> They are used to verify your registration and set up your clinic.</li>
+        <li><b>You keep your patient data.</b> It is yours, and you can ask for all of it at any time.</li>
+        <li><b>Not sure which product?</b> Leave it as it is &mdash; we will work it out from your qualification when we call.</li>
+        <li><b>Nothing is created yet.</b> Sending this does not make an account. We verify first, then activate.</li>
+      </ul>
+      <p style="color:var(--muted);font-size:14px;margin-top:22px">Already have an account? <a href="tcos-login.html">Sign in here</a>.</p>
+      <p style="color:var(--muted);font-size:14px;margin-top:6px">Curious what happens next? <a href="how.html">How we verify a doctor</a>.</p>
+    </div>
+
+    <form class="apply-form" id="applyForm" novalidate>
+      <ol class="wizard-rail" id="wizardRail">
+        <li data-state="now"><small>Step 1</small>About you</li>
+        <li><small>Step 2</small>Registration</li>
+        <li><small>Step 3</small>Your clinic</li>
+      </ol>
+
+      <div id="applyMsg" class="msg" role="alert"></div>
+
+      <!-- ------------------------------------------------- step 1 --- -->
+      <div class="wizard-step" data-step="1">
+        <h3>About you</h3>
+        <p class="hint">The name and number we should use when we call.</p>
+
+        <label class="field"><span>Name <span class="req">*</span></span>
+          <input id="fullName" name="fullName" required autocomplete="name">
+        </label>
+
+        <div class="field-row">
+          <label class="field"><span>Mobile <span class="req">*</span></span>
+            <input id="mobile" name="mobile" required inputmode="tel" autocomplete="tel">
+            <small>We call this number.</small>
+          </label>
+          <label class="field"><span>Email</span>
+            <input id="email" name="email" type="email" autocomplete="email">
+            <small>Where your sign-in details go.</small>
+          </label>
+        </div>
+
+        <div class="field-row">
+          <label class="field"><span>Qualification</span>
+            <input id="qualification" name="qualification" list="qualificationList" autocomplete="off">
+            <datalist id="qualificationList">
+              <option value="BAMS"></option><option value="MD (Ayurveda)"></option>
+              <option value="BHMS"></option><option value="MD (Homoeopathy)"></option>
+              <option value="MBBS"></option><option value="MD"></option>
+              <option value="MS"></option><option value="BUMS"></option>
+              <option value="BSMS"></option><option value="BNYS"></option>
+              <option value="BPT"></option><option value="MPT"></option>
+              <option value="BDS"></option><option value="MDS"></option>
+            </datalist>
+          </label>
+          <label class="field"><span>Which system do you practise?</span>
+            <select id="discipline" name="discipline">
+              <option value="ayurcos">Ayurveda</option>
+              <option value="homeocos">Homeopathy</option>
+              <option value="allocos">Allopathy</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <!-- ------------------------------------------------- step 2 --- -->
+      <div class="wizard-step" data-step="2" hidden>
+        <h3>Your registration</h3>
+        <p class="hint">This is the part we actually check, so it matters more than the rest. If you do not have it to hand, leave it and tell us on the call.</p>
+
+        <label class="field"><span>Registration number</span>
+          <input id="registrationNo" name="registrationNo" autocomplete="off">
+        </label>
+
+        <label class="field"><span>Council</span>
+          <input id="council" name="council" list="councilList" autocomplete="off">
+          <datalist id="councilList">
+            <option value="AYUSH"></option>
+            <option value="Central Council of Indian Medicine"></option>
+            <option value="Central Council of Homoeopathy"></option>
+            <option value="National Medical Commission"></option>
+            <option value="Dental Council of India"></option>
+            <option value="State Medical Council"></option>
+            <option value="State Ayurveda Council"></option>
+            <option value="State Homoeopathy Council"></option>
+          </datalist>
+          <small>The council you are registered with, not the one that issued your degree.</small>
+        </label>
+      </div>
+
+      <!-- ------------------------------------------------- step 3 --- -->
+      <div class="wizard-step" data-step="3" hidden>
+        <h3>Your clinic</h3>
+        <p class="hint">So we set the right thing up before we call you.</p>
+
+        <label class="field"><span>Clinic name <span class="req">*</span></span>
+          <input id="clinicName" name="clinicName" required autocomplete="organization">
+        </label>
+
+        <div class="field-row">
+          <label class="field"><span>State</span>
+            <input id="state" name="state" list="stateList" autocomplete="address-level1">
+            <datalist id="stateList"></datalist>
+          </label>
+          <label class="field"><span>City</span>
+            <input id="city" name="city" list="cityList" autocomplete="address-level2">
+            <datalist id="cityList"></datalist>
+            <small>Type if your town is not listed.</small>
+          </label>
+        </div>
+
+        <label class="field"><span>What kind of place is it?</span>
+          <select id="facilityType" name="facilityType">
+            <option value="clinic">A clinic — one doctor</option>
+            <option value="multi_doctor">A clinic — several doctors together</option>
+            <option value="hospital">A hospital or multi-speciality centre</option>
+          </select>
+        </label>
+
+        <div class="field-row">
+          <label class="field"><span>How many doctors?</span>
+            <input id="doctorCount" name="doctorCount" type="number" min="1" max="9999" value="1" autocomplete="off">
+            <small>Practitioners who see patients.</small>
+          </label>
+          <label class="field"><span>How many staff?</span>
+            <input id="staffCount" name="staffCount" type="number" min="0" max="9999" autocomplete="off">
+            <small>Front desk, pharmacy, assistants.</small>
+          </label>
+        </div>
+
+        <label class="field"><span>Anything else we should know?</span>
+          <textarea id="message" name="message" autocomplete="off"></textarea>
+        </label>
+      </div>
+
+      <!-- The security check lives OUTSIDE the steps on purpose. Turnstile
+           renders once, when the page loads, and a widget first rendered
+           inside a hidden container is a widget that may never produce a
+           token - which is silent, and costs the application. -->
+      <div id="applicationChallenge" hidden></div>
+
+      <div class="wizard-nav">
+        <button class="btn btn-ghost" type="button" id="backBtn" hidden>Back</button>
+        <button class="btn btn-primary" type="button" id="nextBtn">Continue</button>
+        <button class="btn btn-primary" type="submit" id="applyBtn" hidden>Create account</button>
+      </div>
+
+      <p style="color:var(--muted);font-size:12.8px;margin:13px 0 0;text-align:center">
+        Submitting this does not create an account. We verify first, then activate.
+      </p>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>A Tharigopula Technologies product</div>
+    <nav>
+      <a href="products.html">Products</a>
+      <a href="features.html">What it does</a>
+      <a href="how.html">Getting started</a>
+      <a href="tcos-login.html">Sign in</a>
+      <button type="button" class="btn btn-ghost btn-sm install-cta" data-tcos-install hidden>Install app</button>
+      <a href="mailto:hello@tharigopula.com">hello@tharigopula.com</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="js/tcos-api.js"></script>
+<script src="js/security-challenge.js"></script>
+<script src="js/india-locations.js"></script>
+<script src="js/app-install.js"></script>
+<script>
+(() => {
+  /* State and city suggest from each other: picking a state narrows the
+     cities, and typing a city that belongs to only one state fills the
+     state in. Both stay free text, because no list of Indian towns is
+     complete and a form that refuses a real address is worse than none. */
+  IndiaLocations.connect(
+    document.getElementById('state'), document.getElementById('stateList'),
+    document.getElementById('city'), document.getElementById('cityList'));
+
+  const form = document.getElementById('applyForm');
+  const submitBtn = document.getElementById('applyBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const backBtn = document.getElementById('backBtn');
+  const box = document.getElementById('applyMsg');
+  const rail = document.getElementById('wizardRail');
+  const steps = [...form.querySelectorAll('.wizard-step')];
+
+  TCOSChallenge.setup('applicationChallenge', 'doctor_application', TCOSApi.baseUrl())
+    .catch(error => say(error.message, 'err'));
+
+  const say = (text, kind) => {
+    box.className = 'msg ' + kind;
+    box.textContent = text;
+    box.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  };
+  const clearSay = () => { box.className = 'msg'; box.textContent = ''; };
+
+  /* ---------------- the three steps ----------------
+
+     Vijay: "i am clicking on create it is scrolling down and there entering
+     details it is not that good presentation ... make it present well."
+
+     Fourteen fields in one column below the fold is where people leave: you
+     cannot see how far it goes, so you assume it goes on forever. Same
+     fields, same payload - shown three at a time with the end in sight. */
+  let current = 0;
+
+  /* What must be filled before a step will let go of you. Only the three
+     the server itself insists on: a form that argues about optional fields
+     is a form that gets abandoned over a council name. */
+  const REQUIRED = {
+    0: [['fullName', 'your name'], ['mobile', 'your mobile number']],
+    1: [],
+    2: [['clinicName', 'your clinic name']]
+  };
+
+  function show(index) {
+    current = index;
+    steps.forEach((step, i) => { step.hidden = i !== index; });
+    [...rail.children].forEach((item, i) => {
+      if (i < index) item.dataset.state = 'done';
+      else if (i === index) item.dataset.state = 'now';
+      else item.removeAttribute('data-state');
+    });
+    backBtn.hidden = index === 0;
+    const last = index === steps.length - 1;
+    nextBtn.hidden = last;
+    submitBtn.hidden = !last;
+    /* Focus the first field so a keyboard or a screen reader lands where
+       the typing happens, not back at the top of the page. */
+    const first = steps[index].querySelector('input, select, textarea');
+    if (first) first.focus({ preventScroll: true });
+    form.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  }
+
+  function stepIsComplete(index) {
+    for (const [id, label] of REQUIRED[index]) {
+      const field = document.getElementById(id);
+      if (!field.value.trim()) {
+        say('Please fill in ' + label + '.', 'err');
+        field.focus();
+        return false;
+      }
+    }
+    return true;
+  }
+
+  nextBtn.addEventListener('click', () => {
+    clearSay();
+    if (!stepIsComplete(current)) return;
+    show(Math.min(current + 1, steps.length - 1));
+  });
+
+  backBtn.addEventListener('click', () => {
+    clearSay();
+    show(Math.max(current - 1, 0));
+  });
+
+  /* Enter on a text field should advance, not submit from step one. A
+     doctor who presses it on her name and gets "fill in your clinic name"
+     has been told off for using the keyboard normally. */
+  form.addEventListener('keydown', event => {
+    if (event.key !== 'Enter') return;
+    if (event.target.tagName === 'TEXTAREA') return;
+    if (current === steps.length - 1) return;
+    event.preventDefault();
+    nextBtn.click();
+  });
+
+  /* Submitting is the end of the doctor's part, so the form is replaced by
+     what happens next rather than left sitting there looking unsent. She
+     has just typed her registration number into a stranger's website: the
+     three things she needs are that it arrived, that a human checks it
+     before anything is created, and how to reach us if we go quiet. */
+  const done = (applicationId) => {
+    const panel = document.createElement('div');
+    panel.className = 'apply-form';
+    panel.setAttribute('role', 'status');
+    panel.innerHTML =
+      '<div class="eyebrow">Application received</div>' +
+      '<h3 style="margin:.3em 0 .5em;font-size:1.35rem">Thank you, we have it.</h3>' +
+      '<p>We check your registration with the council before anything is created. ' +
+      'That is usually within <strong>two working days</strong>.</p>' +
+      '<p>Once it is verified we create your clinic and send your sign-in details ' +
+      'to the mobile number and email you gave us. <strong>There is nothing to pay ' +
+      'and no account exists yet</strong> - so there is nothing to lose if you hear ' +
+      'nothing today.</p>' +
+      /* The install offer belongs HERE more than anywhere else on the site.
+         She is as interested as she will ever be, and the icon will be
+         waiting on her phone on the day we activate her. */
+      '<p style="margin-bottom:.4em"><strong>While you wait:</strong> add TCOS to your ' +
+      'phone now, and it will be there when we activate you.</p>' +
+      '<p style="margin-top:0"><button type="button" class="btn btn-ghost install-cta" ' +
+      'data-tcos-install hidden>Install app</button></p>' +
+      '<p style="margin-bottom:.4em">Any questions, or if you have not heard from us ' +
+      'in three working days:</p>' +
+      '<p style="margin-top:0"><a href="mailto:hello@tharigopula.com">hello@tharigopula.com</a></p>' +
+      (applicationId
+        ? '<p class="small" style="opacity:.7;margin-bottom:0">Your reference: <code>' +
+          String(applicationId).replace(/[^A-Za-z0-9_-]/g, '') + '</code> - quote this if you write to us.</p>'
+        : '');
+    form.replaceWith(panel);
+    /* The button above was created after app-install.js wired the page, so
+       it has to be told about. */
+    if (window.TCOSInstall) window.TCOSInstall.wireAll();
+    panel.scrollIntoView({ block: 'center', behavior: 'smooth' });
+  };
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    clearSay();
+    if (!stepIsComplete(current)) return;
+
+    const value = id => document.getElementById(id).value.trim();
+    const details = {
+      fullName: value('fullName'), mobile: value('mobile'), email: value('email'),
+      qualification: value('qualification'), registrationNo: value('registrationNo'),
+      council: value('council'), clinicName: value('clinicName'),
+      city: value('city'), state: value('state'),
+      discipline: document.getElementById('discipline').value,
+      facilityType: document.getElementById('facilityType').value,
+      doctorCount: value('doctorCount'), staffCount: value('staffCount'),
+      message: value('message'), source: 'landing'
+    };
+
+    /* The three the server insists on, checked together - a step can be
+       skipped backwards and forwards, so "this step is complete" is not
+       the same as "the form is complete". */
+    if (!details.fullName || !details.mobile || !details.clinicName) {
+      return say('Please fill in your name, mobile number and clinic name.', 'err');
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+    try {
+      /* This used to sit up in the object literal above, OUTSIDE this try.
+         When the security check could not produce a token it threw there,
+         so nothing caught it: no message, no button change, no error a
+         doctor could act on. She pressed Create account and the page did
+         precisely nothing. Every applicant was lost in silence. */
+      details.turnstileToken = await TCOSChallenge.token('doctor_application');
+      const data = await window.TCOSApi.apply(details);
+      form.querySelectorAll('input, textarea').forEach(field => { field.value = ''; });
+      done(data.applicationId);
+    } catch (error) {
+      /* The server's own message is the useful one - "you already have an
+         account", "we are already reviewing this". Only fall back when the
+         request never got there. */
+      say(error.message || 'We could not reach the server. Please try again in a moment.', 'err');
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Create account';
+    } finally {
+      TCOSChallenge.reset('doctor_application');
+    }
+  });
+})();
+</script>
+</body>
+</html>

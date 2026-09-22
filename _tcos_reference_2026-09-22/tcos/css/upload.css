@@ -1,0 +1,69 @@
+/* =========================================================================
+   The patient's upload page.
+
+   Held in one hand, at a counter, by somebody using it once. So it is
+   built for a thumb: one very large target, generous spacing, nothing
+   small enough to need aiming at. Single-theme on purpose - this is a
+   two-minute errand, not an app anyone configures.
+   ========================================================================= */
+
+:root{
+  --ground:#F4F7F6; --card:#FFFFFF;
+  --ink:#0F1E1C; --ink-2:#3D4E48; --muted:#6E7F78;
+  --line:#DEE7E2; --deep:#1F5C42; --ok:#276444; --bad:#9C2B1A;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--ink);
+  font-family:"DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:17px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  min-height:100dvh; display:flex; flex-direction:column;
+}
+.wrap{
+  width:100%; max-width:520px; margin:0 auto; padding:0 16px 30px;
+  flex:1; display:flex; flex-direction:column;
+}
+.loading{padding:60px 0; text-align:center; color:var(--muted)}
+
+.head{padding:28px 0 18px}
+.head h1{font-size:1.55rem; line-height:1.2; margin:0 0 6px; letter-spacing:-.015em}
+.head p{margin:0; color:var(--ink-2); font-size:.98rem}
+
+.card{
+  background:var(--card); border:1px solid var(--line);
+  border-radius:6px; padding:16px 18px; margin-bottom:14px;
+}
+.card h2{font-size:.72rem; letter-spacing:.11em; text-transform:uppercase;
+  color:var(--muted); margin:0 0 8px}
+.card.message{text-align:center; padding:44px 22px; margin-top:40px}
+.card.message h1{font-size:1.3rem; margin:0 0 8px}
+.card.message p{margin:0; color:var(--ink-2)}
+
+.sent ul{margin:0; padding-left:20px}
+.sent li{padding:2px 0; color:var(--ink-2); font-size:.94rem; overflow-wrap:anywhere}
+
+/* The one thing on the page. Big enough to hit without looking, because
+   she is holding a report in the other hand. */
+.pick{
+  display:block; text-align:center; cursor:pointer;
+  background:var(--deep); color:#fff; border-radius:6px;
+  padding:22px 18px; font-size:1.06rem; font-weight:700;
+  margin-bottom:14px; user-select:none;
+}
+.pick:active{filter:brightness(1.12)}
+.pick.off{background:#8FA69A; cursor:default}
+
+.note{min-height:22px; font-size:.9rem; padding:0 2px 8px}
+.note.ok{color:var(--ok); font-weight:600}
+.note.bad{color:var(--bad); font-weight:600}
+
+.guide p{margin:0 0 6px; font-size:.92rem; color:var(--ink-2)}
+.guide p:last-child{margin-bottom:0}
+.guide .small{font-size:.84rem; color:var(--muted)}
+
+footer{margin-top:auto; padding-top:24px; text-align:center}
+footer p{margin:0 0 6px; font-size:.85rem; color:var(--muted)}
+footer .credit{
+  font-size:.72rem; letter-spacing:.04em; padding-top:10px;
+  border-top:1px solid var(--line);
+}

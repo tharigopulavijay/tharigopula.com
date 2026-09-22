@@ -1,0 +1,262 @@
+TCOS - full commit history
+Packaged 22 September 2026 from 6b8efb4.
+The .git directory is deliberately not in the zip: a secret was
+committed to this repository in September and is still in the old
+objects. This is the same story without the objects.
+
+6b8efb4  2026-09-21  Her daily screens become cards on a phone
+795f068  2026-09-21  A sign-in is not usage, and a code goes where she can read it
+d8ae040  2026-09-21  Three test hospitals, held at a paid package for good
+0d16f74  2026-09-21  Open a customer, and make the tab bar visible
+3e24b36  2026-09-21  Say out loud that deploy:web does not move the owner console
+ae1058e  2026-09-21  The owner console had no navigation on a phone at all
+2c83d96  2026-09-20  Hide the recovery button that cannot possibly work now
+32a3e06  2026-09-20  Point the console at an address that actually resolves
+fc7aca9  2026-09-20  A console you can sign into from any device, and a way back if you lose one
+d976177  2026-09-20  Sign in with your fingerprint, and stop depending on a Cloudflare account
+0d16c03  2026-09-20  Recovery follows who Cloudflare Access says you are
+d4454c2  2026-09-20  The owner console is an app now, with its own icon and its own link
+9eed50d  2026-09-20  Three seconds, then something. Never a white screen.
+8502be2  2026-09-20  The password was never wrong. The door was.
+b49d3cc  2026-09-20  Every button is its own page, and the app installs before she signs in
+1d4898a  2026-09-19  An Install button, and a manifest Chrome can actually see
+e1c9744  2026-09-19  The console tells you who Cloudflare Access thinks you are
+fc99f7e  2026-09-19  One prescription for all three products, in three colours
+11ab988  2026-09-19  TCOS installs on a phone, and works with a thumb
+ddd265f  2026-09-19  Stop asking the doctor which system a medicine belongs to
+121f02b  2026-09-19  One link per screen, and the console refreshes itself
+88892d0  2026-09-19  Choose the package and demo/live at the moment you approve
+4481ea5  2026-09-19  Twelve demonstration clinics: every product, every package
+6b328fb  2026-09-19  Demo accounts, and a payment that is a payment
+a989136  2026-09-19  A new doctor no longer arrives to an empty examination form
+e325b07  2026-09-19  Her own examination fields, and six of them on the paper
+72a3899  2026-09-18  Finish the lead inbox: gate it, and let her see it
+bf9e457  2026-09-18  The last reference, in wrangler.jsonc
+0179c9c  2026-09-18  Take one venture's domain name out of TCOS
+1bfc0eb  2026-09-18  Bookings from every platform, in the inbox she already watches
+273e587  2026-09-18  WhatsApp transport moves to the core; TCOS keeps the words
+c52a9b2  2026-09-17  TCOS consumes the shared core instead of its own copies
+affc553  2026-09-14  Web and domains in the owner console: who asked, who has it, what it costs
+9c0adac  2026-09-14  Coupons: a code a doctor can remember, bolted to a discount that is real
+3329f9c  2026-09-14  Owner dashboard: the business on one screen
+c021605  2026-09-14  Changing your password no longer signs you out
+64c45a4  2026-09-12  Guard Turnstile enforcement by acknowledgement, not by a bare 'must be true'
+6cfed06  2026-09-12  Turn Turnstile enforcement off: it was locking the owner out of production
+2d3a755  2026-09-12  Doctors' own domains: a certificate, a route, and an owner-side switch
+bc9b4cd  2026-09-12  Name Cloudflare's own beacon rather than fighting it
+8e61a12  2026-09-12  One named clinic address, so the path is provable without waiting
+0d294b2  2026-09-12  A pattern route needs its zone named
+53d31c3  2026-09-12  Doctors move to one level, which is where the free certificate reaches
+87174bc  2026-09-12  A clinic's own address now serves her page, not her data
+445a0f7  2026-09-12  Clinic setup lets the web settings go, so there is one place for them
+78fc966  2026-09-12  Web: the doctor's own page gets its own screen
+3c8d25b  2026-09-12  Say what the plan is missing, on the screen she was about to use it on
+b3be3d4  2026-09-12  The plan controlled almost nothing, so the pricing page was a lie
+f0a9a79  2026-09-12  A cancelled subscription is history, not status
+3344af2  2026-09-12  An unfinished payment must never stop somebody buying a bigger plan
+e86c919  2026-09-12  The plans screen was contradicting itself, and the wrong half was reassuring
+8feb78f  2026-09-11  Stop charging for patients, which cost us nothing
+ac7f994  2026-09-11  The plans screen says what a doctor gets, not just what it costs
+60cba6c  2026-09-10  The desk has to work without the scratchpad table, and now that is proven
+7776041  2026-09-10  The leak verifier has never made a single request
+b7487c7  2026-09-10  The consultation she has not finished, and telling the desk somebody walked in
+7faae8e  2026-09-10  Cache rules were fighting each other
+99cfeb3  2026-09-10  The patient registers herself while she waits
+ef98080  2026-09-10  Alerts move to the rail, where a doctor will actually see them
+919a48c  2026-09-10  The patient sends her own report, by scanning a code at the counter
+015ccfd  2026-09-10  Never cache the page, always cache the asset
+2b62e1b  2026-09-10  The plan tables grow, and Upload sits where her hand already is
+c7a6210  2026-09-10  Diagnostics is the same sheet too
+25b03c4  2026-09-10  The plan is the page it prints as, not a form beside it
+8c3cb61  2026-09-10  An empty diagnostics table, and somewhere to put a report
+85fc57b  2026-09-10  Fingerprint the assets, because "I see no change" was usually true
+869b733  2026-09-10  The desk never started, and node --check said it was fine
+263fd96  2026-09-10  The plan, the diagnostics and the alerts a doctor needs on one screen
+9f8dad9  2026-09-10  Open the consultation, not a dialog; and let the rail shrink
+f4caa67  2026-09-10  The consultation desk: one screen, and the doctor writes on the sheet
+51ebbc1  2026-09-10  The doctor's screen was still drawing its own prescription
+20efe49  2026-09-10  Record allergies, and put the patient number and age on the sheet
+0be99ff  2026-09-10  Pass the registration number through to the patient's sheet
+e53c507  2026-09-10  Drop the review tick and the movement column, fix the table, add the plan
+6133c96  2026-09-10  Drop the "Prescription" heading
+68aed5d  2026-09-10  Rebuild the sheet to the compact layout
+6af0ca4  2026-09-10  One prescription document, rendered for whoever is looking at it
+5f8da3c  2026-09-10  Brief: one prescription document, rendered for doctor and patient
+8d2cc58  2026-09-10  The patient's prescription should look like a prescription
+6bf8cf2  2026-09-10  Send her the sign-in details, and keep an address to recover with
+0e847fb  2026-09-10  Tell the browser what these fields are, so it stops guessing
+19e57fc  2026-09-10  The CSP blocked the API, so the whole app was inert
+fd0fc25  2026-09-09  An undelivered code must not spend the doctor's hourly allowance
+b7918a6  2026-09-09  docs: record verified encrypted D1 backup
+f33c649  2026-09-09  docs: record production security cutover
+eb66836  2026-09-09  security: enforce production owner session boundary
+2ea168d  2026-09-09  ci: update GitHub actions runtime
+d52d741  2026-09-09  docs: add first doctor production pilot gate
+cd4b2d8  2026-09-09  Merge pull request #13 from tharigopulavijay/codex/record-owner-launcher
+36afdb4  2026-09-09  docs: record production owner launcher
+061d7dc  2026-09-09  Merge pull request #12 from tharigopulavijay/codex/fix-owner-test-boundary
+c67845e  2026-09-09  test: make owner boundary check line-ending safe
+59c91c7  2026-09-09  Merge pull request #11 from tharigopulavijay/codex/production-security-bootstrap
+b45bc01  2026-09-09  chore: bootstrap production security identifiers
+90bc5cb  2026-09-09  Merge pull request #10 from tharigopulavijay/codex/restore-production-api-host
+84d6efd  2026-09-09  Keep the production API hostname enabled
+da94ed0  2026-09-09  Merge pull request #9 from tharigopulavijay/codex/production-admin-security
+974d5d5  2026-09-09  Give production admin a same-origin security boundary
+e4bd5e1  2026-09-09  Merge pull request #8 from tharigopulavijay/codex/production-release-049
+db95a1c  2026-09-09  Record production migration 049 release
+c9f2ec2  2026-09-09  Merge pull request #7 from tharigopulavijay/codex/owner-console-foundation
+0984dc3  2026-09-09  Make privacy-safe health insights visible in staging
+a99aa87  2026-09-09  Document owner operations staging release
+7e3194c  2026-09-09  Isolate staging owner console examples
+49af00c  2026-09-09  Build accountable TCOS owner operations
+73f15fa  2026-09-09  Merge pull request #6 from tharigopulavijay/codex/csp-line-ending-fix
+56f219c  2026-09-09  Fix Windows CSP hashes for login scripts
+79185a7  2026-09-09  Merge pull request #5 from tharigopulavijay/codex/admin-recovery-entry
+b12228c  2026-09-09  Keep secure owner recovery reachable
+0ee7cd5  2026-09-09  Merge pull request #4 from tharigopulavijay/codex/access-session-recovery
+f68276f  2026-09-09  Explain expired Access sessions in admin console
+aac3cb8  2026-09-09  Merge pull request #3 from tharigopulavijay/codex/production-release-guard
+64fe32e  2026-09-09  Guard future production migrations after baseline
+cd233ad  2026-09-09  Merge pull request #2 from tharigopulavijay/codex/encrypted-d1-backups
+9ffacdd  2026-09-09  Add encrypted D1 backups and restore rehearsal
+42df29d  2026-09-09  Merge pull request #1 from tharigopulavijay/codex/production-hardening
+a1213eb  2026-09-09  Baseline production safely and add CI gate
+0191eb7  2026-09-09  Add Access-verified owner recovery
+6656afa  2026-09-09  Require fresh authentication for admin changes
+36215a7  2026-09-09  Enforce Cloudflare Access JWTs on staging
+8c0aada  2026-09-09  Correct verified staging migration status
+7f8932a  2026-09-09  Record staging admin Access protection
+72f5315  2026-09-09  Record live staging Turnstile proof
+01177fc  2026-09-09  Enable Turnstile on staging forms
+d1da003  2026-09-09  Harden staging sessions and admin perimeter
+1b453da  2026-09-09  Add exact credential failure throttling
+10c6305  2026-09-09  Harden authentication and session boundaries
+eaaf6a5  2026-09-08  Harden stock patient and consultation transactions
+dac32c2  2026-09-08  Make clinical and financial transitions retry-safe
+dcd6c85  2026-09-08  Record constitution alignment and payment readiness
+7fa69d5  2026-09-08  Make subscription choices readable
+c4ef413  2026-09-08  Fix payment page application shell
+aa85df0  2026-09-08  Automate subscription payment entitlements
+9f8f324  2026-09-08  Keep clinical identity and product context correct
+d3a7478  2026-09-08  Verify production the way an attacker does, and stop scattering the hostname
+6b43640  2026-09-08  docs: record verified staging AI and cloud cleanup
+b0ba811  2026-09-08  fix(admin): keep staging console on staging API
+e864b13  2026-09-08  chore: ignore local smoke-test artifacts
+a72154f  2026-09-08  fix(ai): preserve original page mapping in split PDFs
+9046cea  2026-09-08  Isolate Pages CLI from worktree configs
+b01ea33  2026-09-08  Make Pages releases deterministic on Windows
+2bcb947  2026-09-08  Make shared sign-in neutral and self-healing
+b4a230a  2026-09-08  Make TCOS release runner cross-platform
+95d17b5  2026-09-08  Preserve Worker deploy arguments on Windows
+60f5316  2026-09-08  Rotate password pepper without account lockout
+5cea16d  2026-09-08  Harden AI retention and Worker releases
+b8f02c9  2026-09-08  Cache headers for paths that must never be served
+4b5e35a  2026-09-08  The QC audit was right: fix the portal, the foot-gun and two false claims
+2901e17  2026-09-08  Two ways in that needed no password
+11e8ccf  2026-09-07  Deploy under each project's own production branch
+fbfc91c  2026-09-07  Staging was leaking its pepper too - same build, same guard
+1f015ee  2026-09-07  Stop publishing the repository, and prove it stays stopped
+1e859fa  2026-09-07  Tell the speakers apart by what they say, not by their voice
+4f65b06  2026-09-07  Reminders: tomorrow's patients, one thumb at a time
+5c6fd01  2026-09-07  The scribe, where the doctor actually is
+77905ae  2026-09-07  The AI scribe: listen to a consultation, draft the note
+61cf451  2026-09-07  Make a doctor typing a brand name find the molecule
+63daad0  2026-09-07  On a phone, a receptionist could not open a patient
+26e7a97  2026-09-07  A patient added at the front desk vanished
+8eb03b4  2026-09-07  A message that failed on quota can be sent after an upgrade
+1e92ddf  2026-09-07  Write down the state of the project
+14562f7  2026-09-07  Do not call a correctly-scoped Resend key rejected
+adbb6bc  2026-09-07  Give a doctor a way back into her own account
+7ea0a25  2026-09-07  Make TCOS readable on the console sign-in, and probe for the balance
+76dd6bb  2026-09-07  Money: land on a month that has something in it
+82b0fdb  2026-09-06  Stop gating SMS on a balance we keep misreading
+4ed1116  2026-09-06  Do not blame the payment when we may be reading the wrong number
+73a03ef  2026-09-06  Show in the console whether a message can actually leave
+fa79b82  2026-09-06  Say what is wrong with SMS without sending an SMS
+e49d3bb  2026-09-06  A verification code always goes by SMS
+20a179e  2026-09-06  Send by wa.me link, by WhatsApp API, or by SMS
+2b30261  2026-09-06  WhatsApp reminders and record links, through Meta's Cloud API
+d4058cf  2026-09-06  Capture ABHA, HPR and HFR by hand, before any gateway exists
+be45db9  2026-09-06  Run the FHIR and plans tests with the rest
+40e39b0  2026-09-05  Price against the market, and stop selling what is not built
+29cf339  2026-09-05  Onboard first, verify on a clock, and say why when access stops
+d5f2a0f  2026-09-05  Start ABDM with the half that needs no permission
+70cf8cc  2026-09-04  Record the production release
+88d0e17  2026-09-04  Price the model that actually ran, not the default one
+457005a  2026-09-04  A page whose values were duplicates is not an empty page
+d97de63  2026-09-04  Read the whole document, and stop crying wolf about it
+68edd51  2026-09-04  Read reports overnight at half price
+46e9768  2026-09-04  Calibrate the spend guard against a real document
+0d3e0bd  2026-09-04  Something that watches what the AI spends, and can stop it
+3d6f3c7  2026-09-04  Turn a prescription crash into a sentence she can act on
+a5874d0  2026-09-04  Fix two bugs that stopped an approved doctor using her account
+e571bf2  2026-09-03  Let the extraction model be chosen by evidence, not by opinion
+b1e027a  2026-09-03  Fix staging routing and product-aware dashboard
+137e184  2026-09-03  Add gated OpenAI diagnostic document workflow
+429b9a4  2026-09-03  Establish an isolated TCOS staging release path
+32a3271  2026-09-02  Fix the bug that made the reader return "Something went wrong"
+616eeeb  2026-09-02  Read the whole page, and check whose name is on it
+365267d  2026-09-02  The screen where a doctor checks what the model read
+15a35b4  2026-09-02  Wire the AI report reader, with the wall between it and the record
+3a052d9  2026-09-01  Bring CLAUDE.md back in line with what is actually true
+4c41a33  2026-09-01  Use Vijay's real product logos, at a size a phone can afford
+ff8973a  2026-09-01  Connect TCOS to the control plane, in shadow, without depending on it
+798d107  2026-08-31  Give the doctor somewhere to actually put a file
+7776547  2026-08-30  Move the file SQL out of the router
+f9c3dde  2026-08-30  Store files in R2, and make the certificate a real document
+c86d588  2026-08-30  Warn, give three days, then stop - instead of stopping
+0e04933  2026-08-30  Make every plan state its limits, and make the code stop at them
+29eb364  2026-08-30  Show what each clinic costs to run, and what is left
+5fd6a36  2026-08-30  Point the clinic domain at a name we already own
+1cfbcd1  2026-08-30  Close the fee list gap in the project notes
+e68bd84  2026-08-30  Build the fee list screen, and let a charge be saved from the bill itself
+bc8f9fc  2026-08-30  Add the Team screen controls for a second doctor
+f3c6221  2026-08-30  Let several doctors share one clinic, without moving the tenant boundary
+085e0db  2026-08-30  Build the three screens for timings, days closed, and the web address
+fe63dac  2026-08-30  Give every clinic a real web address, and a schedule that matches how it opens
+2bcbdae  2026-08-30  Stop tracking .dev.vars
+c9bd627  2026-08-30  Walk the product as a doctor, and fix what that turned up
+09dde4f  2026-08-30  Make verification gate three features instead of the front door
+fe90461  2026-08-30  Use the real logos, real place names, and stop assuming every doctor is an Ayurveda doctor
+d5728d3  2026-08-30  Let doctors apply for an account, and make approving one create it
+22ada68  2026-08-30  Make AyurCOS, HomoCOS and AloCOS one product instead of three
+618ef8f  2026-08-28  Rebuild the shell against the reference designs
+dc4f06f  2026-08-28  Write down what TCOS is, so the next session starts knowing
+5a10169  2026-08-28  Take Sri Ashwin out of the product
+3690e3c  2026-08-28  Prove tenant isolation across every module, not just repo.js
+538bf3c  2026-08-27  Align TCOS interface with clinical brand palette
+457aa27  2026-08-27  Replace TCOS platform logo
+c07a06a  2026-08-27  Add the three tabs that make TCOS a business, not a notebook
+70c6433  2026-08-27  Give Today a right-hand column, shortcuts and the week
+3095d66  2026-08-27  Let the doctor give access without giving away the record
+7db83ef  2026-08-27  Open a chart on the patient, not on a page heading
+d792794  2026-08-27  Carry the redesign through consultation, pharmacy and practice
+cb4f331  2026-08-27  Give TCOS an identity instead of an admin theme
+bfc4f10  2026-08-27  Let her type two letters instead of a whole medicine
+68488e1  2026-08-27  Type a medicine, search one bar, and let TCOS number the patients
+e5c4cf6  2026-08-27  Let a doctor's own website post from any domain
+c9aa3a7  2026-08-26  Add copy-paste snippets so any website can feed TCOS
+6fc2912  2026-08-26  Give every doctor a clinic page, generated not integrated
+92324fc  2026-08-26  Add appointments, and make the follow-up date do something
+f964924  2026-08-26  The patient's record now spans every clinic, newest first
+591d44d  2026-08-26  Fix patient identity: a number is a household, and add the lookup screen
+ee40cd5  2026-08-26  Add lab reports and the patient record with trends
+198781a  2026-08-26  Let a doctor set their own practice, not only the console
+2ef2b33  2026-08-26  Rebuild the theme for a clinical tool, and fix a contrast failure
+26cd891  2026-08-26  Add the patient view: a shared link, not an account
+cad5503  2026-08-26  Add the pharmacy screen
+1dc54f4  2026-08-26  Add the consultation screen - the doctor's actual working page
+f794e25  2026-08-26  Persist prescriptions properly; make pharmacy safe at the counter
+b3dd9a5  2026-08-26  Move bootstrap SQL out of the router into platform.js
+b440db7  2026-08-26  Add platform admin auth and doctor onboarding
+e752e72  2026-08-26  Remove the clinic switcher from the prescription; add the patient list
+78cb4e4  2026-08-26  Wire the login and clinic screens to the live API
+106f057  2026-08-26  Add the Worker API: auth, consent, pharmacy, and 21 isolation tests
+81fd2a7  2026-08-26  Add Cloudflare D1 schema: 18 tables, consent model, no Supabase
+973346e  2026-08-26  Stop tracking .wrangler cache
+3073246  2026-08-26  Add Cloudflare Pages _headers with noindex
+de743e8  2026-08-26  Remove real contact details from the demo seed
+f6219e6  2026-08-26  Split into two product lines: doctors first, clinics later
+0157408  2026-08-26  Add plans, per-clinic entitlements, trials and team access
+9fbe421  2026-08-25  Add noindex headers and robots.txt before first deploy
+791b45a  2026-08-25  TCOS - Tharigopula Clinical OS, first commit

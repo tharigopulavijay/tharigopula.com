@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="robots" content="noindex,nofollow">
+<title>Reminders | TCOS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tcos.css">
+<style>
+/* Built for a thumb. This is worked through standing at a desk at the end
+   of the day, often on a phone, one patient at a time - so the send button
+   is the biggest thing on each row and the rows are tall enough to tap
+   without looking. */
+.rem-row {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 4px; border-bottom: 1px solid var(--line, #e6edf0);
+}
+.rem-row:last-child { border-bottom: 0; }
+.rem-when {
+  font-variant-numeric: tabular-nums; font-weight: 600;
+  min-width: 62px; flex: none;
+}
+.rem-who { flex: 1; min-width: 0; }
+.rem-who b { display: block; }
+.rem-who small { color: var(--muted, #6a7a83); }
+.rem-text {
+  flex: 2; min-width: 0; font-size: .82rem; color: var(--muted, #6a7a83);
+  line-height: 1.4;
+}
+.rem-send { flex: none; }
+
+/* Already messaged is shown, not hidden: the desk needs to see it was done,
+   and hiding the row would make the list look like it had entries missing. */
+.rem-row.done { opacity: .55; }
+.rem-row.done .rem-send { pointer-events: none; }
+
+@media (max-width: 760px) {
+  .rem-row { flex-wrap: wrap; }
+  .rem-text { flex-basis: 100%; order: 3; }
+  .rem-send { order: 2; }
+}
+</style>
+</head>
+<body>
+<div class="console">
+  <nav class="rail"></nav>
+
+  <main class="workspace">
+    <header>
+      <div>
+        <h1>Reminders</h1>
+        <p class="muted">Tomorrow's patients. Tap to send on WhatsApp — the message is already written.</p>
+      </div>
+      <div class="spacer"></div>
+      <label class="field" style="max-width:180px">
+        <span>Day</span><input type="date" id="remDay">
+      </label>
+    </header>
+
+    <div id="pageMsg"></div>
+
+    <!-- Says which of two worlds the clinic is in. Before Meta approves the
+         templates this list IS the feature; after, it becomes the exception
+         list for people the automatic run could not reach. -->
+    <div class="notice info" style="max-width:none" id="remMode"></div>
+
+    <div class="panel">
+      <header><h2>Tomorrow</h2><div class="spacer"></div><span class="muted" id="remCount"></span></header>
+      <div id="remList"><div class="empty">Loading…</div></div>
+    </div>
+  </main>
+</div>
+
+<script src="js/app-boot.js"></script>
+<script src="js/tcos-api.js"></script>
+<script src="js/products.js"></script>
+<script src="js/app-install.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/reminders.js"></script>
+<script src="js/password-reveal.js"></script>
+</body>
+</html>
