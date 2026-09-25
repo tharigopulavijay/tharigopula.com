@@ -1,0 +1,2 @@
+FROM datastudio-audit-build:20260925
+RUN npm ci --no-audit --no-fund
