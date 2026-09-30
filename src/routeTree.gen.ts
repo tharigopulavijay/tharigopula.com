@@ -32,6 +32,7 @@ import { Route as LiveDemosAutomationRouteImport } from './routes/live-demos.aut
 import { Route as LiveDemosBusinessSoftwareRouteImport } from './routes/live-demos.business-software'
 import { Route as LiveDemosMobileAppsRouteImport } from './routes/live-demos.mobile-apps'
 import { Route as LiveDemosWebsitesRouteImport } from './routes/live-demos.websites'
+import { Route as PayZnuffiRouteImport } from './routes/pay.znuffi'
 import { Route as PortfolioIndexRouteImport } from './routes/portfolio.index'
 import { Route as PortfolioSlugRouteImport } from './routes/portfolio.$slug'
 import { Route as ShowcaseIndexRouteImport } from './routes/showcase.index'
@@ -42,7 +43,10 @@ import { Route as ShowcaseMobileAppsRouteImport } from './routes/showcase.mobile
 import { Route as ShowcaseWebsitesRouteImport } from './routes/showcase.websites'
 import { Route as WebsiteStudioIndexRouteImport } from './routes/website-studio.index'
 import { Route as WebsiteStudioSlugRouteImport } from './routes/website-studio.$slug'
+import { Route as PayZnuffiCompleteRouteImport } from './routes/pay.znuffi.complete'
 import { Route as ShowcaseTemplatesSlugRouteImport } from './routes/showcase.templates.$slug'
+import { Route as ApiPaymentsRazorpayWebhookRouteImport } from './routes/api.payments.razorpay.webhook'
+import { Route as ApiPaymentsZnuffiCheckoutRouteImport } from './routes/api.payments.znuffi.checkout'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -160,6 +164,11 @@ const LiveDemosWebsitesRoute = LiveDemosWebsitesRouteImport.update({
   path: '/live-demos/websites',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PayZnuffiRoute = PayZnuffiRouteImport.update({
+  id: '/pay/znuffi',
+  path: '/pay/znuffi',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PortfolioIndexRoute = PortfolioIndexRouteImport.update({
   id: '/portfolio/',
   path: '/portfolio/',
@@ -211,11 +220,28 @@ const WebsiteStudioSlugRoute = WebsiteStudioSlugRouteImport.update({
   path: '/website-studio/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PayZnuffiCompleteRoute = PayZnuffiCompleteRouteImport.update({
+  id: '/complete',
+  path: '/complete',
+  getParentRoute: () => PayZnuffiRoute,
+} as any)
 const ShowcaseTemplatesSlugRoute = ShowcaseTemplatesSlugRouteImport.update({
   id: '/showcase/templates/$slug',
   path: '/showcase/templates/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPaymentsRazorpayWebhookRoute =
+  ApiPaymentsRazorpayWebhookRouteImport.update({
+    id: '/api/payments/razorpay/webhook',
+    path: '/api/payments/razorpay/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiPaymentsZnuffiCheckoutRoute =
+  ApiPaymentsZnuffiCheckoutRouteImport.update({
+    id: '/api/payments/znuffi/checkout',
+    path: '/api/payments/znuffi/checkout',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -239,6 +265,7 @@ export interface FileRoutesByFullPath {
   '/live-demos/business-software': typeof LiveDemosBusinessSoftwareRoute
   '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
   '/live-demos/websites': typeof LiveDemosWebsitesRoute
+  '/pay/znuffi': typeof PayZnuffiRouteWithChildren
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/showcase/automation': typeof ShowcaseAutomationRoute
   '/showcase/business-software': typeof ShowcaseBusinessSoftwareRoute
@@ -251,7 +278,10 @@ export interface FileRoutesByFullPath {
   '/portfolio/': typeof PortfolioIndexRoute
   '/showcase/': typeof ShowcaseIndexRoute
   '/website-studio/': typeof WebsiteStudioIndexRoute
+  '/pay/znuffi/complete': typeof PayZnuffiCompleteRoute
   '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
+  '/api/payments/razorpay/webhook': typeof ApiPaymentsRazorpayWebhookRoute
+  '/api/payments/znuffi/checkout': typeof ApiPaymentsZnuffiCheckoutRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -275,6 +305,7 @@ export interface FileRoutesByTo {
   '/live-demos/business-software': typeof LiveDemosBusinessSoftwareRoute
   '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
   '/live-demos/websites': typeof LiveDemosWebsitesRoute
+  '/pay/znuffi': typeof PayZnuffiRouteWithChildren
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/showcase/automation': typeof ShowcaseAutomationRoute
   '/showcase/business-software': typeof ShowcaseBusinessSoftwareRoute
@@ -287,7 +318,10 @@ export interface FileRoutesByTo {
   '/portfolio': typeof PortfolioIndexRoute
   '/showcase': typeof ShowcaseIndexRoute
   '/website-studio': typeof WebsiteStudioIndexRoute
+  '/pay/znuffi/complete': typeof PayZnuffiCompleteRoute
   '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
+  '/api/payments/razorpay/webhook': typeof ApiPaymentsRazorpayWebhookRoute
+  '/api/payments/znuffi/checkout': typeof ApiPaymentsZnuffiCheckoutRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -312,6 +346,7 @@ export interface FileRoutesById {
   '/live-demos/business-software': typeof LiveDemosBusinessSoftwareRoute
   '/live-demos/mobile-apps': typeof LiveDemosMobileAppsRoute
   '/live-demos/websites': typeof LiveDemosWebsitesRoute
+  '/pay/znuffi': typeof PayZnuffiRouteWithChildren
   '/portfolio/$slug': typeof PortfolioSlugRoute
   '/showcase/automation': typeof ShowcaseAutomationRoute
   '/showcase/business-software': typeof ShowcaseBusinessSoftwareRoute
@@ -324,7 +359,10 @@ export interface FileRoutesById {
   '/portfolio/': typeof PortfolioIndexRoute
   '/showcase/': typeof ShowcaseIndexRoute
   '/website-studio/': typeof WebsiteStudioIndexRoute
+  '/pay/znuffi/complete': typeof PayZnuffiCompleteRoute
   '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
+  '/api/payments/razorpay/webhook': typeof ApiPaymentsRazorpayWebhookRoute
+  '/api/payments/znuffi/checkout': typeof ApiPaymentsZnuffiCheckoutRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -350,6 +388,7 @@ export interface FileRouteTypes {
     | '/live-demos/business-software'
     | '/live-demos/mobile-apps'
     | '/live-demos/websites'
+    | '/pay/znuffi'
     | '/portfolio/$slug'
     | '/showcase/automation'
     | '/showcase/business-software'
@@ -362,7 +401,10 @@ export interface FileRouteTypes {
     | '/portfolio/'
     | '/showcase/'
     | '/website-studio/'
+    | '/pay/znuffi/complete'
     | '/showcase/templates/$slug'
+    | '/api/payments/razorpay/webhook'
+    | '/api/payments/znuffi/checkout'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -386,6 +428,7 @@ export interface FileRouteTypes {
     | '/live-demos/business-software'
     | '/live-demos/mobile-apps'
     | '/live-demos/websites'
+    | '/pay/znuffi'
     | '/portfolio/$slug'
     | '/showcase/automation'
     | '/showcase/business-software'
@@ -398,7 +441,10 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/showcase'
     | '/website-studio'
+    | '/pay/znuffi/complete'
     | '/showcase/templates/$slug'
+    | '/api/payments/razorpay/webhook'
+    | '/api/payments/znuffi/checkout'
   id:
     | '__root__'
     | '/'
@@ -422,6 +468,7 @@ export interface FileRouteTypes {
     | '/live-demos/business-software'
     | '/live-demos/mobile-apps'
     | '/live-demos/websites'
+    | '/pay/znuffi'
     | '/portfolio/$slug'
     | '/showcase/automation'
     | '/showcase/business-software'
@@ -434,7 +481,10 @@ export interface FileRouteTypes {
     | '/portfolio/'
     | '/showcase/'
     | '/website-studio/'
+    | '/pay/znuffi/complete'
     | '/showcase/templates/$slug'
+    | '/api/payments/razorpay/webhook'
+    | '/api/payments/znuffi/checkout'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -459,6 +509,7 @@ export interface RootRouteChildren {
   LiveDemosBusinessSoftwareRoute: typeof LiveDemosBusinessSoftwareRoute
   LiveDemosMobileAppsRoute: typeof LiveDemosMobileAppsRoute
   LiveDemosWebsitesRoute: typeof LiveDemosWebsitesRoute
+  PayZnuffiRoute: typeof PayZnuffiRouteWithChildren
   PortfolioSlugRoute: typeof PortfolioSlugRoute
   ShowcaseAutomationRoute: typeof ShowcaseAutomationRoute
   ShowcaseBusinessSoftwareRoute: typeof ShowcaseBusinessSoftwareRoute
@@ -472,6 +523,8 @@ export interface RootRouteChildren {
   ShowcaseIndexRoute: typeof ShowcaseIndexRoute
   WebsiteStudioIndexRoute: typeof WebsiteStudioIndexRoute
   ShowcaseTemplatesSlugRoute: typeof ShowcaseTemplatesSlugRoute
+  ApiPaymentsRazorpayWebhookRoute: typeof ApiPaymentsRazorpayWebhookRoute
+  ApiPaymentsZnuffiCheckoutRoute: typeof ApiPaymentsZnuffiCheckoutRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -637,6 +690,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LiveDemosWebsitesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pay/znuffi': {
+      id: '/pay/znuffi'
+      path: '/pay/znuffi'
+      fullPath: '/pay/znuffi'
+      preLoaderRoute: typeof PayZnuffiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/portfolio/': {
       id: '/portfolio/'
       path: '/portfolio'
@@ -707,6 +767,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebsiteStudioSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/pay/znuffi/complete': {
+      id: '/pay/znuffi/complete'
+      path: '/complete'
+      fullPath: '/pay/znuffi/complete'
+      preLoaderRoute: typeof PayZnuffiCompleteRouteImport
+      parentRoute: typeof PayZnuffiRoute
+    }
     '/showcase/templates/$slug': {
       id: '/showcase/templates/$slug'
       path: '/showcase/templates/$slug'
@@ -714,8 +781,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShowcaseTemplatesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/payments/razorpay/webhook': {
+      id: '/api/payments/razorpay/webhook'
+      path: '/api/payments/razorpay/webhook'
+      fullPath: '/api/payments/razorpay/webhook'
+      preLoaderRoute: typeof ApiPaymentsRazorpayWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/payments/znuffi/checkout': {
+      id: '/api/payments/znuffi/checkout'
+      path: '/api/payments/znuffi/checkout'
+      fullPath: '/api/payments/znuffi/checkout'
+      preLoaderRoute: typeof ApiPaymentsZnuffiCheckoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
+
+interface PayZnuffiRouteChildren {
+  PayZnuffiCompleteRoute: typeof PayZnuffiCompleteRoute
+}
+
+const PayZnuffiRouteChildren: PayZnuffiRouteChildren = {
+  PayZnuffiCompleteRoute: PayZnuffiCompleteRoute,
+}
+
+const PayZnuffiRouteWithChildren = PayZnuffiRoute._addFileChildren(
+  PayZnuffiRouteChildren,
+)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -739,6 +832,7 @@ const rootRouteChildren: RootRouteChildren = {
   LiveDemosBusinessSoftwareRoute: LiveDemosBusinessSoftwareRoute,
   LiveDemosMobileAppsRoute: LiveDemosMobileAppsRoute,
   LiveDemosWebsitesRoute: LiveDemosWebsitesRoute,
+  PayZnuffiRoute: PayZnuffiRouteWithChildren,
   PortfolioSlugRoute: PortfolioSlugRoute,
   ShowcaseAutomationRoute: ShowcaseAutomationRoute,
   ShowcaseBusinessSoftwareRoute: ShowcaseBusinessSoftwareRoute,
@@ -752,6 +846,8 @@ const rootRouteChildren: RootRouteChildren = {
   ShowcaseIndexRoute: ShowcaseIndexRoute,
   WebsiteStudioIndexRoute: WebsiteStudioIndexRoute,
   ShowcaseTemplatesSlugRoute: ShowcaseTemplatesSlugRoute,
+  ApiPaymentsRazorpayWebhookRoute: ApiPaymentsRazorpayWebhookRoute,
+  ApiPaymentsZnuffiCheckoutRoute: ApiPaymentsZnuffiCheckoutRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
