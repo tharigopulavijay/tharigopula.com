@@ -21,7 +21,7 @@ export const Route = createFileRoute("/showcase/business-software")({
       {
         name: "description",
         content:
-          "Open a complete business operating system and click through it — leads, customers, sales, purchases, inventory, service, warranty and dashboards, with real records and five staff roles.",
+          "Explore a fictional but working business operating system — leads, quotations, GST billing, inventory, service, costing and dashboards.",
       },
       { property: "og:title", content: "Business Software Demo | Tharigopula Technologies" },
       {
@@ -97,10 +97,10 @@ function BusinessSoftwareDemoPage() {
         crumb="Business Software Demo"
         title="A complete business system"
         accentTitle="you can actually click through."
-        lead="Leads, customers, sales, purchases, stock, service and dashboards — one connected system with real records in it. Open it and use it; nothing here is a screenshot."
+        lead="Leads, quotations, billing, stock, service and costs in one working system. Open the fictional demo and try the workflows yourself."
         primary={{ to: "#demo", label: "Open the demo", hash: "#demo" }}
         secondary={{ to: "/contact", label: "Request custom demo" }}
-        assurances={["No login required", "Real records to click", "Five staff roles"]}
+        assurances={["No login required", "Fictional sample records", "Five staff views"]}
         visualWide
         visual={
           <div className="flex justify-center">
@@ -121,7 +121,7 @@ function BusinessSoftwareDemoPage() {
           </h2>
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
             Change the role in the top right to see the same system as an owner, a salesperson, a
-            service engineer or the stores team — each one sees only their own work.
+            service engineer or the stores team. This switches the view; it is not a staff login.
           </p>
           <span aria-hidden className="mx-auto mt-5 block h-1 w-14 rounded-full bg-signal" />
         </div>
@@ -129,13 +129,13 @@ function BusinessSoftwareDemoPage() {
         <div className="mt-10">
           <AppFrame
             src={DEMO_SRC}
-            title="Business OS — live demo"
-            label="Business OS — demo data, and anything you change stays in your browser"
+            title="Business OS — interactive demo"
+            label="SIMS Business OS v1.7 — fictional demo data; changes stay in this browser"
           />
         </div>
 
         <p className="mt-4 text-center text-sm text-muted-foreground">
-          Built for a desktop, the way the people who live in it all day would use it —{" "}
+          Built for desktop work. This public demo is separate from any real business data —{" "}
           <a
             href={DEMO_SRC}
             target="_blank"
