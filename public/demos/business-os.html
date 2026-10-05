@@ -116,6 +116,8 @@ table tbody tr{transition:background .12s var(--ease);}
 table tbody tr:hover td{background:var(--ink-50);}
 table tbody tr:last-child td{border-bottom:none;}
 .tablewrap{border:1px solid var(--ink-200);border-radius:var(--r-lg);overflow:hidden;background:#fff;box-shadow:var(--shadow-xs);}
+.table-pager{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:10px 14px;border-top:1px solid var(--ink-200);background:var(--ink-50);font-size:12px;color:var(--ink-500);}
+.table-pager button:disabled{opacity:.45;cursor:not-allowed;}
 .tablewrap.grid-lines table th,.tablewrap.grid-lines table td{border-right:1px solid var(--ink-200);}
 .tablewrap.grid-lines table th:last-child,.tablewrap.grid-lines table td:last-child{border-right:none;}
 
@@ -245,16 +247,17 @@ textarea{resize:vertical;min-height:60px;}
 .vc-fill{height:100%;border-radius:6px;display:flex;align-items:center;padding-left:8px;font-size:10px;font-weight:800;color:#fff;white-space:nowrap;}
 
 /* ---------- LEADS KANBAN BOARD ---------- */
-/* Panning, not just a thin scrollbar you have to hunt for below the fold: wheel/trackpad scroll pans sideways
-   (kanbanWheelPan), and click-dragging empty column space pans too (kanbanDragStart/Move/End), like Trello. The
-   scrollbar is still there as a fallback but nobody should need to find it. Column height is capped well under
-   the viewport so the whole board — KPIs, toolbar and all — fits on one screen without a page-level scroll first. */
+/* Keep the KPIs and controls visible while the board uses the rest of the content pane.
+   Each column scrolls independently; the board pans horizontally for later stages. */
+#content.lead-board-view{display:flex;flex-direction:column;padding-bottom:14px;}
+#content.lead-board-view>.grid,#content.lead-board-view>.toolbar,#content.lead-board-view>.toolbar-divider{flex-shrink:0;}
+#content.lead-board-view .kanban-wrap{flex:1 1 0;min-height:320px;}
 .kanban-wrap{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;margin-top:4px;cursor:grab;scrollbar-width:thin;}
 .kanban-wrap.dragging{cursor:grabbing;user-select:none;}
 .kanban-wrap::-webkit-scrollbar{height:8px;}
 .kanban-wrap::-webkit-scrollbar-thumb{background:var(--ink-300);border-radius:8px;}
 .kanban-wrap::-webkit-scrollbar-thumb:hover{background:var(--ink-400);}
-.kanban-col{flex:0 0 252px;background:var(--ink-50);border:1px solid var(--ink-200);border-radius:var(--r-md);display:flex;flex-direction:column;max-height:min(58vh,560px);}
+.kanban-col{flex:0 0 252px;background:var(--ink-50);border:1px solid var(--ink-200);border-radius:var(--r-md);display:flex;flex-direction:column;min-height:0;}
 .kanban-col-head{padding:10px 12px;border-bottom:1px solid var(--ink-200);flex-shrink:0;}
 .kanban-col-head .kc-title{font-size:12px;font-weight:750;color:var(--ink-900);display:flex;justify-content:space-between;align-items:center;gap:6px;}
 .kanban-col-head .kc-count{background:var(--ink-200);color:var(--ink-700);border-radius:10px;padding:1px 8px;font-size:10.5px;font-weight:700;}
@@ -262,7 +265,7 @@ textarea{resize:vertical;min-height:60px;}
 .kanban-col.won-col .kanban-col-head{background:var(--green-100);}
 .kanban-col.lost-col .kanban-col-head{background:var(--red-100);}
 .kanban-col-body{flex:1;overflow-y:auto;padding:9px;display:flex;flex-direction:column;gap:8px;}
-.kanban-card{background:var(--surface);border:1px solid var(--ink-200);border-radius:var(--r-sm);padding:10px 11px;cursor:pointer;transition:box-shadow .14s var(--ease),transform .14s var(--ease);}
+.kanban-card{flex-shrink:0;background:var(--surface);border:1px solid var(--ink-200);border-radius:var(--r-sm);padding:10px 11px;cursor:pointer;transition:box-shadow .14s var(--ease),transform .14s var(--ease);}
 .kanban-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px);border-color:var(--ink-300);}
 .kanban-card.onhold{border-left:3px solid var(--amber);}
 .kanban-card .kc-company{font-size:12.3px;font-weight:700;color:var(--ink-900);line-height:1.3;}
@@ -1841,6 +1844,8 @@ function sortTable(rows, key, dir, kind, valueFn){
   return r;
 }
 let _tableSortState={};
+let _tablePageState={};
+function setTablePage(tableId,page){ _tablePageState[tableId]=Math.max(0,page); rerender(); }
 function renderTable(tableId, cols, rows, opts){
   opts=opts||{};
   const st=_tableSortState[tableId]||{key:opts.defaultSort||null,dir:opts.defaultDir||1};
@@ -1850,6 +1855,11 @@ function renderTable(tableId, cols, rows, opts){
   // v1.1 — register what's on screen so the topbar Export button can offer it
   // without every render function having to wire up its own export.
   window._tableReg[tableId] = {cols:cols, rows:rowsToShow, title:opts.title||tableId};
+  const pageSize=opts.pageSize||0;
+  const pageCount=pageSize?Math.max(1,Math.ceil(rowsToShow.length/pageSize)):1;
+  const page=pageSize?Math.min(_tablePageState[tableId]||0,pageCount-1):0;
+  if(pageSize) _tablePageState[tableId]=page;
+  const visibleRows=pageSize?rowsToShow.slice(page*pageSize,(page+1)*pageSize):rowsToShow;
   let h='<table><thead><tr>';
   cols.forEach(c=>{
     if(c.sort===false){ h+='<th class="nosort">'+(c.raw?c.label:esc(c.label))+'</th>'; }
@@ -1859,11 +1869,16 @@ function renderTable(tableId, cols, rows, opts){
     }
   });
   h+='</tr></thead><tbody>';
-  if(!rowsToShow.length){ h+='<tr><td colspan="'+cols.length+'"><div class="empty">No records</div></td></tr>'; }
-  rowsToShow.forEach(row=>{
+  if(!visibleRows.length){ h+='<tr><td colspan="'+cols.length+'"><div class="empty">No records</div></td></tr>'; }
+  visibleRows.forEach(row=>{
     h+='<tr>'+cols.map(c=> '<td>'+(c.render?c.render(row):esc(row[c.key])) +'</td>').join('')+'</tr>';
   });
   h+='</tbody></table>';
+  if(pageSize && rowsToShow.length>pageSize){
+    h+='<div class="table-pager"><span>Showing '+(page*pageSize+1)+'–'+Math.min((page+1)*pageSize,rowsToShow.length)+' of '+rowsToShow.length+'</span>'+
+      '<button class="btn sm" '+(page===0?'disabled ':'')+act('setTablePage',tableId,page-1)+'>Previous</button>'+
+      '<button class="btn sm" '+(page===pageCount-1?'disabled ':'')+act('setTablePage',tableId,page+1)+'>Next</button></div>';
+  }
   return h;
 }
 window._lastTableRenderFn = {};
@@ -1871,6 +1886,7 @@ function onSortTable(tableId,key){
   const st=_tableSortState[tableId]||{key:null,dir:1};
   if(st.key===key){ st.dir=-st.dir; } else { st.key=key; st.dir=1; }
   _tableSortState[tableId]=st;
+  _tablePageState[tableId]=0;
   if(window._lastTableRenderFn[tableId]) window._lastTableRenderFn[tableId]();
 }
 
@@ -5567,6 +5583,7 @@ function renderTopbarTabs(){
 }
 function route(){
   const rk=currentRouteKey();
+  document.getElementById('content').classList.toggle('lead-board-view',rk==='leads' && _leadView==='board');
   window._tableReg = {};        // exports only ever offer what's on the screen now
   renderDemoFlag();
   // Leaving Stores & Purchases entirely re-arms the low-stock popup, so walking away and coming back later
@@ -5823,11 +5840,11 @@ function renderActionCenter(){
     {key:'act',label:'Action',sort:false,render:t=> t.status==='Open' ?
       ('<button class="btn icon-only ghost" title="Snooze 3 days" data-act="snoozeTask" data-args="'+esc(JSON.stringify([(t.id),3]))+'">'+icon('clock',14)+'</button> <button class="btn sm primary" data-act="completeTask" data-args="'+esc(JSON.stringify([(t.id)]))+'">Complete</button>')
       : ('<button class="btn sm ghost" data-act="reopenTask" data-args="'+esc(JSON.stringify([(t.id)]))+'">'+icon('refresh',13)+' Reopen</button>') },
-  ], rows, {})+'</div>';
+  ], rows, {pageSize:30})+'</div>';
   window._lastTableRenderFn['actbl']=()=>{ rerender(); };
   return h;
 }
-function setACView(v){ _acView=v; rerender(); }
+function setACView(v){ _acView=v; _tablePageState.actbl=0; rerender(); }
 function openManualTaskForm(){
   const empOpts = DB.employees.map(e=>'<option value="'+e.id+'">'+esc(e.name)+' ('+e.team+')</option>').join('');
   openModal('New Manual Task', ''+
@@ -6453,7 +6470,7 @@ function renderSalesInvoices(){
     {key:'act',label:'Action',sort:false,exportVal:()=>'',render:i=>
       (invBalance(i)>0.5?'<button class="btn sm primary" '+act('openPaymentForm',i.id)+'>Record payment</button> ':'')+
       '<button class="btn sm" '+act('printInvoiceDoc',i.id)+'>Print</button>'},
-  ], rows, {defaultSort:'date',defaultDir:-1,title:'Sales Invoices'})+'</div>';
+  ], rows, {defaultSort:'date',defaultDir:-1,title:'Sales Invoices',pageSize:30})+'</div>';
   window._lastTableRenderFn['invtbl']=rerender;
   return h;
 }
@@ -10049,7 +10066,7 @@ function renderAuditLog(){
         return '<div class="chg"><b>' + esc(k) + '</b>: <span class="was">' + esc(fmt(c.from)) + '</span> → <span class="now">' + esc(fmt(c.to)) + '</span></div>';
       }).join('');
       return shown + (keys.length > 3 ? '<div class="small muted">+' + (keys.length-3) + ' more field(s)</div>' : ''); }},
-  ], shown, {defaultSort:null, title:'Audit Log'}) + '</div>';
+  ], shown, {defaultSort:null, title:'Audit Log', pageSize:30}) + '</div>';
   window._lastTableRenderFn['audittbl'] = rerender;
   return h;
 }
