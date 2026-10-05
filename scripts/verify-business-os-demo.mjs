@@ -8,8 +8,10 @@ const expected = [
   "sims_os_public_demo_v16",
   "sims_os_public_trial_db_v16",
   "sims_os_public_mode_v16",
-  "My test data",
-  "Live · locked",
+  "My example data",
+  "Client test data",
+  "Client real data · locked",
+  "LD-FUT-1",
   "var PUBLIC_DEMO = true;",
   "People & Pay",
   "Web Enquiries",
@@ -100,5 +102,6 @@ assert.equal(runInContext("DB.customers.length", trial), 0);
 assert.equal(runInContext("DB.salesInvoices.length", trial), 0);
 assert.equal(runInContext("syncReady()", trial), false);
 assert.equal(runInContext("PUBLIC_DEMO", trial), true);
+assert.equal(runInContext("DB.leads.length", trial), 0);
 assert.ok(trialStorage.has("sims_os_public_trial_db_v16"));
 console.log("SIMS public demo: sanitization, JavaScript and marketplace import OK.");

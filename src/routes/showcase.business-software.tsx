@@ -122,6 +122,7 @@ function BusinessSoftwareDemoPage() {
           <p className="mt-3 text-sm text-muted-foreground sm:text-base">
             Change the role in the top right to see the same system as an owner, a salesperson, a
             service engineer or the stores team. This switches the view; it is not a staff login.
+            Choose example or clean client-test data at the bottom of the app sidebar; real data stays locked.
           </p>
           <span aria-hidden className="mx-auto mt-5 block h-1 w-14 rounded-full bg-signal" />
         </div>

@@ -58,6 +58,14 @@ b,strong{font-weight:650;}
 #sidebar .navsub.active{color:#fff;font-weight:600;background:rgba(47,95,224,.24);border-left-color:var(--primary);}
 #sidebar .navsub.active svg{opacity:1;color:#8fb0f5;}
 #sidebar .foot{padding:12px 18px;border-top:1px solid rgba(255,255,255,.08);font-size:10.5px;color:#5f7796;}
+.workspace-picker{padding:12px 14px 10px;border-top:1px solid rgba(255,255,255,.13);color:#dbe5f2;}
+.workspace-picker .wp-title{font-size:11px;font-weight:750;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.workspace-picker label{display:flex;align-items:center;gap:8px;padding:5px 3px;font-size:11.5px;cursor:pointer;}
+.workspace-picker input{width:15px;height:15px;margin:0;accent-color:#8fb0f5;flex-shrink:0;}
+.workspace-picker label.locked{opacity:.6;cursor:not-allowed;}
+.workspace-picker .wp-note{font-size:10.5px;line-height:1.4;color:#aebfd9;margin-top:7px;}
+.workspace-picker.mobile{color:var(--ink-900);border-color:var(--ink-200);padding:12px;}
+.workspace-picker.mobile .wp-note{color:var(--ink-500);}
 
 /* ---------- MAIN / TOPBAR ---------- */
 #main{flex:1;display:flex;flex-direction:column;min-width:0;}
@@ -558,8 +566,9 @@ table.gst-summary{margin-top:10px;}
 .mobilenav{position:fixed;inset:0;z-index:500;background:rgba(10,20,40,.45);backdrop-filter:blur(2px);}
 .mobilenav .mn-sheet{
   position:absolute;left:0;top:0;bottom:0;width:82%;max-width:300px;background:var(--surface);
-  box-shadow:var(--shadow-lg);padding:10px;overflow-y:auto;animation:slideup .16s var(--ease);
+  box-shadow:var(--shadow-lg);padding:10px;display:flex;flex-direction:column;animation:slideup .16s var(--ease);
 }
+.mobilenav .mn-links{flex:1;min-height:0;overflow-y:auto;}
 .mn-head{display:flex;align-items:center;justify-content:space-between;padding:8px 10px 12px;border-bottom:1px solid var(--ink-200);margin-bottom:8px;}
 .mn-head b{font-size:14px;color:var(--ink-900);}
 .mn-item{display:flex;align-items:center;gap:12px;padding:12px 12px;border-radius:var(--r-sm);cursor:pointer;font-size:14px;color:var(--ink-700);font-weight:600;}
@@ -638,6 +647,7 @@ table.pl tr.grand td{border-top:2px solid var(--ink-900);border-bottom:2px solid
   <div id="sidebar">
     <div class="brand"><b>SIMS</b></div>
     <nav id="navroot"></nav>
+    <div id="workspacePicker"></div>
     <div class="foot">v1.7 &middot; clear connections</div>
   </div>
   <div id="main">
@@ -1687,6 +1697,18 @@ function readWorkspaceMode(){
 var WORKSPACE_MODE = readWorkspaceMode();
 function workspaceDbKey(){ return WORKSPACE_MODE==='trial' ? 'sims_os_public_trial_db_v16' : 'sims_os_public_demo_v16'; }
 function workspaceSyncKey(){ return WORKSPACE_MODE==='trial' ? 'sims_os_public_trial_sync_v16' : 'sims_os_public_sync_v16'; }
+function renderWorkspacePicker(mobile){
+  const name = mobile ? 'workspace-mobile' : 'workspace-desktop';
+  const option = (mode, label) => '<label><input type="radio" name="' + name + '" ' +
+    (WORKSPACE_MODE===mode ? 'checked ' : '') + act('switchWorkspaceMode',mode) + '/><span>' + label + '</span></label>';
+  return '<div class="workspace-picker' + (mobile?' mobile':'') + '" aria-label="Data workspace">' +
+    '<div class="wp-title">Show data from</div>' +
+    option('sample','My example data') +
+    option('trial','Client test data') +
+    '<label class="locked" title="Private staff login is required"><input type="radio" name="' + name + '" disabled/><span>Client real data · locked</span></label>' +
+    '<div class="wp-note">Choose one. Switching hides other records; it never deletes them.</div>' +
+    '</div>';
+}
 function blankTrialDB(){
   const db = freshDB();
   // Keep the shape every screen expects, but none of the SIMS example records.
@@ -1741,10 +1763,12 @@ function loadDB(){
       seedV12(DB);                                       // adds GSTINs/tax fields only where missing
       settings();                                        // fills in any missing setting
       DB.salesInvoices.forEach(i=>{ if(i.payments===undefined) applyGstToInvoice(DB, i, {paymentStatus:i.paymentStatus}); });
+      if(seedV17(DB,true)){ recomputeAlertsAndTasks(DB); saveLocal(); }
       return;
     }catch(e){} }
   DB = freshDB();
   DB = seedTransactions(DB) || DB;
+  seedV17(DB,false);
   seedV11(DB);
   seedV12(DB);
   seedV15(DB);
@@ -1759,6 +1783,7 @@ function resetDemo(){
   localStorage.removeItem('sims_os_public_demo_v16');
   DB = freshDB();
   DB = seedTransactions(DB) || DB;
+  seedV17(DB,false);
   seedV11(DB);
   seedV12(DB);
   seedV15(DB);
@@ -3913,9 +3938,10 @@ function toggleMobileNav(){
   wrap.className = 'mobilenav';
   wrap.innerHTML = '<div class="mn-sheet">' +
     '<div class="mn-head"><b>Go to</b><span class="closex" data-act="toggleMobileNav">&times;</span></div>' +
+    '<div class="mn-links">' +
     NAV.filter(n=>n.roles.includes(CURRENT_ROLE)).map(n=>
       '<div class="mn-item" ' + act('mobileNavTo', n.id) + '>' + icon(n.icon,17) + '<span>' + esc(n.label) + '</span></div>'
-    ).join('') + '</div>';
+    ).join('') + '</div>' + renderWorkspacePicker(true) + '</div>';
   wrap.addEventListener('click', ev=>{ if(ev.target === wrap) wrap.remove(); });
   document.body.appendChild(wrap);
 }
@@ -5475,6 +5501,8 @@ function renderNav(){
     }
   });
   root.innerHTML=h;
+  const picker=document.getElementById('workspacePicker');
+  if(picker) picker.innerHTML=renderWorkspacePicker(false);
   const sel=document.getElementById('roleSelect');
   sel.innerHTML = ['owner','sales','service','stores','production'].map(r=>'<option value="'+r+'"'+(r===CURRENT_ROLE?' selected':'')+'>'+r[0].toUpperCase()+r.slice(1)+' view</option>').join('');
   const avatar=document.querySelector('#topbar .avatar');
@@ -10098,16 +10126,7 @@ function exportAgeingReport(){
 
 function renderSettingsPage(){
   const s = settings();
-  let h = '<div class="card" style="margin-bottom:16px;"><div class="section-title" style="margin-top:0;"><span class="lft">' + icon('layers',16) + ' Which data do you want to see?</span></div>' +
-    '<div class="small muted">Switching changes the view, not the saved records. Your entries stay in their own space.</div>' +
-    '<div class="toolbar" style="margin-top:14px;gap:8px;flex-wrap:wrap;">' +
-      '<button class="btn ' + (WORKSPACE_MODE==='sample'?'primary':'') + '" ' + act('switchWorkspaceMode','sample') + '>SIMS example data</button>' +
-      '<button class="btn ' + (WORKSPACE_MODE==='trial'?'primary':'') + '" ' + act('switchWorkspaceMode','trial') + '>My test data</button>' +
-      '<button class="btn" disabled title="Available after secure staff sign-in">Live · locked</button></div>' +
-    '<div class="small muted" style="margin-top:10px;">' + (WORKSPACE_MODE==='sample'
-      ? 'The existing SIMS examples are visible. Choose My test data for a clean workspace; nothing here is deleted.'
-      : 'Your clean trial workspace is visible. SIMS examples are hidden, not deleted. Trial changes stay in this browser until secure sharing is ready.') + '</div></div>' +
-    '<div class="grid g3" style="grid-template-columns:1fr 1fr;">';
+  let h = '<div class="grid g3" style="grid-template-columns:1fr 1fr;">';
   h += '<div class="card"><div class="section-title" style="margin-top:0;"><span class="lft">' + icon('clock',16) + ' Business date</span></div>' +
     '<div class="' + (s.demoMode ? 'warnbox' : 'infobox') + '">' + (s.demoMode
       ? '<div><b>Demo mode is ON.</b> The whole system believes today is <b>' + fmtDate(s.demoDate) + '</b>. Every due date, warranty check and ageing calculation is measured against that date, so a demo looks the same tomorrow as it does today. Switch this off before entering real business data.</div>'
@@ -12407,6 +12426,25 @@ function seedV16(db){
   return db;
 }
 
+// A small, clearly fictional forward-looking pack. It belongs only to the
+// SIMS examples; a client's clean test workspace never receives these rows.
+function seedV17(db, logImport){
+  const T = settings(db).demoDate || '2026-08-07';
+  const nextYear = Number(T.slice(0,4)) + 1;
+  const scenarios = [
+    {id:'LD-FUT-1',company:'Northstar Wind Fabrication (Demo)',contact:'Demo Buyer',mobile:'0000000000',email:'wind-buyer@example.com',location:'Kutch, Gujarat',industry:'Renewable Energy / Fabrication',source:'Website',product:'Bench-Type MPI Machine',expectedValue:740000,assignedTo:'EMP-2',stage:'New',followUpDate:addDays(T,2),lostReason:'',notes:'Fictional planning scenario: exploring a '+nextYear+' wind-tower weld inspection line. Custom fixture, scope and standards all require buyer verification before quoting.',activities:[{date:addDays(T,-1),note:'Example web enquiry recorded; technical requirements still to be confirmed'}],createdAt:addDays(T,-1)},
+    {id:'LD-FUT-2',company:'BlueHarbor Marine QA (Demo)',contact:'Demo Procurement',mobile:'0000000000',email:'marine-buyer@example.com',location:'Singapore',industry:'Marine Inspection',source:'Website',product:'Dual Magnetization Yoke',expectedValue:225000,assignedTo:'EMP-3',stage:'Qualified',followUpDate:addDays(T,4),lostReason:'',notes:'Fictional export scenario: multi-site equipment request for '+nextYear+'. INR estimate only; currency, freight, taxes and warranty coverage need review before any offer.',activities:[{date:addDays(T,-2),note:'Example international enquiry received'},{date:addDays(T,-1),note:'Need confirmed destination and commercial terms'}],createdAt:addDays(T,-2)},
+    {id:'LD-FUT-3',company:'FutureRail Components Lab (Demo)',contact:'Demo Quality Lead',mobile:'0000000000',email:'quality-buyer@example.com',location:'Pune, Maharashtra',industry:'Rail Components',source:'Referral',product:'Gauss Meter GM-800',expectedValue:156000,assignedTo:'EMP-2',stage:'Technical Discussion',followUpDate:addDays(T,3),lostReason:'',notes:'Fictional '+nextYear+' lab-upgrade scenario. Confirm measurement range, calibration documents and quantity with the buyer; no certification is asserted.',activities:[{date:addDays(T,-3),note:'Example referral received'},{date:T,note:'Technical questions to clarify before quotation'}],createdAt:addDays(T,-3)},
+  ];
+  let added=0;
+  scenarios.forEach(lead=>{
+    if(byId(db.leads,lead.id)) return;
+    db.leads.push(lead); added++;
+    if(logImport && db===DB) audit('Import','Lead',lead.id,'Fictional future scenario — '+lead.company);
+  });
+  return added;
+}
+
 /* === SECTION: INIT === */
 function init(){
   loadDB();
@@ -12426,7 +12464,7 @@ function renderDemoFlag(){
   const el=document.getElementById('demoFlag'); if(!el) return;
   const s=settings();
   const name=WORKSPACE_MODE==='trial'?'My test data':'SIMS examples';
-  el.innerHTML = '<span class="demoflag" data-act="gotoSettings" title="Choose which data to show or change the date.">' +
+  el.innerHTML = '<span class="demoflag" data-act="gotoSettings" title="Change the business date and settings. Choose data at the bottom of the sidebar.">' +
     name + ' · ' + (s.demoMode ? 'Demo date: '+fmtDate(s.demoDate) : 'Real date: '+fmtDate(realTodayISO())) + '</span>';
 }
 function gotoSettings(){ _dataView='settings'; navTo('datahub'); rerender(); }
