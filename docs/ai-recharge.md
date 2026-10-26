@@ -1,0 +1,5 @@
+# Shared Tharigopula AI recharges
+
+The signed POST /api/payments/ai-recharge route reuses the company Worker's existing Razorpay credentials. Only the SIMS tenant is registered initially with its own SIMS_RECHARGE_SHARED_SECRET. Existing checkout and webhook routes remain unchanged. The route permits status, create/recover and verify only; it never accepts arbitrary provider paths, payouts, mandates, browser credits, or another tenant. It bounds signed timestamps, amounts, bodies and provider responses, rejects redirects, refetches captured payments/refunds, and projects only the fields needed by SIMS.
+
+Canonical reusable implementation is packages/platform-billing/recharge-gateway.mjs in the private SIMS repository; src/server/ai-recharge.mjs is an identical deployment copy. Compare bytes before deployment. No merchant secret is copied to SIMS. A separate signed Razorpay webhook targets the existing SIMS wallet endpoint. Main-office, review data and actual AI-cost settlement boundaries remain unchanged.

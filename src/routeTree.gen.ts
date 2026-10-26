@@ -43,6 +43,7 @@ import { Route as ShowcaseMobileAppsRouteImport } from './routes/showcase.mobile
 import { Route as ShowcaseWebsitesRouteImport } from './routes/showcase.websites'
 import { Route as WebsiteStudioIndexRouteImport } from './routes/website-studio.index'
 import { Route as WebsiteStudioSlugRouteImport } from './routes/website-studio.$slug'
+import { Route as ApiPaymentsAiRechargeRouteImport } from './routes/api.payments.ai-recharge'
 import { Route as PayZnuffiCompleteRouteImport } from './routes/pay.znuffi.complete'
 import { Route as ShowcaseTemplatesSlugRouteImport } from './routes/showcase.templates.$slug'
 import { Route as ApiPaymentsRazorpayWebhookRouteImport } from './routes/api.payments.razorpay.webhook'
@@ -220,6 +221,11 @@ const WebsiteStudioSlugRoute = WebsiteStudioSlugRouteImport.update({
   path: '/website-studio/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPaymentsAiRechargeRoute = ApiPaymentsAiRechargeRouteImport.update({
+  id: '/api/payments/ai-recharge',
+  path: '/api/payments/ai-recharge',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PayZnuffiCompleteRoute = PayZnuffiCompleteRouteImport.update({
   id: '/complete',
   path: '/complete',
@@ -278,6 +284,7 @@ export interface FileRoutesByFullPath {
   '/portfolio/': typeof PortfolioIndexRoute
   '/showcase/': typeof ShowcaseIndexRoute
   '/website-studio/': typeof WebsiteStudioIndexRoute
+  '/api/payments/ai-recharge': typeof ApiPaymentsAiRechargeRoute
   '/pay/znuffi/complete': typeof PayZnuffiCompleteRoute
   '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
   '/api/payments/razorpay/webhook': typeof ApiPaymentsRazorpayWebhookRoute
@@ -318,6 +325,7 @@ export interface FileRoutesByTo {
   '/portfolio': typeof PortfolioIndexRoute
   '/showcase': typeof ShowcaseIndexRoute
   '/website-studio': typeof WebsiteStudioIndexRoute
+  '/api/payments/ai-recharge': typeof ApiPaymentsAiRechargeRoute
   '/pay/znuffi/complete': typeof PayZnuffiCompleteRoute
   '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
   '/api/payments/razorpay/webhook': typeof ApiPaymentsRazorpayWebhookRoute
@@ -359,6 +367,7 @@ export interface FileRoutesById {
   '/portfolio/': typeof PortfolioIndexRoute
   '/showcase/': typeof ShowcaseIndexRoute
   '/website-studio/': typeof WebsiteStudioIndexRoute
+  '/api/payments/ai-recharge': typeof ApiPaymentsAiRechargeRoute
   '/pay/znuffi/complete': typeof PayZnuffiCompleteRoute
   '/showcase/templates/$slug': typeof ShowcaseTemplatesSlugRoute
   '/api/payments/razorpay/webhook': typeof ApiPaymentsRazorpayWebhookRoute
@@ -401,6 +410,7 @@ export interface FileRouteTypes {
     | '/portfolio/'
     | '/showcase/'
     | '/website-studio/'
+    | '/api/payments/ai-recharge'
     | '/pay/znuffi/complete'
     | '/showcase/templates/$slug'
     | '/api/payments/razorpay/webhook'
@@ -441,6 +451,7 @@ export interface FileRouteTypes {
     | '/portfolio'
     | '/showcase'
     | '/website-studio'
+    | '/api/payments/ai-recharge'
     | '/pay/znuffi/complete'
     | '/showcase/templates/$slug'
     | '/api/payments/razorpay/webhook'
@@ -481,6 +492,7 @@ export interface FileRouteTypes {
     | '/portfolio/'
     | '/showcase/'
     | '/website-studio/'
+    | '/api/payments/ai-recharge'
     | '/pay/znuffi/complete'
     | '/showcase/templates/$slug'
     | '/api/payments/razorpay/webhook'
@@ -522,6 +534,7 @@ export interface RootRouteChildren {
   PortfolioIndexRoute: typeof PortfolioIndexRoute
   ShowcaseIndexRoute: typeof ShowcaseIndexRoute
   WebsiteStudioIndexRoute: typeof WebsiteStudioIndexRoute
+  ApiPaymentsAiRechargeRoute: typeof ApiPaymentsAiRechargeRoute
   ShowcaseTemplatesSlugRoute: typeof ShowcaseTemplatesSlugRoute
   ApiPaymentsRazorpayWebhookRoute: typeof ApiPaymentsRazorpayWebhookRoute
   ApiPaymentsZnuffiCheckoutRoute: typeof ApiPaymentsZnuffiCheckoutRoute
@@ -767,6 +780,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WebsiteStudioSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/payments/ai-recharge': {
+      id: '/api/payments/ai-recharge'
+      path: '/api/payments/ai-recharge'
+      fullPath: '/api/payments/ai-recharge'
+      preLoaderRoute: typeof ApiPaymentsAiRechargeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pay/znuffi/complete': {
       id: '/pay/znuffi/complete'
       path: '/complete'
@@ -845,6 +865,7 @@ const rootRouteChildren: RootRouteChildren = {
   PortfolioIndexRoute: PortfolioIndexRoute,
   ShowcaseIndexRoute: ShowcaseIndexRoute,
   WebsiteStudioIndexRoute: WebsiteStudioIndexRoute,
+  ApiPaymentsAiRechargeRoute: ApiPaymentsAiRechargeRoute,
   ShowcaseTemplatesSlugRoute: ShowcaseTemplatesSlugRoute,
   ApiPaymentsRazorpayWebhookRoute: ApiPaymentsRazorpayWebhookRoute,
   ApiPaymentsZnuffiCheckoutRoute: ApiPaymentsZnuffiCheckoutRoute,
