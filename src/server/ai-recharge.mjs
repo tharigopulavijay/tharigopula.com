@@ -16,7 +16,10 @@ export async function handleAiRecharge(request,env,fetcher=fetch){
  try{
   const raw=new TextDecoder().decode(await bytes(request,8192));
   if(!await authenticated(request,env.SIMS_RECHARGE_SHARED_SECRET,raw))return json({error:'signature_rejected'},403);
-  if(!/^rzp_live_[a-zA-Z0-9]+$/.test(env.RAZORPAY_KEY_ID||'')||!env.RAZORPAY_KEY_SECRET)return json({error:'live_merchant_required'},503);
+  // Trim copied whitespace/paired quotes; never reinterpret a different credential.
+  const clean=value=>typeof value==='string'?value.trim().replace(/^(['"])(.*)\1$/s,'$2'):'';
+  env={...env,RAZORPAY_KEY_ID:clean(env.RAZORPAY_KEY_ID),RAZORPAY_KEY_SECRET:clean(env.RAZORPAY_KEY_SECRET)};
+  if(!/^rzp_live_[a-zA-Z0-9]+$/.test(env.RAZORPAY_KEY_ID||'')||!env.RAZORPAY_KEY_SECRET)return json({error:'live_merchant_required',keyMode:/^rzp_test_/.test(env.RAZORPAY_KEY_ID||'')?'test':env.RAZORPAY_KEY_ID?'unrecognised':'missing',merchantSecretPresent:Boolean(env.RAZORPAY_KEY_SECRET),keyIdLength:(env.RAZORPAY_KEY_ID||'').length,containsReviewedKey:(env.RAZORPAY_KEY_ID||'').includes('rzp_live_TanPvUMLv1Hryj')},503);
   let input;try{input=JSON.parse(raw);}catch{fail('invalid_request',400);}
   if(input.tenant!=='sims'||!['status','create','verify'].includes(input.operation))fail('invalid_request',400);
   if(input.operation==='status'){await provider(env,'payment_links?count=1',null,fetcher);return json({ready:true,live:true,keyId:env.RAZORPAY_KEY_ID});}
